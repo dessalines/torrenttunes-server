@@ -1,5 +1,6 @@
 package com.ytm;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,7 +12,6 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.sql.Connection;
@@ -21,16 +21,26 @@ import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import org.javalite.activejdbc.DB;
+import org.javalite.activejdbc.DBException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.esotericsoftware.kryo.Kryo;
+import com.esotericsoftware.kryo.io.Input;
+import com.esotericsoftware.kryo.io.Output;
 import com.google.common.io.Files;
 import com.turn.ttorrent.common.Torrent;
+import com.turn.ttorrent.common.Torrent.TorrentFile;
+
+import de.javakaffee.kryoserializers.KryoReflectionFactorySupport;
 
 public class Tools {
 
 	static final Logger log = LoggerFactory.getLogger(Tools.class);
 
+	public static final Kryo KRYO  = new KryoReflectionFactorySupport();
+	
 	public static FilenameFilter TORRENT_FILE_FILTER = new FilenameFilter() {
 		public boolean accept(File dir, String name) {
 			return name.endsWith(".torrent");
@@ -87,7 +97,7 @@ public class Tools {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			t.save(baos);
 
-			out = baos.toString("UTF-8");
+			out = baos.toString();
 			baos.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -95,18 +105,77 @@ public class Tools {
 		}
 		return out;
 	}
+	
+	
 
 	public static Torrent deserializeTorrentFile(String data) {
 		Torrent t = null;
 		try {
-			byte[] b = data.getBytes("UTF-8");
-			t = new Torrent(b, true);
+			byte[] b = data.getBytes();
+			t = new Torrent(b, false);
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 		return t;
+	}
+	
+	public static String serializeTorrentFile2(Torrent t) {
+
+		String out = null;
+		try {
+			Output output = new Output(new ByteArrayOutputStream());
+			
+			KRYO.writeObject(output, t);
+			ByteArrayOutputStream baos = (ByteArrayOutputStream) output.getOutputStream();
+			
+			out = baos.toString("UTF-8");
+			
+			output.close();
+			baos.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return out;
+	}
+	
+	
+
+	public static Torrent deserializeTorrentFile2(String data) {
+		Torrent t = null;
+		try {
+			
+			byte[] b = data.getBytes("UTF-8");
+			
+			ByteArrayInputStream bais = new ByteArrayInputStream(b);
+			
+			Input input = new Input(bais);
+			
+			t = KRYO.readObject(input, Torrent.class);			
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return t;
+	}
+
+	public static File saveTorrentToFile(Torrent t) {
+		File file = new File(DataSources.TORRENTS_DIR() + "/" + t.getName());
+		try {
+			FileOutputStream fos = new FileOutputStream(file);
+			t.save(fos);
+			fos.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return file;
+
 	}
 
 	public static void copyResourcesToHomeDir(Boolean copyAnyway) {
@@ -197,7 +266,7 @@ public class Tools {
 			in.close();
 		}
 	}
-	
+
 	public static void runSQLFile(Connection c,File sqlFile) {
 
 		try {
@@ -215,6 +284,19 @@ public class Tools {
 		}
 	}
 
+	public static final void dbInit() {
+		try {
+			new DB("default").open("org.sqlite.JDBC", "jdbc:sqlite:" + DataSources.DB_FILE(), "root", "p@ssw0rd");
+		} catch (DBException e) {
+			e.printStackTrace();
+			dbClose();
+			dbInit();
+		}
 
+	}
+
+	public static final void dbClose() {
+		new DB("default").close();
+	}
 
 }

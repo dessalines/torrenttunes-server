@@ -3,6 +3,9 @@ package com.ytm.db;
 import static com.ytm.db.Tables.SERIALIZED_DATA;
 import static com.ytm.db.Tables.SONG;
 
+import java.util.NoSuchElementException;
+
+import org.javalite.activejdbc.DBException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,6 +19,9 @@ public class Actions {
 
 	
 	public static void saveTorrentToDB(TrackedTorrent t) {
+		
+		try {
+			
 		
 		log.info("Saving " + t.getName() + " to the DB");
 		// First get the MBID
@@ -35,6 +41,14 @@ public class Actions {
 			String data = Tools.serializeTorrentFile(t);
 			
 			SERIALIZED_DATA.createIt("data",data);
+		}
+		
+		} catch(DBException e) {		
+			if (e.getMessage().contains("[SQLITE_CONSTRAINT]")) {
+				log.error("Not adding " + t.getName() + ", Song was already in the DB");
+			} else {
+				e.printStackTrace();
+			}
 		}
 		
 		

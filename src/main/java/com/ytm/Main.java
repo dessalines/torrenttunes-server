@@ -3,6 +3,7 @@ package com.ytm;
 import java.io.File;
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.util.Timer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,6 +50,8 @@ public class Main {
 
 		// Start the tracker
 		tracker.start();
+		
+		
 	}
 
 	public void createTracker() {
@@ -64,12 +67,20 @@ public class Main {
 			for (File f : new File(DataSources.TORRENTS_DIR()).listFiles(Tools.TORRENT_FILE_FILTER)) {
 				log.info("Announcing file: " + f.getName());
 				TrackedTorrent tt = TrackedTorrent.load(f);
+				
 				tracker.announce(tt);
 				
 				// Save to the DB
+				Tools.dbInit();
 				Actions.saveTorrentToDB(tt);
+				Tools.dbClose();
 				
+				// Scan the tracker every 10 minutes for new announces, and add them to the db
+				ScanTrackerService sts = new ScanTrackerService();
+				sts.startAsync();
 				
+	
+		
 			}
 			
 		} catch (IOException e) {

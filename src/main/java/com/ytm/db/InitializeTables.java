@@ -17,7 +17,7 @@ public class InitializeTables {
 
 	public static void initializeTables() {
 		log.info("Using database located at : " + DataSources.DB_FILE());
-
+		createTables(false);
 	}
 
 	public static void createTables(Boolean delete) {
@@ -31,6 +31,8 @@ public class InitializeTables {
 
 			Class.forName("org.sqlite.JDBC");
 			if (!new File(DataSources.DB_FILE()).exists()) {
+				new File(DataSources.DB_FILE()).getParentFile().mkdirs();
+				new File(DataSources.DB_FILE());
 				c = DriverManager.getConnection("jdbc:sqlite:" + DataSources.DB_FILE());
 				log.info("Opened database successfully");
 

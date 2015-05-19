@@ -1,14 +1,15 @@
 package com.ytm;
 
+import static com.ytm.db.Tables.SERIALIZED_DATA;
+
 import java.io.File;
 import java.io.IOException;
 
-import org.junit.Before;
-
 import junit.framework.TestCase;
 
+import org.junit.Before;
+
 import com.turn.ttorrent.common.Torrent;
-import com.turn.ttorrent.tracker.TrackedTorrent;
 
 public class TorrentTest extends TestCase {
 	
@@ -21,13 +22,28 @@ public class TorrentTest extends TestCase {
 	}
 	
 	public void testDerp() throws IOException {
-		Tools.torrentInfo(torrent);
+//		Tools.torrentInfo(torrent);
 	
 	}
 	
 	public void testConvertToMagnetLink() {
 		assertEquals("magnet:?xt=urn:btih:09c17295ccc24af400a2a91495af440b27766b5e&dn=Fugazi+-+Studio+Discography+1989-2001+%5BFLAC%5D", 
 				Tools.convertTorrentToMagnetLink(torrent));
+	}
+	
+	public void testSerialization() {
+	
+		String ser = Tools.serializeTorrentFile(torrent);
+		
+		System.out.println(ser);
+		Torrent deser = Tools.deserializeTorrentFile(ser);
+		
+		Tools.torrentInfo(deser);
+		deser.getName();
+		
+//		Torrent t = Tools.deserializeTorrentFile(data);
+		
+//		Tools.saveTorrentToFile(t);
 	}
 
 }
