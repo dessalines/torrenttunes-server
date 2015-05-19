@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- SQL XML created by WWW SQL Designer, https://github.com/ondras/wwwsqldesigner/ -->
+<!-- Active URL: http://ondras.zarovi.cz/sql/demo/ -->
+<sql>
+<datatypes db="sqlite">
+        <group label="Affinity">
+            <type label="Integer" default="0" length="0" sql="INTEGER" quote="" color="rgb(238,238,170)"/>
+            <type label="Text" default="" length="1" sql="TEXT" quote="'" color="rgb(255,200,200)"/>
+            <type label="Numeric" default="0" length="0" sql="NUMERIC" quote="" color="rgb(238,238,170)"/>
+            <type label="Real" default="0" length="0" sql="REAL" quote="" color="rgb(238,238,170)"/>
+            <type label="None" default="" length="0" sql="NONE" quote="" color="rgb(200,255,200)"/>
+        </group>
+    </datatypes><table x="377" y="101" name="serialized_data">
+<row name="id" null="1" autoincrement="1">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="song" row="id" />
+</row>
+<row name="data" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+<default>NULL</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="207" y="101" name="song">
+<row name="id" null="1" autoincrement="1">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="magnet_link" null="0" autoincrement="0">
+<datatype>TEXT</datatype>
+<default>'NULL'</default></row>
+<row name="mbid" null="0" autoincrement="0">
+<datatype>TEXT</datatype>
+<default>'NULL'</default></row>
+<key type="UNIQUE" name="">
+<part>magnet_link</part>
+</key>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+</sql>
