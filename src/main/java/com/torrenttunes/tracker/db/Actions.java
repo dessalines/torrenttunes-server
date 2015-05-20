@@ -1,7 +1,7 @@
-package com.ytm.db;
+package com.torrenttunes.tracker.db;
 
-import static com.ytm.db.Tables.SERIALIZED_DATA;
-import static com.ytm.db.Tables.SONG;
+import static com.torrenttunes.tracker.db.Tables.SERIALIZED_DATA;
+import static com.torrenttunes.tracker.db.Tables.SONG;
 
 import java.util.NoSuchElementException;
 
@@ -9,9 +9,9 @@ import org.javalite.activejdbc.DBException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.torrenttunes.tracker.Tools;
+import com.torrenttunes.tracker.db.Tables.Song;
 import com.turn.ttorrent.tracker.TrackedTorrent;
-import com.ytm.Tools;
-import com.ytm.db.Tables.Song;
 
 public class Actions {
 	
@@ -22,8 +22,8 @@ public class Actions {
 		
 		try {
 			
-		
 		log.info("Saving " + t.getName() + " to the DB");
+		
 		// First get the MBID
 		String mbid = "666";
 		

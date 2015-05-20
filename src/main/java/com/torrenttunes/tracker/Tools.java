@@ -1,4 +1,4 @@
-package com.ytm;
+package com.torrenttunes.tracker;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.nio.file.Paths;
@@ -30,8 +31,11 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 import com.google.common.io.Files;
+import com.torrenttunes.tracker.db.Actions;
 import com.turn.ttorrent.common.Torrent;
 import com.turn.ttorrent.common.Torrent.TorrentFile;
+import com.turn.ttorrent.tracker.TrackedTorrent;
+import com.turn.ttorrent.tracker.Tracker;
 
 import de.javakaffee.kryoserializers.KryoReflectionFactorySupport;
 
@@ -40,7 +44,7 @@ public class Tools {
 	static final Logger log = LoggerFactory.getLogger(Tools.class);
 
 	public static final Kryo KRYO  = new KryoReflectionFactorySupport();
-	
+
 	public static FilenameFilter TORRENT_FILE_FILTER = new FilenameFilter() {
 		public boolean accept(File dir, String name) {
 			return name.endsWith(".torrent");
@@ -105,15 +109,15 @@ public class Tools {
 		}
 		return out;
 	}
-	
-	
+
+
 
 	public static Torrent deserializeTorrentFile(String data) {
 		Torrent t = null;
 		try {
 			byte[] b = data.getBytes();
 			t = new Torrent(b, false);
-			
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -121,18 +125,18 @@ public class Tools {
 
 		return t;
 	}
-	
+
 	public static String serializeTorrentFile2(Torrent t) {
 
 		String out = null;
 		try {
 			Output output = new Output(new ByteArrayOutputStream());
-			
+
 			KRYO.writeObject(output, t);
 			ByteArrayOutputStream baos = (ByteArrayOutputStream) output.getOutputStream();
-			
+
 			out = baos.toString("UTF-8");
-			
+
 			output.close();
 			baos.close();
 		} catch (IOException e) {
@@ -141,21 +145,21 @@ public class Tools {
 		}
 		return out;
 	}
-	
-	
+
+
 
 	public static Torrent deserializeTorrentFile2(String data) {
 		Torrent t = null;
 		try {
-			
+
 			byte[] b = data.getBytes("UTF-8");
-			
+
 			ByteArrayInputStream bais = new ByteArrayInputStream(b);
-			
+
 			Input input = new Input(bais);
-			
+
 			t = KRYO.readObject(input, Torrent.class);			
-			
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -173,7 +177,7 @@ public class Tools {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		return file;
 
 	}
@@ -297,6 +301,42 @@ public class Tools {
 
 	public static final void dbClose() {
 		new DB("default").close();
+	}
+
+	public static String extractInfoHashFromMagnetLink(String magnetLink) {
+		// magnet:?xt=urn:btih:09c17295ccc24af400a2a91495af440b27766b5e&dn=Fugazi+-+Studio+Discography+1989-2001+%5BFLAC%5D
+
+		return magnetLink.split("btih:")[1].split("&dn")[0].toLowerCase();
+
+	}
+
+	public static String extractNameFromMagnetLink(String magnetLink) {
+		String encoded = magnetLink.split("&dn=")[1];
+		String name = null;
+		try {
+			name = URLDecoder.decode(encoded, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return name;
+	}
+
+	public static void announceAndSaveTorrentFileToDB(Tracker tracker, File f) {
+		try {
+			log.info("Announcing file: " + f.getName());
+			TrackedTorrent tt = TrackedTorrent.load(f);
+
+			tracker.announce(tt);
+
+			// Save to the DB
+			Tools.dbInit();
+			Actions.saveTorrentToDB(tt);
+			Tools.dbClose();
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

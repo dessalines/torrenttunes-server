@@ -1,4 +1,4 @@
-package com.ytm;
+package com.torrenttunes.tracker;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,10 +8,10 @@ import java.util.Timer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.torrenttunes.tracker.db.Actions;
+import com.torrenttunes.tracker.db.InitializeTables;
 import com.turn.ttorrent.tracker.TrackedTorrent;
 import com.turn.ttorrent.tracker.Tracker;
-import com.ytm.db.Actions;
-import com.ytm.db.InitializeTables;
 
 public class Main {
 
@@ -46,10 +46,14 @@ public class Main {
 		createTracker();
 
 		// First find all the torrent files stored on your tracker
-		announceTorrentFiles(tracker);
+		announceTorrentFiles(tracker);	
 
 		// Start the tracker
 		tracker.start();
+		
+		// Scan the folder every 10 minutes for new torrents, and add them to the db
+		ScanTrackerService sts = ScanTrackerService.create(tracker);
+		sts.startAsync();
 		
 		
 	}
@@ -63,30 +67,12 @@ public class Main {
 	}
 
 	public static void announceTorrentFiles(Tracker tracker) {
-		try {
-			for (File f : new File(DataSources.TORRENTS_DIR()).listFiles(Tools.TORRENT_FILE_FILTER)) {
-				log.info("Announcing file: " + f.getName());
-				TrackedTorrent tt = TrackedTorrent.load(f);
-				
-				tracker.announce(tt);
-				
-				// Save to the DB
-				Tools.dbInit();
-				Actions.saveTorrentToDB(tt);
-				Tools.dbClose();
-				
-				// Scan the tracker every 10 minutes for new announces, and add them to the db
-				ScanTrackerService sts = new ScanTrackerService();
-				sts.startAsync();
-				
-	
 		
-			}
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		for (File f : new File(DataSources.TORRENTS_DIR()).listFiles(Tools.TORRENT_FILE_FILTER)) {
+			Tools.announceAndSaveTorrentFileToDB(tracker, f);
 		}
-	
+		
 	}
+
+
 }

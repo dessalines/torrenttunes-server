@@ -1,4 +1,4 @@
-package com.ytm.db;
+package com.torrenttunes.tracker.db;
 
 import java.io.File;
 import java.sql.Connection;
@@ -7,8 +7,8 @@ import java.sql.DriverManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ytm.DataSources;
-import com.ytm.Tools;
+import com.torrenttunes.tracker.DataSources;
+import com.torrenttunes.tracker.Tools;
 
 public class InitializeTables {
 

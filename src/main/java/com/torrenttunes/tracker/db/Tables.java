@@ -1,4 +1,4 @@
-package com.ytm.db;
+package com.torrenttunes.tracker.db;
 
 import org.javalite.activejdbc.Model;
 import org.javalite.activejdbc.annotations.Table;
