@@ -19,6 +19,9 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -27,10 +30,15 @@ import org.javalite.activejdbc.DBException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import spark.Request;
+import spark.Response;
+
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 import com.google.common.io.Files;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.torrenttunes.tracker.db.Actions;
 import com.turn.ttorrent.common.Torrent;
 import com.turn.ttorrent.tracker.TrackedTorrent;
@@ -44,6 +52,88 @@ public class Tools {
 
 	public static final Kryo KRYO  = new KryoReflectionFactorySupport();
 
+	public static final Gson GSON = new Gson();
+	public static final Gson GSON2 = new GsonBuilder().setPrettyPrinting().create();
+	
+	public static void allowOnlyLocalHeaders(Request req, Response res) {
+
+
+		log.debug("req ip = " + req.ip());
+
+
+		//		res.header("Access-Control-Allow-Origin", "http://mozilla.com");
+		//		res.header("Access-Control-Allow-Origin", "null");
+		//		res.header("Access-Control-Allow-Origin", "*");
+		//		res.header("Access-Control-Allow-Credentials", "true");
+
+
+		if (!isLocalIP(req.ip())) {
+			throw new NoSuchElementException("Not a local ip, can't access");
+		}
+	}
+
+	public static Boolean isLocalIP(String ip) {
+		Boolean isLocalIP = (ip.equals("127.0.0.1") || ip.equals("0:0:0:0:0:0:0:1"));
+		return isLocalIP;
+	}
+
+	public static void allowAllHeaders(Request req, Response res) {
+		String origin = req.headers("Origin");
+		res.header("Access-Control-Allow-Credentials", "true");
+		res.header("Access-Control-Allow-Origin", origin);
+
+
+	}
+
+
+
+	public static void logRequestInfo(Request req) {
+		String origin = req.headers("Origin");
+		String origin2 = req.headers("origin");
+		String host = req.headers("Host");
+
+
+		log.debug("request host: " + host);
+		log.debug("request origin: " + origin);
+		log.debug("request origin2: " + origin2);
+
+
+		//		System.out.println("origin = " + origin);
+		//		if (DataSources.ALLOW_ACCESS_ADDRESSES.contains(req.headers("Origin"))) {
+		//			res.header("Access-Control-Allow-Origin", origin);
+		//		}
+		for (String header : req.headers()) {
+			log.debug("request header | " + header + " : " + req.headers(header));
+		}
+		log.debug("request ip = " + req.ip());
+		log.debug("request pathInfo = " + req.pathInfo());
+		log.debug("request host = " + req.host());
+		log.debug("request url = " + req.url());
+	}
+
+	public static final Map<String, String> createMapFromAjaxPost(String reqBody) {
+		log.debug(reqBody);
+		Map<String, String> postMap = new HashMap<String, String>();
+		String[] split = reqBody.split("&");
+		for (int i = 0; i < split.length; i++) {
+			String[] keyValue = split[i].split("=");
+			try {
+				if (keyValue.length > 1) {
+					postMap.put(URLDecoder.decode(keyValue[0], "UTF-8"),URLDecoder.decode(keyValue[1], "UTF-8"));
+				}
+			} catch (UnsupportedEncodingException |ArrayIndexOutOfBoundsException e) {
+				e.printStackTrace();
+				throw new NoSuchElementException(e.getMessage());
+			}
+		}
+
+		log.debug(GSON2.toJson(postMap));
+
+		return postMap;
+
+	}
+	
+	
 	public static FilenameFilter TORRENT_FILE_FILTER = new FilenameFilter() {
 		public boolean accept(File dir, String name) {
 			return name.endsWith(".torrent");

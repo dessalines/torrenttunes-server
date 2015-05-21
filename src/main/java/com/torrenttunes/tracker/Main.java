@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import com.torrenttunes.tracker.db.Actions;
 import com.torrenttunes.tracker.db.InitializeTables;
+import com.torrenttunes.tracker.webservice.WebService;
 import com.turn.ttorrent.tracker.TrackedTorrent;
 import com.turn.ttorrent.tracker.Tracker;
 
@@ -51,9 +52,9 @@ public class Main {
 		// Start the tracker
 		tracker.start();
 		
-		// Scan the folder every 10 minutes for new torrents, and add them to the db
-		ScanTrackerService sts = ScanTrackerService.create(tracker);
-		sts.startAsync();
+		
+		// Startup the web service
+		WebService.start(tracker);
 		
 		
 	}

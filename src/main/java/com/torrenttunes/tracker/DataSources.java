@@ -4,6 +4,8 @@ public class DataSources {
 
 	public static String APP_NAME = "torrenttunes-tracker";
 	
+	public static Integer SPARK_WEB_PORT = 4567;
+	
 	
 	// The path to the ytm dir
 	public static String HOME_DIR() {
@@ -32,5 +34,11 @@ public class DataSources {
 	public static final String SHADED_JAR_FILE_2 = CODE_DIR + "/" + APP_NAME + ".jar";
 	
 	public static final String ZIP_FILE() {return HOME_DIR() + "/" + APP_NAME + ".zip";}
+	
+	// Web pages
+	public static final String WEB_HOME() {return SOURCE_CODE_HOME() + "/web";}
+
+	public static final String WEB_HTML() {return WEB_HOME() + "/html";}
+	
 	
 }

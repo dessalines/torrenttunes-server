@@ -22,6 +22,7 @@ import com.turn.ttorrent.common.Torrent;
 import com.turn.ttorrent.tracker.TrackedTorrent;
 import com.turn.ttorrent.tracker.Tracker;
 
+@Deprecated
 public class ScanTrackerService extends AbstractScheduledService {
 
 	static final Logger log = LoggerFactory.getLogger(ScanTrackerService.class);
