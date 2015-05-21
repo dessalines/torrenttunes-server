@@ -10,19 +10,7 @@
             <type label="Real" default="0" length="0" sql="REAL" quote="" color="rgb(238,238,170)"/>
             <type label="None" default="" length="0" sql="NONE" quote="" color="rgb(200,255,200)"/>
         </group>
-    </datatypes><table x="377" y="101" name="serialized_data">
-<row name="id" null="1" autoincrement="1">
-<datatype>INTEGER</datatype>
-<default>NULL</default><relation table="song" row="id" />
-</row>
-<row name="data" null="1" autoincrement="0">
-<datatype>TEXT</datatype>
-<default>NULL</default></row>
-<key type="PRIMARY" name="">
-<part>id</part>
-</key>
-</table>
-<table x="207" y="101" name="song">
+    </datatypes><table x="207" y="101" name="song">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>

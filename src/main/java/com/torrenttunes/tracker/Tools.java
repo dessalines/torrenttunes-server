@@ -33,7 +33,6 @@ import com.esotericsoftware.kryo.io.Output;
 import com.google.common.io.Files;
 import com.torrenttunes.tracker.db.Actions;
 import com.turn.ttorrent.common.Torrent;
-import com.turn.ttorrent.common.Torrent.TorrentFile;
 import com.turn.ttorrent.tracker.TrackedTorrent;
 import com.turn.ttorrent.tracker.Tracker;
 
@@ -338,5 +337,6 @@ public class Tools {
 			e.printStackTrace();
 		}
 	}
+
 
 }

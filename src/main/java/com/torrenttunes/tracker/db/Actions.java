@@ -1,9 +1,6 @@
 package com.torrenttunes.tracker.db;
 
-import static com.torrenttunes.tracker.db.Tables.SERIALIZED_DATA;
 import static com.torrenttunes.tracker.db.Tables.SONG;
-
-import java.util.NoSuchElementException;
 
 import org.javalite.activejdbc.DBException;
 import org.slf4j.Logger;
@@ -24,8 +21,8 @@ public class Actions {
 			
 		log.info("Saving " + t.getName() + " to the DB");
 		
-		// First get the MBID
-		String mbid = "666";
+		// First get the MBID from the filename
+		String mbid = t.getName().split("_")[0];
 		
 		// Generate the magnet link
 		String magnetLink = Tools.convertTorrentToMagnetLink(t);
@@ -35,13 +32,6 @@ public class Actions {
 				"mbid", mbid);
 		
 		Boolean success = song.saveIt();
-		
-		// Serialize the torrent
-		if (success) {
-			String data = Tools.serializeTorrentFile(t);
-			
-			SERIALIZED_DATA.createIt("data",data);
-		}
 		
 		} catch(DBException e) {		
 			if (e.getMessage().contains("[SQLITE_CONSTRAINT]")) {

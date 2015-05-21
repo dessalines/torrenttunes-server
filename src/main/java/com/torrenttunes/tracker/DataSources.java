@@ -2,7 +2,7 @@ package com.torrenttunes.tracker;
 
 public class DataSources {
 
-	public static String APP_NAME = "ytm";
+	public static String APP_NAME = "torrenttunes-tracker";
 	
 	
 	// The path to the ytm dir

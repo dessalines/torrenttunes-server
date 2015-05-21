@@ -5,15 +5,6 @@
 	<artifactId>torrenttunes-tracker</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 
-
-	<repositories>
-		<repository>
-			<id>jboss-thirdparty-releases</id>
-			<name>JBoss Thirdparty Releases</name>
-			<url>https://repository.jboss.org/nexus/content/repositories/thirdparty-releases/</url>
-		</repository>
-	</repositories>
-
 	<build>
 		<plugins>
 			<plugin>
@@ -72,6 +63,11 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>com.github.tchoulihan</groupId>
+			<artifactId>musicbrainz-tagger</artifactId>
+			<version>1.0.2</version>
+		</dependency>
+		<dependency>
 			<groupId>com.esotericsoftware</groupId>
 			<artifactId>kryo</artifactId>
 			<version>3.0.1</version>
@@ -97,8 +93,9 @@
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
-			<version>16.0.1</version>
+			<version>18.0</version>
 		</dependency>
+
 
 		<dependency>
 			<groupId>com.sparkjava</groupId>
