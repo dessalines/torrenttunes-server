@@ -33,13 +33,13 @@ public class TorrentTest extends TestCase {
 	
 	public void testSerialization() {
 	
-		String ser = Tools.serializeTorrentFile(torrent);
+		byte[] ser = Tools.serializeTorrentFile(torrent);
 		
 		System.out.println(ser);
 		Torrent deser = Tools.deserializeTorrentFile(ser);
 		
 		Tools.torrentInfo(deser);
-		deser.getName();
+		System.out.println(deser.getName());
 		
 //		Torrent t = Tools.deserializeTorrentFile(data);
 		

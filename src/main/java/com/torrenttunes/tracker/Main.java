@@ -3,31 +3,43 @@ package com.torrenttunes.tracker;
 import java.io.File;
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.util.Timer;
 
-import org.slf4j.Logger;
+import org.kohsuke.args4j.CmdLineException;
+import org.kohsuke.args4j.CmdLineParser;
+import org.kohsuke.args4j.Option;
 import org.slf4j.LoggerFactory;
 
-import com.torrenttunes.tracker.db.Actions;
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.Logger;
+
 import com.torrenttunes.tracker.db.InitializeTables;
 import com.torrenttunes.tracker.webservice.WebService;
-import com.turn.ttorrent.tracker.TrackedTorrent;
 import com.turn.ttorrent.tracker.Tracker;
 
 public class Main {
 
-	static final Logger log = LoggerFactory.getLogger(Main.class);
+	static Logger log = (Logger)LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
 
+	@Option(name="-uninstall",usage="Uninstall torrenttunes-client.(WARNING, this deletes your library)")
+	private boolean uninstall;
+	
+	@Option(name="-loglevel", usage="Sets the log level [INFO, DEBUG, etc.]")     
+	private String loglevel = "INFO";
 	
 	Tracker tracker;
 
 	
-	public static void main(String[] args) {
-		new Main().doMain(args);
-
-	}
-	
 	public void doMain(String[] args) {
+		
+		parseArguments(args);
+		
+		// See if the user wants to uninstall it
+		if (uninstall) {
+			Tools.uninstall();
+		}
+		
+		
+		log.setLevel(Level.toLevel(loglevel));
 		
 		// Initialize
 		Tools.setupDirectories();
@@ -73,6 +85,35 @@ public class Main {
 			Tools.announceAndSaveTorrentFileToDB(tracker, f);
 		}
 		
+	}
+	
+	private void parseArguments(String[] args) {
+		CmdLineParser parser = new CmdLineParser(this);
+
+		try {
+
+			parser.parseArgument(args);
+
+		} catch (CmdLineException e) {
+			// if there's a problem in the command line,
+			// you'll get this exception. this will report
+			// an error message.
+			System.err.println(e.getMessage());
+			System.err.println("java -jar torrenttunes-client.jar [options...] arguments...");
+			// print the list of available options
+			parser.printUsage(System.err);
+			System.err.println();
+			System.exit(0);
+
+
+			return;
+		}
+	}
+	
+
+	public static void main(String[] args) {
+		new Main().doMain(args);
+	
 	}
 
 

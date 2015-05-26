@@ -16,7 +16,7 @@ public class DataSources {
 	public static final String TORRENTS_DIR() {return HOME_DIR() + "/torrents";}
 	
 	public static final String SAMPLE_TORRENT_FILE() {return TORRENTS_DIR() + 
-			"/[kat.cr]fugazi.studio.discography.1989.2001.flac.torrent";
+			"/4dc5a38c-e053-4c12-a028-34b1a89075be_f29a2d2fb98be7afc69b0cb562fd5e38472fb44fa4790d1b11ff9565675d0fd6.torrent";
 	}
 	
 	public static final String DB_FILE() {return HOME_DIR() + "/db/db.sqlite";}

@@ -126,7 +126,7 @@ public class ScanTrackerService extends AbstractScheduledService {
 
 		for (String missingInfoHash : missingInfoHashes) {
 			Tools.dbInit();
-			Actions.saveTorrentToDB(infoHashToTorrentMap.get(missingInfoHash));
+//			Actions.saveTorrentToDB(infoHashToTorrentMap.get(missingInfoHash));
 			Tools.dbClose();
 		}
 

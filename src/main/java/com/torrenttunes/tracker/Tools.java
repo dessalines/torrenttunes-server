@@ -25,6 +25,10 @@ import java.util.NoSuchElementException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import org.apache.commons.io.FileUtils;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.node.ObjectNode;
 import org.javalite.activejdbc.DB;
 import org.javalite.activejdbc.DBException;
 import org.slf4j.Logger;
@@ -54,6 +58,9 @@ public class Tools {
 
 	public static final Gson GSON = new Gson();
 	public static final Gson GSON2 = new GsonBuilder().setPrettyPrinting().create();
+	
+	public static final ObjectMapper MAPPER = new ObjectMapper();
+	
 	
 	public static void allowOnlyLocalHeaders(Request req, Response res) {
 
@@ -183,14 +190,14 @@ public class Tools {
 		return null;
 	}
 
-	public static String serializeTorrentFile(Torrent t) {
+	public static byte[] serializeTorrentFile(Torrent t) {
 
-		String out = null;
+		byte[] out = null;
 		try {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			t.save(baos);
-
-			out = baos.toString();
+			
+			out = baos.toByteArray();
 			baos.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -201,11 +208,10 @@ public class Tools {
 
 
 
-	public static Torrent deserializeTorrentFile(String data) {
+	public static Torrent deserializeTorrentFile(byte[] data) {
 		Torrent t = null;
 		try {
-			byte[] b = data.getBytes();
-			t = new Torrent(b, false);
+			t = new Torrent(data, false);
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -421,9 +427,52 @@ public class Tools {
 
 			// Save to the DB
 			Tools.dbInit();
-			Actions.saveTorrentToDB(tt);
+			Actions.saveTorrentToDB(f, tt);
 			Tools.dbClose();
 		} catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static JsonNode jsonToNode(String json) {
+
+		try {
+			JsonNode root = MAPPER.readTree(json);
+			return root;
+		} catch (Exception e) {
+			log.error("json: " + json);
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public static String nodeToJson(ObjectNode a) {
+		try {
+			return Tools.MAPPER.writeValueAsString(a);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public static String nodeToJsonPretty(JsonNode a) {
+		try {
+			return Tools.MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(a);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public static void uninstall() {
+
+		try {
+			FileUtils.deleteDirectory(new File(DataSources.HOME_DIR()));
+			log.info("Torrenttunes-tracker uninstalled successfully.");
+			System.exit(0);
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
