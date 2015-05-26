@@ -157,6 +157,7 @@ public class Tools {
 		}
 	}
 
+	@Deprecated
 	public static String convertTorrentToMagnetLink(Torrent t) {
 
 

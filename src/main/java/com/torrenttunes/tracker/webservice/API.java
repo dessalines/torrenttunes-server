@@ -38,7 +38,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-
+import static com.torrenttunes.tracker.db.Tables.*;
 
 
 
@@ -123,6 +123,23 @@ public class API {
 				Tools.dbClose();
 				
 				return "Saved info";
+			} catch (Exception e) {
+				res.status(666);
+				e.printStackTrace();
+				return e.getMessage();
+			} 
+		});
+		
+		get("/get_songs", (req, res) -> {
+
+			try {
+	
+				Tools.dbInit();
+				String json = SONG.findAll().toJson(false);
+				Tools.dbClose();
+				
+				return json;
+			
 			} catch (Exception e) {
 				res.status(666);
 				e.printStackTrace();

@@ -27,12 +27,10 @@ public class Actions {
 
 			// First get the MBID from the filename
 			String mbid = torrentFile.getName().split("_")[0];
-
-			// Generate the magnet link
-			String magnetLink = Tools.convertTorrentToMagnetLink(t);
-
+			
 			// Save the song
-			Song song = SONG.create("magnet_link", magnetLink,
+			Song song = SONG.create("torrent_path", torrentFile.getAbsolutePath(),
+					"info_hash", t.getHexInfoHash().toLowerCase(),
 					"mbid", mbid);
 
 

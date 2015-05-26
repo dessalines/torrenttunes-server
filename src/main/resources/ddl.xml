@@ -10,11 +10,14 @@
             <type label="Real" default="0" length="0" sql="REAL" quote="" color="rgb(238,238,170)"/>
             <type label="None" default="" length="0" sql="NONE" quote="" color="rgb(200,255,200)"/>
         </group>
-    </datatypes><table x="93" y="96" name="song">
+    </datatypes><table x="170" y="88" name="song">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
-<row name="magnet_link" null="0" autoincrement="0">
+<row name="torrent_path" null="0" autoincrement="0">
+<datatype>TEXT</datatype>
+<default>'NULL'</default></row>
+<row name="info_hash" null="0" autoincrement="0">
 <datatype>TEXT</datatype>
 <default>'NULL'</default></row>
 <row name="mbid" null="0" autoincrement="0">
@@ -42,10 +45,13 @@
 <datatype>TEXT</datatype>
 <default>NULL</default></row>
 <key type="UNIQUE" name="">
-<part>magnet_link</part>
+<part>torrent_path</part>
 </key>
 <key type="PRIMARY" name="">
 <part>id</part>
+</key>
+<key type="UNIQUE" name="">
+<part>info_hash</part>
 </key>
 </table>
 </sql>
