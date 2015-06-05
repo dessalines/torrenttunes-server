@@ -14,6 +14,8 @@ import org.codehaus.jackson.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import spark.Request;
+
 import com.torrenttunes.tracker.DataSources;
 import com.torrenttunes.tracker.Tools;
 import com.torrenttunes.tracker.db.Actions;
@@ -116,6 +118,7 @@ public class API {
 		get("/song_search/:query", (req, res) -> {
 
 			try {
+				Tools.logRequestInfo(req);
 				Tools.allowAllHeaders(req, res);
 				Tools.dbInit();
 
@@ -136,7 +139,6 @@ public class API {
 						break;
 					}
 							
-					
 				}
 				
 				log.info(queryStr.toString());
