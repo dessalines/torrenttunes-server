@@ -1,6 +1,6 @@
 package com.torrenttunes.tracker.webservice;
 
-import static com.torrenttunes.tracker.db.Tables.SONG;
+import static com.torrenttunes.tracker.db.Tables.*;
 import static spark.Spark.get;
 import static spark.Spark.post;
 
@@ -127,7 +127,7 @@ public class API {
 				String[] splitWords = query.split(" ");
 				StringBuilder queryStr = new StringBuilder();
 				for(int i = 0;;) {
-					String word = "title like '%" + splitWords[i++] + "%'";
+					String word = "search like '%" + splitWords[i++] + "%'";
 					queryStr.append(word);
 					
 					if (i < splitWords.length) {
@@ -141,7 +141,7 @@ public class API {
 				
 				log.info(queryStr.toString());
 
-				json = SONG.find(queryStr.toString()).limit(10).toJson(false);
+				json = SEARCH_VIEW.find(queryStr.toString()).limit(10).toJson(false);
 
 				return json;
 

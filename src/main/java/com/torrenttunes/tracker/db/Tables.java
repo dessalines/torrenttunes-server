@@ -9,4 +9,8 @@ public class Tables {
 	public static class Song extends Model {}
 	public static final Song SONG = new Song();
 	
+	@Table("search_view")
+	public static class SearchView extends Model {}
+	public static final SearchView SEARCH_VIEW = new SearchView();
+	
 }
