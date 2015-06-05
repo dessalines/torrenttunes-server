@@ -123,6 +123,7 @@ public class API {
 				Tools.dbInit();
 
 				String query = req.params(":query");
+				query = java.net.URLDecoder.decode(query, "UTF-8");
 				String json = null;
 				
 				log.info(query);
