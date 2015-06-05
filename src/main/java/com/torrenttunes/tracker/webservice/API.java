@@ -1,54 +1,18 @@
 package com.torrenttunes.tracker.webservice;
 
-import static spark.Spark.*;
+import static com.torrenttunes.tracker.db.Tables.SONG;
+import static spark.Spark.get;
+import static spark.Spark.post;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
-import java.util.Enumeration;
 import java.util.List;
 
-
-
-
-
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
-import javax.servlet.http.HttpServletResponse;
-
-
-
-
-
-
-
-
-
-import javax.servlet.http.Part;
-
 import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.codehaus.jackson.JsonNode;
-import org.eclipse.jetty.servlet.ServletHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-
-import static com.torrenttunes.tracker.db.Tables.*;
-
-
-
-
-
-
-
-
-
-
 
 import com.torrenttunes.tracker.DataSources;
 import com.torrenttunes.tracker.Tools;
@@ -146,7 +110,51 @@ public class API {
 				return e.getMessage();
 			} 
 		});
+		
+		
+		
+		get("/song_search/:query", (req, res) -> {
 
+			try {
+				Tools.allowAllHeaders(req, res);
+				Tools.dbInit();
+
+				String query = req.params(":query");
+				String json = null;
+				
+				log.info(query);
+				
+				String[] splitWords = query.split(" ");
+				StringBuilder queryStr = new StringBuilder();
+				for(int i = 0;;) {
+					String word = "title like %" + splitWords[i++] + "%";
+					queryStr.append(word);
+					
+					if (i < splitWords.length) {
+						queryStr.append(" and ");
+					} else {
+						break;
+					}
+							
+					
+				}
+				
+				log.info(queryStr.toString());
+
+				json = SONG.find(queryStr.toString()).limit(10).toJson(false);
+
+				return json;
+
+			} catch (Exception e) {
+				res.status(666);
+				e.printStackTrace();
+				return e.getMessage();
+			} finally {
+				Tools.dbClose();
+			}
+
+
+		});
 
 
 	}

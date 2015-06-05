@@ -29,6 +29,8 @@ public class DataSources {
 	
 	public static final String SQL_FILE() {return SOURCE_CODE_HOME() + "/ddl.sql";}
 	
+	public static final String SQL_VIEWS_FILE() {return SOURCE_CODE_HOME() + "/views.sql";}
+	
 	public static final String SHADED_JAR_FILE = CODE_DIR + "/target/" + APP_NAME + ".jar";
 
 	public static final String SHADED_JAR_FILE_2 = CODE_DIR + "/" + APP_NAME + ".jar";
