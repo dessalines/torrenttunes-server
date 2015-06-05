@@ -127,7 +127,7 @@ public class API {
 				String[] splitWords = query.split(" ");
 				StringBuilder queryStr = new StringBuilder();
 				for(int i = 0;;) {
-					String word = "title like %" + splitWords[i++] + "%";
+					String word = "title like '%" + splitWords[i++] + "%'";
 					queryStr.append(word);
 					
 					if (i < splitWords.length) {
