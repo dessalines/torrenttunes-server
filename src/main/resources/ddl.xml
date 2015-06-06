@@ -10,7 +10,7 @@
             <type label="Real" default="0" length="0" sql="REAL" quote="" color="rgb(238,238,170)"/>
             <type label="None" default="" length="0" sql="NONE" quote="" color="rgb(200,255,200)"/>
         </group>
-    </datatypes><table x="170" y="88" name="song">
+    </datatypes><table x="652" y="99" name="song">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -26,14 +26,42 @@
 <row name="title" null="1" autoincrement="0">
 <datatype>TEXT</datatype>
 <default>NULL</default></row>
-<row name="artist" null="1" autoincrement="0">
+<row name="album_mbid" null="1" autoincrement="0">
 <datatype>TEXT</datatype>
-<default>NULL</default></row>
-<row name="album" null="1" autoincrement="0">
-<datatype>TEXT</datatype>
-<default>NULL</default></row>
+<default>NULL</default><relation table="release" row="mbid" />
+</row>
 <row name="duration_ms" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="plays" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>0</default></row>
+<key type="UNIQUE" name="">
+<part>torrent_path</part>
+</key>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+<key type="UNIQUE" name="">
+<part>info_hash</part>
+</key>
+</table>
+<table x="296" y="99" name="release">
+<row name="mbid" null="0" autoincrement="0">
+<datatype>TEXT</datatype>
+<default>'NULL'</default></row>
+<row name="title" null="0" autoincrement="0">
+<datatype>TEXT</datatype>
+<default>'NULL'</default></row>
+<row name="artist_mbid" null="0" autoincrement="0">
+<datatype>TEXT</datatype>
+<default>'NULL'</default><relation table="artist" row="mbid" />
+</row>
+<row name="wikipedia_link" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+<default>NULL</default></row>
+<row name="allmusic_link" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
 <default>NULL</default></row>
 <row name="album_coverart_url" null="1" autoincrement="0">
 <datatype>TEXT</datatype>
@@ -44,14 +72,28 @@
 <row name="album_coverart_thumbnail_small" null="1" autoincrement="0">
 <datatype>TEXT</datatype>
 <default>NULL</default></row>
-<key type="UNIQUE" name="">
-<part>torrent_path</part>
-</key>
 <key type="PRIMARY" name="">
-<part>id</part>
+<part>mbid</part>
 </key>
-<key type="UNIQUE" name="">
-<part>info_hash</part>
+</table>
+<table x="70" y="101" name="artist">
+<row name="mbid" null="0" autoincrement="0">
+<datatype>TEXT</datatype>
+<default>'NULL'</default></row>
+<row name="name" null="0" autoincrement="0">
+<datatype>TEXT</datatype>
+<default>'NULL'</default></row>
+<row name="image_url" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+<default>NULL</default></row>
+<row name="wikipedia_link" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+<default>NULL</default></row>
+<row name="allmusic_link" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+<default>NULL</default></row>
+<key type="PRIMARY" name="">
+<part>mbid</part>
 </key>
 </table>
 </sql>
