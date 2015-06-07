@@ -5,6 +5,7 @@ import static spark.Spark.get;
 import static spark.Spark.post;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import org.apache.commons.fileupload.FileItem;
@@ -46,17 +47,17 @@ public class API {
 						.filter(e -> "torrent".equals(e.getFieldName()))
 						.findFirst().get();
 				String fileName = item.getName();
-				
+
 
 
 				File torrentFile = new File(DataSources.TORRENTS_DIR(), fileName);
 				item.write(torrentFile);
 
-				
+
 				Tools.announceAndSaveTorrentFileToDB(tracker, torrentFile);
-				
+
 				// a first test
-				
+
 				log.info(fileName);
 
 
@@ -80,15 +81,15 @@ public class API {
 			try {
 				log.info(req.body());
 				log.info(req.params().toString());
-				
+
 				String json = req.body();
-				
+
 				JsonNode jsonNode = Tools.jsonToNode(json);
-				
+
 				Tools.dbInit();
 				Actions.updateSongInfo(jsonNode);
 				Tools.dbClose();
-				
+
 				return "Saved info";
 			} catch (Exception e) {
 				res.status(666);
@@ -96,26 +97,26 @@ public class API {
 				return e.getMessage();
 			} 
 		});
-		
+
 		get("/get_songs", (req, res) -> {
 
 			try {
-	
+
 				Tools.dbInit();
 				String json = SONG.findAll().toJson(false);
 				Tools.dbClose();
-				
+
 				return json;
-			
+
 			} catch (Exception e) {
 				res.status(666);
 				e.printStackTrace();
 				return e.getMessage();
 			} 
 		});
-		
-		
-		
+
+
+
 		get("/song_search/:query", (req, res) -> {
 
 			try {
@@ -124,28 +125,13 @@ public class API {
 				Tools.dbInit();
 
 				String query = req.params(":query");
-				query = java.net.URLDecoder.decode(query, "UTF-8");
-				String json = null;
-				
-				log.info(query);
-				
-				String[] splitWords = query.split(" ");
-				StringBuilder queryStr = new StringBuilder();
-				for(int i = 0;;) {
-					String word = "search like '%" + splitWords[i++] + "%'";
-					queryStr.append(word);
-					
-					if (i < splitWords.length) {
-						queryStr.append(" and ");
-					} else {
-						break;
-					}
-							
-				}
-				
-				log.info(queryStr.toString());
 
-				json = SEARCH_VIEW.find(queryStr.toString()).limit(10).toJson(false);
+				String json = null;
+
+				String queryStr = constructQueryString(query, "search");
+				log.info(queryStr);
+
+				json = SONG_SEARCH_VIEW.find(queryStr.toString()).limit(5).toJson(false);
 
 				return json;
 
@@ -160,6 +146,296 @@ public class API {
 
 		});
 
+		get("/artist_search/:query", (req, res) -> {
+
+			try {
+				Tools.logRequestInfo(req);
+				Tools.allowAllHeaders(req, res);
+				Tools.dbInit();
+
+				String query = req.params(":query");
+
+				String json = null;
+
+				String queryStr = constructQueryString(query, "search");
+				log.info(queryStr);
+
+				json = ARTIST_SEARCH_VIEW.find(queryStr.toString()).limit(5).toJson(false);
+
+				return json;
+
+			} catch (Exception e) {
+				res.status(666);
+				e.printStackTrace();
+				return e.getMessage();
+			} finally {
+				Tools.dbClose();
+			}
+
+
+		});
+
+		get("/album_search/:query", (req, res) -> {
+
+			try {
+				Tools.logRequestInfo(req);
+				Tools.allowAllHeaders(req, res);
+				Tools.dbInit();
+
+				String query = req.params(":query");
+
+				String json = null;
+
+				String queryStr = constructQueryString(query, "search");
+				log.info(queryStr);
+
+				json = ALBUM_SEARCH_VIEW.find(queryStr.toString()).limit(5).toJson(false);
+
+				return json;
+
+			} catch (Exception e) {
+				res.status(666);
+				e.printStackTrace();
+				return e.getMessage();
+			} finally {
+				Tools.dbClose();
+			}
+
+
+		});
+
+		get("/get_top_albums/:artistMbid", (req, res) -> {
+
+			try {
+				Tools.logRequestInfo(req);
+				Tools.allowAllHeaders(req, res);
+				Tools.dbInit();
+
+				String artistMbid = req.params(":artistMbid");
+
+				String json = null;
+
+				json = ALBUM_VIEW.find("artist_mbid = ?", artistMbid).
+						orderBy("plays desc").limit(5).toJson(false);
+
+				return json;
+
+			} catch (Exception e) {
+				res.status(666);
+				e.printStackTrace();
+				return e.getMessage();
+			} finally {
+				Tools.dbClose();
+			}
+
+
+		});
+
+		get("/get_top_songs/:artistMbid", (req, res) -> {
+
+			try {
+				Tools.logRequestInfo(req);
+				Tools.allowAllHeaders(req, res);
+				Tools.dbInit();
+
+				String artistMbid = req.params(":artistMbid");
+
+				String json = null;
+
+				json = SONG_VIEW.find("artist_mbid = ?", artistMbid).
+						orderBy("plays desc").limit(25).toJson(false);
+
+				return json;
+
+			} catch (Exception e) {
+				res.status(666);
+				e.printStackTrace();
+				return e.getMessage();
+			} finally {
+				Tools.dbClose();
+			}
+
+
+		});
+
+		get("/get_all_albums/:artistMbid", (req, res) -> {
+
+			try {
+				Tools.logRequestInfo(req);
+				Tools.allowAllHeaders(req, res);
+				Tools.dbInit();
+
+				String artistMbid = req.params(":artistMbid");
+
+				String json = null;
+
+				json = ALBUM_VIEW.find("artist_mbid = ?", artistMbid).
+						orderBy("year desc").toJson(false);
+
+				return json;
+
+			} catch (Exception e) {
+				res.status(666);
+				e.printStackTrace();
+				return e.getMessage();
+			} finally {
+				Tools.dbClose();
+			}
+
+
+		});
+
+		get("/get_all_songs/:artistMbid", (req, res) -> {
+
+			try {
+				Tools.logRequestInfo(req);
+				Tools.allowAllHeaders(req, res);
+				Tools.dbInit();
+
+				String artistMbid = req.params(":artistMbid");
+
+				String json = null;
+
+				json = SONG_VIEW.find("artist_mbid = ?", artistMbid).
+						orderBy("plays desc").toJson(false);
+
+				return json;
+
+			} catch (Exception e) {
+				res.status(666);
+				e.printStackTrace();
+				return e.getMessage();
+			} finally {
+				Tools.dbClose();
+			}
+
+
+		});
+
+		get("/get_artist/:artistMbid", (req, res) -> {
+
+			try {
+				Tools.logRequestInfo(req);
+				Tools.allowAllHeaders(req, res);
+				Tools.dbInit();
+
+				String artistMbid = req.params(":artistMbid");
+
+				String json = null;
+				json = ARTIST.findFirst("mbid = ?", artistMbid).toJson(false);
+
+				return json;
+
+			} catch (Exception e) {
+				res.status(666);
+				e.printStackTrace();
+				return e.getMessage();
+			} finally {
+				Tools.dbClose();
+			}
+
+
+		});
+
+		get("/get_album/:albumMbid", (req, res) -> {
+
+			try {
+				Tools.logRequestInfo(req);
+				Tools.allowAllHeaders(req, res);
+				Tools.dbInit();
+
+				String albumMbid = req.params(":albumMbid");
+
+				String json = null;
+				json = ALBUM_VIEW.findFirst("mbid = ?", albumMbid).toJson(false);
+
+				return json;
+
+			} catch (Exception e) {
+				res.status(666);
+				e.printStackTrace();
+				return e.getMessage();
+			} finally {
+				Tools.dbClose();
+			}
+
+
+		});
+
+		get("/get_album_songs/:albumMbid", (req, res) -> {
+
+			try {
+				Tools.logRequestInfo(req);
+				Tools.allowAllHeaders(req, res);
+				Tools.dbInit();
+
+				String albumMbid = req.params(":albumMbid");
+
+				String json = null;
+				json = SONG_VIEW.find("release_mbid = ?", albumMbid).
+						orderBy("track_number asc").toJson(false);
+
+				return json;
+
+			} catch (Exception e) {
+				res.status(666);
+				e.printStackTrace();
+				return e.getMessage();
+			} finally {
+				Tools.dbClose();
+			}
+
+
+		});
+		
+		get("/get_artists", (req, res) -> {
+
+			try {
+				Tools.logRequestInfo(req);
+				Tools.allowAllHeaders(req, res);
+				Tools.dbInit();
+
+
+				String json = null;
+				json = ARTIST.findAll().orderBy("name asc").toJson(false);
+
+				return json;
+
+			} catch (Exception e) {
+				res.status(666);
+				e.printStackTrace();
+				return e.getMessage();
+			} finally {
+				Tools.dbClose();
+			}
+
+
+		});
+
+
+	}
+
+	public static String constructQueryString(String query, String columnName) {
+
+		try {
+			query = java.net.URLDecoder.decode(query, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		String[] splitWords = query.split(" ");
+		StringBuilder queryStr = new StringBuilder();
+		for(int i = 0;;) {
+			String word = columnName + " like '%" + splitWords[i++] + "%'";
+			queryStr.append(word);
+
+			if (i < splitWords.length) {
+				queryStr.append(" and ");
+			} else {
+				break;
+			}
+		}
+
+		return queryStr.toString();
 
 	}
 

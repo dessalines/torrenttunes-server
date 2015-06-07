@@ -23,9 +23,21 @@ public class Tables {
 	public static class Release extends Model {}
 	public static final Release RELEASE = new Release();
 	
+	@Table("album_view")
+	public static class AlbumView extends Model {}
+	public static final AlbumView ALBUM_VIEW = new AlbumView();
 	
-	@Table("search_view")
-	public static class SearchView extends Model {}
-	public static final SearchView SEARCH_VIEW = new SearchView();
+	
+	@Table("song_search_view")
+	public static class SongSearchView extends Model {}
+	public static final SongSearchView SONG_SEARCH_VIEW = new SongSearchView();
+	
+	@Table("album_search_view")
+	public static class AlbumSearchView extends Model {}
+	public static final AlbumSearchView ALBUM_SEARCH_VIEW = new AlbumSearchView();
+	
+	@Table("artist_search_view")
+	public static class ArtistSearchView extends Model {}
+	public static final ArtistSearchView ARTIST_SEARCH_VIEW = new ArtistSearchView();
 	
 }

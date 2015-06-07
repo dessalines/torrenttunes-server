@@ -26,11 +26,14 @@
 <row name="title" null="1" autoincrement="0">
 <datatype>TEXT</datatype>
 <default>NULL</default></row>
-<row name="album_mbid" null="1" autoincrement="0">
+<row name="release_mbid" null="1" autoincrement="0">
 <datatype>TEXT</datatype>
 <default>NULL</default><relation table="release" row="mbid" />
 </row>
 <row name="duration_ms" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="track_number" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
 <row name="plays" null="0" autoincrement="0">
@@ -57,6 +60,9 @@
 <datatype>TEXT</datatype>
 <default>'NULL'</default><relation table="artist" row="mbid" />
 </row>
+<row name="year" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+<default>NULL</default></row>
 <row name="wikipedia_link" null="1" autoincrement="0">
 <datatype>TEXT</datatype>
 <default>NULL</default></row>

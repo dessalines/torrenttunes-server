@@ -9,6 +9,7 @@ CREATE TABLE 'song' (
 'title' TEXT DEFAULT NULL,
 'release_mbid' TEXT DEFAULT NULL REFERENCES 'release' ('mbid'),
 'duration_ms' INTEGER DEFAULT NULL,
+'track_number' INTEGER DEFAULT NULL,
 'plays' INTEGER NOT NULL  DEFAULT 0,
 UNIQUE (torrent_path),
 UNIQUE (info_hash)
@@ -18,6 +19,7 @@ CREATE TABLE 'release' (
 'mbid' TEXT NOT NULL  DEFAULT 'NULL' PRIMARY KEY,
 'title' TEXT NOT NULL  DEFAULT 'NULL',
 'artist_mbid' TEXT NOT NULL  DEFAULT 'NULL' REFERENCES 'artist' ('mbid'),
+'year' TEXT DEFAULT NULL,
 'wikipedia_link' TEXT DEFAULT NULL,
 'allmusic_link' TEXT DEFAULT NULL,
 'album_coverart_url' TEXT DEFAULT NULL,
