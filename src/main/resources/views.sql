@@ -7,18 +7,18 @@ release_mbid,
 duration_ms, 
 plays,
 track_number,
-release.title as release_title,
+release.title as album,
 artist_mbid,
-artist.name as artist_name
+artist.name as artist,
+year,
+album_coverart_url,
+album_coverart_thumbnail_large,
+album_coverart_thumbnail_small
 from song
 inner join release
 on song.release_mbid = release.mbid
 inner join artist 
 on release.artist_mbid = artist.mbid;
-
-DROP VIEW song_search_view;
-DROP VIEW album_search_view;
-DROP VIEW artist_search_view;
 
 CREATE VIEW song_search_view AS
 select song.mbid as song_mbid,

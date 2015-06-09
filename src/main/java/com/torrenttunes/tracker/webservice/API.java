@@ -1,12 +1,23 @@
 package com.torrenttunes.tracker.webservice;
 
-import static com.torrenttunes.tracker.db.Tables.*;
+import static com.torrenttunes.tracker.db.Tables.ALBUM_SEARCH_VIEW;
+import static com.torrenttunes.tracker.db.Tables.ALBUM_VIEW;
+import static com.torrenttunes.tracker.db.Tables.ARTIST;
+import static com.torrenttunes.tracker.db.Tables.ARTIST_SEARCH_VIEW;
+import static com.torrenttunes.tracker.db.Tables.SONG;
+import static com.torrenttunes.tracker.db.Tables.SONG_SEARCH_VIEW;
+import static com.torrenttunes.tracker.db.Tables.SONG_VIEW;
 import static spark.Spark.get;
 import static spark.Spark.post;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.UnsupportedEncodingException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -15,11 +26,11 @@ import org.codehaus.jackson.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import spark.Request;
-
 import com.torrenttunes.tracker.DataSources;
 import com.torrenttunes.tracker.Tools;
 import com.torrenttunes.tracker.db.Actions;
+import com.torrenttunes.tracker.db.Tables.SongView;
+import com.turn.ttorrent.tracker.TrackedTorrent;
 import com.turn.ttorrent.tracker.Tracker;
 
 public class API {
@@ -88,15 +99,74 @@ public class API {
 
 				Tools.dbInit();
 				Actions.updateSongInfo(jsonNode);
-				Tools.dbClose();
+				
 
 				return "Saved info";
 			} catch (Exception e) {
 				res.status(666);
 				e.printStackTrace();
 				return e.getMessage();
-			} 
+			} finally {
+				Tools.dbClose();
+			}
 		});
+		
+		get("/download_torrent/:infoHash", (req, res) -> {
+
+			try {
+				String infoHash = req.params(":infoHash");
+
+				Tools.dbInit();
+				
+				// get torrent file location from infoHash
+				
+				String torrentPath = SONG.findFirst("info_hash = ?", infoHash).
+						getString("torrent_path");
+				
+				log.info("torrent downloaded from : " + torrentPath);
+				HttpServletResponse raw = res.raw();
+				raw.getOutputStream().write(Files.readAllBytes(Paths.get(torrentPath)));
+				raw.getOutputStream().flush();
+				raw.getOutputStream().close();
+
+				return res.raw();
+				
+			} catch (Exception e) {
+				res.status(666);
+				e.printStackTrace();
+				return e.getMessage();
+			} finally {
+				Tools.dbClose();
+			}
+		});
+		
+		get("/download_torrent_info/:infoHash", (req, res) -> {
+
+			try {
+				String infoHash = req.params(":infoHash");
+				Tools.dbInit();
+				SongView sv = SONG_VIEW.findFirst("info_hash = ?", infoHash);
+				String json = sv.toJson(false);
+	
+				
+				// Reannounce the torrent:
+				// get the torrent
+//				String torrentFile = sv.getString("torrent_path");
+//				TrackedTorrent tt = TrackedTorrent.load(new File(torrentFile));
+//				tracker.announce(tt);
+				
+				log.info("torrent json: " + json);
+				return json;
+
+			} catch (Exception e) {
+				res.status(666);
+				e.printStackTrace();
+				return e.getMessage();
+			} finally {
+				Tools.dbClose();
+			}
+		});
+		
 
 		get("/get_songs", (req, res) -> {
 
@@ -104,7 +174,7 @@ public class API {
 
 				Tools.dbInit();
 				String json = SONG.findAll().toJson(false);
-				Tools.dbClose();
+	
 
 				return json;
 
@@ -112,7 +182,9 @@ public class API {
 				res.status(666);
 				e.printStackTrace();
 				return e.getMessage();
-			} 
+			} finally {
+				Tools.dbClose();
+			}
 		});
 
 
@@ -398,6 +470,55 @@ public class API {
 
 				String json = null;
 				json = ARTIST.findAll().orderBy("name asc").toJson(false);
+
+				return json;
+
+			} catch (Exception e) {
+				res.status(666);
+				e.printStackTrace();
+				return e.getMessage();
+			} finally {
+				Tools.dbClose();
+			}
+
+
+		});
+		
+		get("/get_trending_albums", (req, res) -> {
+
+			try {
+				Tools.logRequestInfo(req);
+				Tools.allowAllHeaders(req, res);
+				Tools.dbInit();
+
+
+				String json = null;
+				json = ALBUM_VIEW.findAll().orderBy("plays desc").limit(4).toJson(false);
+
+				return json;
+
+			} catch (Exception e) {
+				res.status(666);
+				e.printStackTrace();
+				return e.getMessage();
+			} finally {
+				Tools.dbClose();
+			}
+
+
+		});
+		
+		
+		get("/get_trending_songs", (req, res) -> {
+
+			try {
+				Tools.logRequestInfo(req);
+				Tools.allowAllHeaders(req, res);
+				Tools.dbInit();
+
+
+				String json = null;
+				json = SONG_VIEW.findAll().orderBy("plays desc").limit(40).toJson(false);
 
 				return json;
 

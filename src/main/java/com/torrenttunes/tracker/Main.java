@@ -49,12 +49,6 @@ public class Main {
 		InitializeTables.initializeTables();
 		
 		
-		startup();
-		
-	}
-
-	public void startup() {
-
 		// Startup the tracker
 		createTracker();
 
@@ -68,12 +62,13 @@ public class Main {
 		// Startup the web service
 		WebService.start(tracker);
 		
-		
 	}
+
 
 	public void createTracker() {
 		try {
 			tracker = new Tracker(new InetSocketAddress(6969));
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
