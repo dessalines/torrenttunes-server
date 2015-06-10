@@ -114,7 +114,7 @@ public class API {
 		post("/add_play_count/:infoHash", (req, res) -> {
 
 			try {
-				
+				Tools.allowAllHeaders(req, res);
 				String infoHash = req.params(":infoHash");
 				
 				Tools.dbInit();
