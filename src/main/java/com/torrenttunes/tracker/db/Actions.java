@@ -107,7 +107,7 @@ public class Actions {
 
 
 	public static void addToPlayCount(String infoHash) {
-		SONG.update("plays = plays + 1", "info_hash = " + infoHash);
+		SONG.update("plays = plays + ?", "info_hash = ?", 1, infoHash);
 		
 	}
 
