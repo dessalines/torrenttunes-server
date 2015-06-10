@@ -111,6 +111,27 @@ public class API {
 			}
 		});
 		
+		post("/add_play_count/:infoHash", (req, res) -> {
+
+			try {
+				
+				String infoHash = req.params(":infoHash");
+				
+				Tools.dbInit();
+				Actions.addToPlayCount(infoHash);
+				
+				
+
+				return "Added play count";
+			} catch (Exception e) {
+				res.status(666);
+				e.printStackTrace();
+				return e.getMessage();
+			} finally {
+				Tools.dbClose();
+			}
+		});
+		
 		get("/download_torrent/:infoHash", (req, res) -> {
 
 			try {
