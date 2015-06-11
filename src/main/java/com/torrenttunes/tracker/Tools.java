@@ -40,6 +40,8 @@ import spark.Response;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
+import com.google.common.base.Charsets;
+import com.google.common.hash.Hashing;
 import com.google.common.io.Files;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -476,6 +478,19 @@ public class Tools {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public static String convertWikimediaCommonsURLToImageUrl(String wmLink) {	
+		
+		String fileName = wmLink.split("File:")[1];
+		
+		String md5 = Hashing.md5().hashString(fileName, Charsets.UTF_8).toString();
+		
+		String weirdPathString = md5.substring(0, 1) + "/" + md5.substring(0, 2) + "/";
+		String imageURL = "https://upload.wikimedia.org/wikipedia/commons/" + weirdPathString + 
+				fileName;
+		
+		return imageURL;
 	}
 
 

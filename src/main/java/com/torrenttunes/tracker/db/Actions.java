@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.musicbrainz.mp3.tagger.Tools.Song.MusicBrainzRecordingQuery;
+import com.torrenttunes.tracker.Tools;
 import com.torrenttunes.tracker.db.Tables.Song;
 import com.turn.ttorrent.tracker.TrackedTorrent;
 
@@ -81,10 +82,13 @@ public class Actions {
 			com.musicbrainz.mp3.tagger.Tools.Artist mbInfo = 
 					com.musicbrainz.mp3.tagger.Tools.Artist.fetchArtist(artistMbid);
 			
-			
+			String imageURL = null;
+			if (mbInfo.getImage().contains("commons.wikimedia.org")) {
+				imageURL = Tools.convertWikimediaCommonsURLToImageUrl(mbInfo.getImage());
+			}
 			artistRow = ARTIST.createIt("mbid", artistMbid,
 					"name", artist,
-					"image_url", mbInfo.getImage(),
+					"image_url", imageURL,
 					"wikipedia_link", mbInfo.getWikipedia(),
 					"allmusic_link", mbInfo.getAllMusic(),
 					"official_homepage", mbInfo.getOfficialHomepage(),
