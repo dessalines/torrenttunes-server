@@ -58,9 +58,14 @@ public class Main {
 		// Start the tracker
 		tracker.start();
 		
+		// Update the seeder counts in the db
+		UpdateSeederCountService.create(tracker);
+		
 		
 		// Startup the web service
 		WebService.start(tracker);
+		
+	
 		
 	}
 

@@ -32,9 +32,8 @@ public class Actions {
 			// Save the song
 			Song song = SONG.create("torrent_path", torrentFile.getAbsolutePath(),
 					"info_hash", t.getHexInfoHash().toLowerCase(),
-					"mbid", mbid);
-
-
+					"mbid", mbid,
+					"seeders", t.seeders());
 
 			Boolean success = song.saveIt();
 

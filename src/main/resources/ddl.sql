@@ -11,6 +11,7 @@ CREATE TABLE 'song' (
 'duration_ms' INTEGER DEFAULT NULL,
 'track_number' INTEGER DEFAULT NULL,
 'plays' INTEGER NOT NULL  DEFAULT 0,
+'seeders' INTEGER DEFAULT NULL,
 UNIQUE (torrent_path),
 UNIQUE (info_hash)
 );
@@ -40,5 +41,4 @@ CREATE TABLE 'artist' (
 'soundcloud' TEXT DEFAULT NULL,
 'lastfm' TEXT DEFAULT NULL
 );
-
 
