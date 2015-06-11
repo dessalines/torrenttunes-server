@@ -32,7 +32,13 @@ CREATE TABLE 'artist' (
 'name' TEXT NOT NULL  DEFAULT 'NULL',
 'image_url' TEXT DEFAULT NULL,
 'wikipedia_link' TEXT DEFAULT NULL,
-'allmusic_link' TEXT DEFAULT NULL
+'allmusic_link' TEXT DEFAULT NULL,
+'official_homepage' TEXT DEFAULT NULL,
+'imdb' TEXT DEFAULT NULL,
+'lyrics' TEXT DEFAULT NULL,
+'youtube' TEXT DEFAULT NULL,
+'soundcloud' TEXT DEFAULT NULL,
+'lastfm' TEXT DEFAULT NULL
 );
 
 

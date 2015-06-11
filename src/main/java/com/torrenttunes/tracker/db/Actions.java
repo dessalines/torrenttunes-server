@@ -9,6 +9,7 @@ import org.javalite.activejdbc.DBException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.musicbrainz.mp3.tagger.Tools.Song.MusicBrainzRecordingQuery;
 import com.torrenttunes.tracker.db.Tables.Song;
 import com.turn.ttorrent.tracker.TrackedTorrent;
 
@@ -75,8 +76,23 @@ public class Actions {
 		// First, check to see if the album or artist need to be created:
 		Artist artistRow = ARTIST.findFirst("mbid = ?", artistMbid);
 		if (artistRow == null) {
+			
+			// Fetch some links and images from musicbrainz
+			com.musicbrainz.mp3.tagger.Tools.Artist mbInfo = 
+					com.musicbrainz.mp3.tagger.Tools.Artist.fetchArtist(artistMbid);
+			
+			
 			artistRow = ARTIST.createIt("mbid", artistMbid,
-					"name", artist);
+					"name", artist,
+					"image_url", mbInfo.getImage(),
+					"wikipedia_link", mbInfo.getWikipedia(),
+					"allmusic_link", mbInfo.getAllMusic(),
+					"official_homepage", mbInfo.getOfficialHomepage(),
+					"imdb", mbInfo.getIMDB(),
+					"lyrics", mbInfo.getLyrics(),
+					"youtube", mbInfo.getYoutube(),
+					"soundcloud", mbInfo.getSoundCloud(),
+					"lastfm", mbInfo.getLastFM());
 		}
 		
 		// Do the same for album
