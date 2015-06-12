@@ -132,6 +132,28 @@ public class API {
 			}
 		});
 		
+		post("/seeder_upload/:infoHash/:seeders", (req, res) -> {
+
+			try {
+				Tools.allowAllHeaders(req, res);
+				String infoHash = req.params(":infoHash");
+				String seeders = req.params(":seeders");
+				
+				Tools.dbInit();
+				Actions.updateSeeders(infoHash, seeders);
+				
+				
+
+				return "Set seeders";
+			} catch (Exception e) {
+				res.status(666);
+				e.printStackTrace();
+				return e.getMessage();
+			} finally {
+				Tools.dbClose();
+			}
+		});
+		
 		get("/download_torrent/:infoHash", (req, res) -> {
 
 			try {

@@ -22,7 +22,7 @@ import com.turn.ttorrent.common.Torrent;
 import com.turn.ttorrent.tracker.TrackedTorrent;
 import com.turn.ttorrent.tracker.Tracker;
 
-
+@Deprecated
 public class UpdateSeederCountService extends AbstractScheduledService {
 
 	static final Logger log = LoggerFactory.getLogger(UpdateSeederCountService.class);
@@ -44,10 +44,11 @@ public class UpdateSeederCountService extends AbstractScheduledService {
 		
 		// Get a map of the tracked torrents, infoHashToTrackedTorrent
 		Map<String, TrackedTorrent> infoHashToTorrentMap = infoHashToTorrentMap();
-		
+		log.info(infoHashToTorrentMap.toString());
 		
 		Tools.dbInit();
 		List<Song> songs = SONG.findAll();
+		songs.get(0);
 		for (Song s : songs) {
 			
 			// Get the torrent
@@ -55,10 +56,11 @@ public class UpdateSeederCountService extends AbstractScheduledService {
 			
 			log.info(torrent.getName());
 			log.info(String.valueOf(torrent.seeders()));
+			
 			// Set the seeder count
 			s.set("seeders", torrent.seeders());
 		
-		}		
+		}
 		
 		Tools.dbClose();
 		

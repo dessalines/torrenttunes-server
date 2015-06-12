@@ -46,6 +46,7 @@ import com.google.common.io.Files;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.torrenttunes.tracker.db.Actions;
+import com.turn.ttorrent.client.SharedTorrent;
 import com.turn.ttorrent.common.Torrent;
 import com.turn.ttorrent.tracker.TrackedTorrent;
 import com.turn.ttorrent.tracker.Tracker;
@@ -426,6 +427,7 @@ public class Tools {
 			log.info("Announcing file: " + f.getName());
 			TrackedTorrent tt = TrackedTorrent.load(f);
 			
+			
 			tracker.announce(tt);
 
 			// Save to the DB
@@ -453,7 +455,6 @@ public class Tools {
 		try {
 			return Tools.MAPPER.writeValueAsString(a);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
@@ -463,7 +464,6 @@ public class Tools {
 		try {
 			return Tools.MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(a);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;

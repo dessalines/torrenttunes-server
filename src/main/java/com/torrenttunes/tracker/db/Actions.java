@@ -130,4 +130,12 @@ public class Actions {
 		
 	}
 
+
+	public static void updateSeeders(String infoHash, String seeders) {
+		Song song = SONG.findFirst("info_hash = ?", infoHash);
+		song.set("seeders", seeders);
+		song.saveIt();
+		
+	}
+
 }
