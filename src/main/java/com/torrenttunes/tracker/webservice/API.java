@@ -132,7 +132,7 @@ public class API {
 			}
 		});
 		
-		post("/seeder_upload/:infoHash/:seeders", (req, res) -> {
+		get("/seeder_upload/:infoHash/:seeders", (req, res) -> {
 
 			try {
 				Tools.allowAllHeaders(req, res);
