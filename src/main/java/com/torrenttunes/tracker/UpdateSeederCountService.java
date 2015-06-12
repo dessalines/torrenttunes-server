@@ -53,6 +53,8 @@ public class UpdateSeederCountService extends AbstractScheduledService {
 			// Get the torrent
 			TrackedTorrent torrent = infoHashToTorrentMap.get(s.get("info_hash"));
 			
+			log.info(torrent.getName());
+			log.info(String.valueOf(torrent.seeders()));
 			// Set the seeder count
 			s.set("seeders", torrent.seeders());
 		

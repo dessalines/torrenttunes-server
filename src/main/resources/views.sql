@@ -13,7 +13,8 @@ artist.name as artist,
 year,
 album_coverart_url,
 album_coverart_thumbnail_large,
-album_coverart_thumbnail_small
+album_coverart_thumbnail_small,
+seeders
 from song
 inner join release
 on song.release_mbid = release.mbid
