@@ -40,7 +40,7 @@
 <datatype>INTEGER</datatype>
 <default>0</default></row>
 <row name="seeders" null="1" autoincrement="0">
-<datatype>INTEGER</datatype>
+<datatype>TEXT</datatype>
 <default>NULL</default></row>
 <key type="UNIQUE" name="">
 <part>torrent_path</part>

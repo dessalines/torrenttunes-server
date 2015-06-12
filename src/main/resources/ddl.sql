@@ -11,7 +11,7 @@ CREATE TABLE 'song' (
 'duration_ms' INTEGER DEFAULT NULL,
 'track_number' INTEGER DEFAULT NULL,
 'plays' INTEGER NOT NULL  DEFAULT 0,
-'seeders' INTEGER DEFAULT NULL,
+'seeders' TEXT DEFAULT NULL,
 UNIQUE (torrent_path),
 UNIQUE (info_hash)
 );
@@ -41,4 +41,22 @@ CREATE TABLE 'artist' (
 'soundcloud' TEXT DEFAULT NULL,
 'lastfm' TEXT DEFAULT NULL
 );
+
+
+
+CREATE TABLE 'song2' (
+'id' INTEGER DEFAULT NULL PRIMARY KEY AUTOINCREMENT,
+'torrent_path' TEXT NOT NULL  DEFAULT 'NULL',
+'info_hash' TEXT NOT NULL  DEFAULT 'NULL',
+'mbid' TEXT NOT NULL  DEFAULT 'NULL',
+'title' TEXT DEFAULT NULL,
+'release_mbid' TEXT DEFAULT NULL REFERENCES 'release' ('mbid'),
+'duration_ms' INTEGER DEFAULT NULL,
+'track_number' INTEGER DEFAULT NULL,
+'plays' INTEGER NOT NULL  DEFAULT 0,
+'seeders' TEXT DEFAULT NULL,
+UNIQUE (torrent_path),
+UNIQUE (info_hash)
+);
+
 

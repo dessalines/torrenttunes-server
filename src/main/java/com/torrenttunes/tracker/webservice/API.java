@@ -139,6 +139,9 @@ public class API {
 				String infoHash = req.params(":infoHash");
 				String seeders = req.params(":seeders");
 				
+				
+				log.info("Seeder upload received for infohash: " + infoHash);
+				
 				Tools.dbInit();
 				Actions.updateSeeders(infoHash, seeders);
 				
