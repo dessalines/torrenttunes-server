@@ -23,6 +23,9 @@ on release.artist_mbid = artist.mbid;
 
 CREATE VIEW song_search_view AS
 select song.mbid as song_mbid,
+release.mbid as album_mbid,
+info_hash,
+seeders,
 artist.name || ' - ' || release.title || ' - ' ||  song.title as search
 from song
 inner join release
