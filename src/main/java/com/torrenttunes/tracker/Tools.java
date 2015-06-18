@@ -46,7 +46,6 @@ import com.google.common.io.Files;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.torrenttunes.tracker.db.Actions;
-import com.turn.ttorrent.client.SharedTorrent;
 import com.turn.ttorrent.common.Torrent;
 import com.turn.ttorrent.tracker.TrackedTorrent;
 import com.turn.ttorrent.tracker.Tracker;
@@ -155,6 +154,9 @@ public class Tools {
 			log.info("Setting up ~/." + DataSources.APP_NAME + " dirs");
 			new File(DataSources.HOME_DIR()).mkdirs();
 			new File(DataSources.TORRENTS_DIR()).mkdirs();
+			com.torrenttunes.client.tools.DataSources.MUSIC_STORAGE_PATH = DataSources.MUSIC_STORAGE_PATH;
+			new File(DataSources.MUSIC_STORAGE_PATH).mkdirs();
+			
 		} else {
 			log.info("Home directory already exists");
 		}

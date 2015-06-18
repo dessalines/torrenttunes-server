@@ -61,9 +61,14 @@ public class Main {
 		// Update the seeder counts in the db
 //		UpdateSeederCountService.create(tracker).startAsync();
 		
+		// Start up the client(used for caching requests from the web)
+		com.torrenttunes.client.Main.main(new String[]{});
+		
 		
 		// Startup the web service
 		WebService.start(tracker);
+		
+	
 		
 	
 		

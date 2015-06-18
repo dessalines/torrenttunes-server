@@ -2,7 +2,7 @@ package com.torrenttunes.tracker;
 
 public class DataSources {
 
-	public static String APP_NAME = "torrenttunes-tracker";
+	public static String APP_NAME = "torrenttunes-server";
 	
 	public static Integer SPARK_WEB_PORT = 4567;
 	
@@ -34,6 +34,8 @@ public class DataSources {
 	public static final String SHADED_JAR_FILE = CODE_DIR + "/target/" + APP_NAME + ".jar";
 
 	public static final String SHADED_JAR_FILE_2 = CODE_DIR + "/" + APP_NAME + ".jar";
+
+	public static final String MUSIC_STORAGE_PATH  = HOME_DIR() + "/music";
 	
 	public static final String ZIP_FILE() {return HOME_DIR() + "/" + APP_NAME + ".zip";}
 	

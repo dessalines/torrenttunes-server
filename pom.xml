@@ -62,6 +62,13 @@
 
 
 	<dependencies>
+
+		<dependency>
+			<groupId>com.github.tchoulihan</groupId>
+			<artifactId>torrenttunes-client</artifactId>
+			<version>0.0.7-SNAPSHOT</version>
+		</dependency>
+		
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
