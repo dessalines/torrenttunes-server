@@ -506,7 +506,7 @@ function downloadOrFetchTrackObj(infoHash, option) {
   // now fetch or download the song
   var playButtonName = 'play-button_' + infoHash;
 
-  getJson('fetch_or_download_song/' + infoHash, null, null, playButtonName).done(function(e1) {
+  getJson('fetch_or_download_song/' + infoHash, null, true, playButtonName).done(function(e1) {
     var trackObj = JSON.parse(e1);
 
     // var id = parseInt(full[1]) - 1;
