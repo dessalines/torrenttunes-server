@@ -54,7 +54,7 @@ public class DataSources {
 		return WEB_HTML() + "/" + pageName + ".html";
 	}
 	
-	public static final String TRACKER_IP = "127.0.0.1";
+	public static final String TRACKER_IP = "104.236.44.89";
 	
 	public static final String TRACKER_WEB_PORT = "4567";
 	

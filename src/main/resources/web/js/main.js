@@ -47,11 +47,11 @@ $(document).ready(function() {
   keyboardShortcuts();
 
 
-  setupPlaylistLeftTab();
+  // setupPlaylistLeftTab();
   setupPlayQueueBtn();
   setupHomeTab();
-  setupSettingsTab();
-  setupPlaylistForm();
+  // setupSettingsTab();
+  // setupPlaylistForm();
   setupDonate();
 
   setupTabs();
@@ -97,14 +97,14 @@ function setupTabs() {
     } else if (tabId == "#homeTab") {
       setupHomeTab();
     } else if (tabId == "#libraryTab") {
-      setupLibrary();
+      // setupLibrary();
     } else if (tabId == "#uploadTab") {
-      setupUploadForm();
-      setupUploadTable();
+      // setupUploadForm();
+      // setupUploadTable();
     } else if (tabId == "#playlistTab") {
-      setupPlaylistTab();
+      // setupPlaylistTab();
     } else if (tabId == "#playlistPageTab") {
-      setupPlaylistPageTab();
+      // setupPlaylistPageTab();
     }
 
   });
