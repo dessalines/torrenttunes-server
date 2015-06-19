@@ -42,7 +42,7 @@ public class WebService {
 		});
 		
 		get("/:page", (req, res) -> {
-			Tools.allowOnlyLocalHeaders(req, res);	
+			Tools.allowAllHeaders(req, res);
 			String pageName = req.params(":page");
 			return Tools.readFile(DataSources.PAGES(pageName));
 		});
