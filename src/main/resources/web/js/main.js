@@ -40,7 +40,7 @@ soundManager.onready(function() {
   console.log(player.dom);
   console.log(player.actions);
   // player.actions.play();
-  setupPlayQueue();
+  // setupPlayQueue();
 });
 
 $(document).ready(function() {
@@ -227,7 +227,7 @@ function setupHomeTab() {
     $('[data-toggle="tooltip"]').tooltip({
       container: 'body'
     });
-    addPlaylistDropdowns();
+    // addPlaylistDropdowns();
     setupTrackSelect();
     $('#home_page_div').removeClass('hide');
     $('#home_page_loading_div').addClass('hide');
@@ -256,7 +256,7 @@ function setupAlbumCatalogTab() {
       $('[data-toggle="tooltip"]').tooltip({
         container: 'body'
       });
-      addPlaylistDropdowns();
+      // addPlaylistDropdowns();
       setupTrackSelect();
 
       setupAlbumPlaySelect(albumSongs);
@@ -274,7 +274,7 @@ function setupArtistCatalogSongTab() {
     console.log(allArtistSongs);
 
     fillMustacheWithJson(allArtistSongs, topArtistSongsTemplate, '#all_artist_songs_div');
-    addPlaylistDropdowns();
+    // addPlaylistDropdowns();
     setupTrackSelect();
 
   });
@@ -326,7 +326,7 @@ function setupArtistCatalogTab() {
     console.log(topArtistSongs);
 
     fillMustacheWithJson(topArtistSongs, topArtistSongsTemplate, '#top_artist_songs_div');
-    addPlaylistDropdowns();
+    // addPlaylistDropdowns();
     setupTrackSelect();
 
     $('[data-toggle="tooltip"]').tooltip({
