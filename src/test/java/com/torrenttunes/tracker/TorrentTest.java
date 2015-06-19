@@ -9,8 +9,8 @@ import org.junit.Before;
 
 import com.google.common.base.Charsets;
 import com.google.common.hash.Hashing;
-import com.torrenttunes.tracker.DataSources;
-import com.torrenttunes.tracker.Tools;
+import com.torrenttunes.server.DataSources;
+import com.torrenttunes.server.Tools;
 import com.turn.ttorrent.common.Torrent;
 
 public class TorrentTest extends TestCase {
