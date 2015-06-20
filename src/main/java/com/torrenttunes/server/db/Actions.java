@@ -83,10 +83,12 @@ public class Actions {
 					com.musicbrainz.mp3.tagger.Tools.Artist.fetchArtist(artistMbid);
 			
 			String imageURL = null;
-		
-				if (mbInfo.getImage() != null && mbInfo.getImage().contains("commons.wikimedia.org")) {
-					imageURL = Tools.convertWikimediaCommonsURLToImageUrl(mbInfo.getImage());
-				}
+			if (mbInfo.getWikipedia() != null) {
+				imageURL = Tools.getImageFromWikipedia(mbInfo.getWikipedia());
+			}
+//				if (mbInfo.getImage() != null && mbInfo.getImage().contains("commons.wikimedia.org")) {
+//					imageURL = Tools.convertWikimediaCommonsURLToImageUrl(mbInfo.getImage());
+//				}
 			
 
 			artistRow = ARTIST.createIt("mbid", artistMbid,

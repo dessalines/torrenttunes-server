@@ -1,5 +1,6 @@
 package com.torrenttunes.server;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -8,8 +9,11 @@ import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
@@ -27,6 +31,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.http.client.methods.HttpGet;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ObjectNode;
@@ -537,6 +542,50 @@ public class Tools {
 			e.printStackTrace();
 		}
 
+	}
+
+	public static String getImageFromWikipedia(String wikipedia) {
+		
+		// First extract the title
+		String[] wikiUrlSplit = wikipedia.split("/");
+		String title = wikiUrlSplit[wikiUrlSplit.length-1];
+		
+		String wikiQuery = "https://en.wikipedia.org/w/api.php?action=query&titles=" + title + 
+				"&prop=pageimages&pithumbsize=300&format=json&piprop=original";
+		
+		String wikiJson = httpGetString(wikiQuery);
+		
+		JsonNode node = jsonToNode(wikiJson);
+		
+		JsonNode pages = node.get("query").get("pages");
+		
+		String pageId = pages.getFieldNames().next();
+		
+		String image = pages.get(pageId).get("thumbnail").get("original").asText();
+		
+		return image;
+	}
+	
+	public static final String httpGetString(String url) {
+		String res = "";
+		try {
+			URL externalURL = new URL(url);
+
+			URLConnection yc = externalURL.openConnection();
+//			yc.setRequestProperty("User-Agent", USER_AGENT);
+
+			BufferedReader in = new BufferedReader(
+					new InputStreamReader(
+							yc.getInputStream()));
+			String inputLine;
+
+			while ((inputLine = in.readLine()) != null) 
+				res+="\n" + inputLine;
+			in.close();
+
+			return res;
+		} catch(IOException e) {}
+		return res;
 	}
 
 }

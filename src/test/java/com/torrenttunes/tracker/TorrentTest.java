@@ -37,6 +37,12 @@ public class TorrentTest extends TestCase {
 
 
 	}
+	
+	public void testWikiImage() {
+		String wikiUrl = "https://en.wikipedia.org/wiki/Sufjan_Stevens";
+		String image = Tools.getImageFromWikipedia(wikiUrl);
+		System.out.println(image);
+	}
 
 
 }
