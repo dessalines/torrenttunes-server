@@ -46,6 +46,11 @@ public class WebService {
 			String pageName = req.params(":page");
 			return Tools.readFile(DataSources.PAGES(pageName));
 		});
+		
+		get("/", (req, res) -> {
+			Tools.allowAllHeaders(req, res);
+			return Tools.readFile(DataSources.PAGES("main"));
+		});
 	
 	}
 }
