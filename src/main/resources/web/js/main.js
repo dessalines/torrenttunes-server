@@ -41,6 +41,9 @@ soundManager.onready(function() {
   console.log(player.actions);
   // player.actions.play();
   // setupPlayQueue();
+     player.playlistController.refresh();
+    player.actions.next();
+    player.actions.stop();
 });
 
 $(document).ready(function() {
@@ -655,8 +658,8 @@ function buildLiFromTrackObject(trackObj) {
   // var li = '<li><a href="file://' + trackObj['file_path'] + '"><b>' +
   //   trackObj['artist'] + '</b> - ' + trackObj['title'] + '</a></li>';
 
-  console.log(li);
-  console.log(encodedAudioFilePath);
+  // console.log(li);
+  // console.log(encodedAudioFilePath);
 
 
   return li;
