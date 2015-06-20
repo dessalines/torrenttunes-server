@@ -644,7 +644,7 @@ function playNow(trackObj) {
 }
 
 function buildLiFromTrackObject(trackObj) {
-  var encodedAudioFilePath = localSparkService + 'get_audio_file/' +
+  var encodedAudioFilePath = externalSparkService + 'get_audio_file/' +
     encodeURIComponent(trackObj['file_path']);
 
 
