@@ -52,6 +52,8 @@ public class Actions {
 
 	public static void updateSongInfo(JsonNode jsonNode) {
 
+		log.info("updating song info");
+		
 		// Get the variables
 		String songMbid = jsonNode.get("mbid").asText();
 		String title = jsonNode.get("title").asText();
@@ -81,6 +83,7 @@ public class Actions {
 			String imageURL = null;
 			if (mbInfo.getWikipedia() != null) {
 				imageURL = Tools.getImageFromWikipedia(mbInfo.getWikipedia());
+				log.info("found wikipedia image");
 			}
 
 			
