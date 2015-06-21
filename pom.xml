@@ -86,7 +86,7 @@
 		<dependency>
 			<groupId>com.github.tchoulihan</groupId>
 			<artifactId>musicbrainz-tagger</artifactId>
-			<version>1.0.9</version>
+			<version>1.1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.esotericsoftware</groupId>

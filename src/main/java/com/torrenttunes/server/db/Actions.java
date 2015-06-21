@@ -10,6 +10,7 @@ import org.javalite.activejdbc.DBException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.musicbrainz.mp3.tagger.Tools.CoverArt;
 import com.musicbrainz.mp3.tagger.Tools.Song.MusicBrainzRecordingQuery;
 import com.torrenttunes.server.Tools;
 import com.torrenttunes.server.db.Tables.Song;
@@ -29,7 +30,7 @@ public class Actions {
 
 			// First get the MBID from the filename
 			String mbid = torrentFile.getName().split("_")[0];
-			
+
 			// Save the song
 			Song song = SONG.create("torrent_path", torrentFile.getAbsolutePath(),
 					"info_hash", t.getHexInfoHash().toLowerCase(),
@@ -61,35 +62,20 @@ public class Actions {
 		Long durationMS = jsonNode.get("duration_ms").asLong();
 		Integer trackNumber = jsonNode.get("track_number").asInt();
 		String year = jsonNode.get("year").asText();
-		String albumArtUrl = jsonNode.get("album_coverart_url").asText();
-		if (albumArtUrl.equals("null")) {
-			albumArtUrl = null;
-		}
-		String largeThumbnail = jsonNode.get("album_coverart_thumbnail_large").asText();
-		if (largeThumbnail.equals("null")) {
-			largeThumbnail = null;
-		}
-		String smallThumbnail = jsonNode.get("album_coverart_thumbnail_small").asText();
-		if (smallThumbnail.equals("null")) {
-			smallThumbnail = null;
-		}
-		
+
 		// First, check to see if the album or artist need to be created:
 		Artist artistRow = ARTIST.findFirst("mbid = ?", artistMbid);
 		if (artistRow == null) {
-			
+
 			// Fetch some links and images from musicbrainz
 			com.musicbrainz.mp3.tagger.Tools.Artist mbInfo = 
 					com.musicbrainz.mp3.tagger.Tools.Artist.fetchArtist(artistMbid);
-			
+
 			String imageURL = null;
 			if (mbInfo.getWikipedia() != null) {
 				imageURL = Tools.getImageFromWikipedia(mbInfo.getWikipedia());
 			}
-//				if (mbInfo.getImage() != null && mbInfo.getImage().contains("commons.wikimedia.org")) {
-//					imageURL = Tools.convertWikimediaCommonsURLToImageUrl(mbInfo.getImage());
-//				}
-			
+
 
 			artistRow = ARTIST.createIt("mbid", artistMbid,
 					"name", artist,
@@ -103,21 +89,39 @@ public class Actions {
 					"soundcloud", mbInfo.getSoundCloud(),
 					"lastfm", mbInfo.getLastFM());
 		}
-		
+
 		// Do the same for album
-		Release releaseRow = RELEASE.findFirst("mbid = ?" , albumMbid);
+		ReleaseGroup releaseRow = RELEASE_GROUP.findFirst("mbid = ?" , albumMbid);
 		if (releaseRow == null) {
-			releaseRow = RELEASE.createIt("mbid", albumMbid,
+
+			// Fetch some links and images from musicbrainz
+			com.musicbrainz.mp3.tagger.Tools.ReleaseGroup mbInfo = 
+					com.musicbrainz.mp3.tagger.Tools.ReleaseGroup.fetchReleaseGroup(albumMbid);
+			
+			// Fetch the coverart
+			String coverArtURL = null, coverArtLargeThumbnail = null, coverArtSmallThumbnail = null;
+			try {
+				CoverArt coverArt = CoverArt.fetchCoverArt(albumMbid);
+				coverArtURL = coverArt.getImageURL();
+				coverArtLargeThumbnail = coverArt.getLargeThumbnailURL();
+				coverArtSmallThumbnail = coverArt.getSmallThumbnailURL();
+			} catch(NoSuchElementException e) {}
+
+			releaseRow = RELEASE_GROUP.createIt("mbid", albumMbid,
 					"title", album,
 					"artist_mbid", artistMbid,
 					"year", year,
-					"album_coverart_url", albumArtUrl,
-					"album_coverart_thumbnail_large", largeThumbnail,
-					"album_coverart_thumbnail_small", smallThumbnail);		
+					"wikipedia_link", mbInfo.getWikipedia(),
+					"allmusic_link", mbInfo.getAllMusic(),
+					"official_homepage", mbInfo.getOfficialHomepage(),
+					"lyrics", mbInfo.getLyrics(),
+					"album_coverart_url", coverArtURL,
+					"album_coverart_thumbnail_large", coverArtLargeThumbnail,
+					"album_coverart_thumbnail_small", coverArtSmallThumbnail);		
 		}
-		
-		
-		
+
+
+
 		// Find it by the MBID
 		Song song = SONG.findFirst("mbid = ?", songMbid);
 
@@ -133,7 +137,7 @@ public class Actions {
 
 	public static void addToPlayCount(String infoHash) {
 		SONG.update("plays = plays + ?", "info_hash = ?", 1, infoHash);
-		
+
 	}
 
 
@@ -141,7 +145,7 @@ public class Actions {
 		Song song = SONG.findFirst("info_hash = ?", infoHash);
 		song.set("seeders", seeders);
 		song.saveIt();
-		
+
 	}
 
 }

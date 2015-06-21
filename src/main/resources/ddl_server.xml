@@ -28,7 +28,7 @@
 <default>NULL</default></row>
 <row name="release_mbid" null="1" autoincrement="0">
 <datatype>TEXT</datatype>
-<default>NULL</default><relation table="release" row="mbid" />
+<default>NULL</default><relation table="release_group" row="mbid" />
 </row>
 <row name="duration_ms" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
@@ -52,7 +52,7 @@
 <part>info_hash</part>
 </key>
 </table>
-<table x="296" y="99" name="release">
+<table x="296" y="99" name="release_group">
 <row name="mbid" null="0" autoincrement="0">
 <datatype>TEXT</datatype>
 <default>'NULL'</default></row>
@@ -70,6 +70,12 @@
 <datatype>TEXT</datatype>
 <default>NULL</default></row>
 <row name="allmusic_link" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+<default>NULL</default></row>
+<row name="official_homepage" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+<default>NULL</default></row>
+<row name="lyrics" null="1" autoincrement="0">
 <datatype>TEXT</datatype>
 <default>NULL</default></row>
 <row name="album_coverart_url" null="1" autoincrement="0">

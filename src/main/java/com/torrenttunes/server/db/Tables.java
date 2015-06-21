@@ -19,9 +19,9 @@ public class Tables {
 	public static class Artist extends Model {}
 	public static final Artist ARTIST = new Artist();
 	
-	@Table("release")
-	public static class Release extends Model {}
-	public static final Release RELEASE = new Release();
+	@Table("release_group")
+	public static class ReleaseGroup extends Model {}
+	public static final ReleaseGroup RELEASE_GROUP = new ReleaseGroup();
 	
 	@Table("album_view")
 	public static class AlbumView extends Model {}
