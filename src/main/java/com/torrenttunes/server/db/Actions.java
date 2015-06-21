@@ -101,6 +101,14 @@ public class Actions {
 		ReleaseGroup releaseRow = RELEASE_GROUP.findFirst("mbid = ?" , albumMbid);
 		if (releaseRow == null) {
 
+			// Wait 1.1 seconds
+			try {
+				Thread.sleep(1200);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 			// Fetch some links and images from musicbrainz
 			com.musicbrainz.mp3.tagger.Tools.ReleaseGroup mbInfo = 
 					com.musicbrainz.mp3.tagger.Tools.ReleaseGroup.fetchReleaseGroup(albumMbid);
