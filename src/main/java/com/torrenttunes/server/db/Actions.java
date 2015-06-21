@@ -74,6 +74,14 @@ public class Actions {
 			// Fetch some links and images from musicbrainz
 			com.musicbrainz.mp3.tagger.Tools.Artist mbInfo = 
 					com.musicbrainz.mp3.tagger.Tools.Artist.fetchArtist(artistMbid);
+			// Wait 1.1 seconds
+			try {
+				Thread.sleep(1200);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			log.info("derp2");
 
 			String imageURL = null;
 			if (mbInfo.getWikipedia() != null) {
@@ -81,6 +89,7 @@ public class Actions {
 				log.info("found wikipedia image");
 			}
 
+			log.info("derp3");
 			
 			artistRow = ARTIST.createIt("mbid", artistMbid,
 					"name", artist,
@@ -99,11 +108,28 @@ public class Actions {
 		// Do the same for album
 		ReleaseGroup releaseRow = RELEASE_GROUP.findFirst("mbid = ?" , albumMbid);
 		if (releaseRow == null) {
-
+			log.info("derp4");
+			// Wait 1.1 seconds
+			try {
+				Thread.sleep(1200);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			log.info("derp5");
 			// Fetch some links and images from musicbrainz
 			com.musicbrainz.mp3.tagger.Tools.ReleaseGroup mbInfo = 
 					com.musicbrainz.mp3.tagger.Tools.ReleaseGroup.fetchReleaseGroup(albumMbid);
-			
+
+			log.info("derp6");
+			// Wait 1.1 seconds
+			try {
+				Thread.sleep(4000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			log.info("derp7");
 			// Fetch the coverart
 			String coverArtURL = null, coverArtLargeThumbnail = null, coverArtSmallThumbnail = null;
 			try {
@@ -112,7 +138,7 @@ public class Actions {
 				coverArtLargeThumbnail = coverArt.getLargeThumbnailURL();
 				coverArtSmallThumbnail = coverArt.getSmallThumbnailURL();
 			} catch(NoSuchElementException e) {}
-
+			log.info("derp8");
 			releaseRow = RELEASE_GROUP.createIt("mbid", albumMbid,
 					"title", album,
 					"artist_mbid", artistMbid,
