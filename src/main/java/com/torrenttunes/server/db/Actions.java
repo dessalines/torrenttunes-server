@@ -70,6 +70,13 @@ public class Actions {
 			// Fetch some links and images from musicbrainz
 			com.musicbrainz.mp3.tagger.Tools.Artist mbInfo = 
 					com.musicbrainz.mp3.tagger.Tools.Artist.fetchArtist(artistMbid);
+			// Wait 1.1 seconds
+			try {
+				Thread.sleep(1200);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 			String imageURL = null;
 			if (mbInfo.getWikipedia() != null) {
@@ -97,16 +104,16 @@ public class Actions {
 			// Fetch some links and images from musicbrainz
 			com.musicbrainz.mp3.tagger.Tools.ReleaseGroup mbInfo = 
 					com.musicbrainz.mp3.tagger.Tools.ReleaseGroup.fetchReleaseGroup(albumMbid);
-			
-			
+
+
 			// Wait 1.1 seconds
 			try {
-				Thread.sleep(1100);
+				Thread.sleep(1200);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+
 			// Fetch the coverart
 			String coverArtURL = null, coverArtLargeThumbnail = null, coverArtSmallThumbnail = null;
 			try {
