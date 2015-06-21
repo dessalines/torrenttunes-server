@@ -126,7 +126,7 @@ public class Actions {
 		Song song = SONG.findFirst("mbid = ?", songMbid);
 
 		song.set("title", title,
-				"release_mbid", albumMbid,
+				"release_group_mbid", albumMbid,
 				"duration_ms", durationMS,
 				"track_number", trackNumber);
 		song.saveIt();

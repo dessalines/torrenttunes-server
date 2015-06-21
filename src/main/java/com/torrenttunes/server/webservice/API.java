@@ -490,7 +490,7 @@ public class API {
 				String albumMbid = req.params(":albumMbid");
 
 				String json = null;
-				json = SONG_VIEW.find("release_mbid = ?", albumMbid).
+				json = SONG_VIEW.find("release_group_mbid = ?", albumMbid).
 						orderBy("track_number asc").toJson(false);
 
 				return json;
