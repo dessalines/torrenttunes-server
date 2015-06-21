@@ -124,7 +124,7 @@ public class Actions {
 			log.info("derp6");
 			// Wait 1.1 seconds
 			try {
-				Thread.sleep(1200);
+				Thread.sleep(3000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
