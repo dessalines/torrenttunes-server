@@ -3,11 +3,11 @@ select torrent_path,
 info_hash, 
 song.mbid as song_mbid,
 song.title, 
-release_mbid,
+release_group_mbid,
 duration_ms, 
 plays,
 track_number,
-release.title as album,
+release_group.title as album,
 artist_mbid,
 artist.name as artist,
 year,
@@ -16,29 +16,29 @@ album_coverart_thumbnail_large,
 album_coverart_thumbnail_small,
 seeders
 from song
-inner join release
-on song.release_mbid = release.mbid
+inner join release_group
+on song.release_group_mbid = release_group.mbid
 inner join artist 
-on release.artist_mbid = artist.mbid;
+on release_group.artist_mbid = artist.mbid;
 
 CREATE VIEW song_search_view AS
 select song.mbid as song_mbid,
-release.mbid as album_mbid,
+release_group.mbid as album_mbid,
 info_hash,
 seeders,
-artist.name || ' - ' || release.title || ' - ' ||  song.title as search
+artist.name || ' - ' || release_group.title || ' - ' ||  song.title as search
 from song
-inner join release
-on song.release_mbid = release.mbid
+inner join release_group
+on song.release_group_mbid = release_group.mbid
 inner join artist 
-on release.artist_mbid = artist.mbid;
+on release_group.artist_mbid = artist.mbid;
 
 CREATE VIEW album_search_view AS
-select release.mbid as album_mbid,
-artist.name || ' - ' || release.title as search
-from release
+select release_group.mbid as album_mbid,
+artist.name || ' - ' || release_group.title as search
+from release_group
 inner join artist 
-on release.artist_mbid = artist.mbid;
+on release_group.artist_mbid = artist.mbid;
 
 CREATE VIEW artist_search_view AS 
 select mbid as artist_mbid,
@@ -47,23 +47,23 @@ from artist;
 
 -- this includes song counts and play times
 CREATE VIEW album_view AS
-select release.mbid,
-release.title,
-release.artist_mbid,
+select release_group.mbid,
+release_group.title,
+release_group.artist_mbid,
 artist.name as artist_name,
 year,
-release.wikipedia_link,
-release.allmusic_link,
+release_group.wikipedia_link,
+release_group.allmusic_link,
 album_coverart_url,
 album_coverart_thumbnail_large,
 album_coverart_thumbnail_small,
 count(song.id) as number_of_songs,
 sum(plays) as plays
-from release
+from release_group
 inner join song
-on song.release_mbid = release.mbid
+on song.release_group_mbid = release_group.mbid
 inner join artist
-on release.artist_mbid = artist.mbid
-group by release.mbid;
+on release_group.artist_mbid = artist.mbid
+group by release_group.mbid;
 
 

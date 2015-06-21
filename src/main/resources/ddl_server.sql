@@ -7,7 +7,7 @@ CREATE TABLE 'song' (
 'info_hash' TEXT NOT NULL  DEFAULT 'NULL',
 'mbid' TEXT NOT NULL  DEFAULT 'NULL',
 'title' TEXT DEFAULT NULL,
-'release_mbid' TEXT DEFAULT NULL REFERENCES 'release_group' ('mbid'),
+'release_group_mbid' TEXT DEFAULT NULL REFERENCES 'release_group' ('mbid'),
 'duration_ms' INTEGER DEFAULT NULL,
 'track_number' INTEGER DEFAULT NULL,
 'plays' INTEGER NOT NULL  DEFAULT 0,
