@@ -52,7 +52,7 @@ public class Actions {
 
 	public static void updateSongInfo(JsonNode jsonNode) {
 
-		log.info("updating song info");
+		
 		
 		// Get the variables
 		String songMbid = jsonNode.get("mbid").asText();
@@ -64,11 +64,13 @@ public class Actions {
 		Long durationMS = jsonNode.get("duration_ms").asLong();
 		Integer trackNumber = jsonNode.get("track_number").asInt();
 		String year = jsonNode.get("year").asText();
+		
+		log.info("Updating song info for song: " + title);
 
 		// First, check to see if the album or artist need to be created:
 		Artist artistRow = ARTIST.findFirst("mbid = ?", artistMbid);
 		if (artistRow == null) {
-
+			log.info("derp1");
 			// Fetch some links and images from musicbrainz
 			com.musicbrainz.mp3.tagger.Tools.Artist mbInfo = 
 					com.musicbrainz.mp3.tagger.Tools.Artist.fetchArtist(artistMbid);
@@ -79,6 +81,7 @@ public class Actions {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			log.info("derp2");
 
 			String imageURL = null;
 			if (mbInfo.getWikipedia() != null) {
@@ -86,6 +89,7 @@ public class Actions {
 				log.info("found wikipedia image");
 			}
 
+			log.info("derp3");
 			
 			artistRow = ARTIST.createIt("mbid", artistMbid,
 					"name", artist,
