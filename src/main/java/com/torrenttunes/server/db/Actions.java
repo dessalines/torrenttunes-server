@@ -83,7 +83,7 @@ public class Actions {
 				imageURL = Tools.getImageFromWikipedia(mbInfo.getWikipedia());
 			}
 
-
+			
 			artistRow = ARTIST.createIt("mbid", artistMbid,
 					"name", artist,
 					"image_url", imageURL,
@@ -95,6 +95,7 @@ public class Actions {
 					"youtube", mbInfo.getYoutube(),
 					"soundcloud", mbInfo.getSoundCloud(),
 					"lastfm", mbInfo.getLastFM());
+			log.info("New artist: " + artist + "created");
 		}
 
 		// Do the same for album
@@ -141,7 +142,8 @@ public class Actions {
 					"lyrics", mbInfo.getLyrics(),
 					"album_coverart_url", coverArtURL,
 					"album_coverart_thumbnail_large", coverArtLargeThumbnail,
-					"album_coverart_thumbnail_small", coverArtSmallThumbnail);		
+					"album_coverart_thumbnail_small", coverArtSmallThumbnail);
+			log.info("New album: " + album + "created");
 		}
 
 
@@ -154,6 +156,8 @@ public class Actions {
 				"duration_ms", durationMS,
 				"track_number", trackNumber);
 		song.saveIt();
+		log.info("New song: " + title + "created");
+		
 
 
 	}
