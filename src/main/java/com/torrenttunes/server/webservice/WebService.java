@@ -17,9 +17,12 @@ public class WebService {
 	static final Logger log = LoggerFactory.getLogger(WebService.class);
 
 	
+	
 	public static void start(Tracker tracker) {
 		
 
+		com.torrenttunes.client.tools.DataSources.MUSIC_STORAGE_PATH = 
+				DataSources.HOME_DIR() + "/music";
 
 //				setupSSL();
 

@@ -94,7 +94,7 @@ public class Actions {
 					"youtube", mbInfo.getYoutube(),
 					"soundcloud", mbInfo.getSoundCloud(),
 					"lastfm", mbInfo.getLastFM());
-			log.info("New artist: " + artist + "created");
+			log.info("New artist: " + artist + " created");
 		}
 
 		// Do the same for album
@@ -124,7 +124,7 @@ public class Actions {
 					"album_coverart_url", coverArtURL,
 					"album_coverart_thumbnail_large", coverArtLargeThumbnail,
 					"album_coverart_thumbnail_small", coverArtSmallThumbnail);
-			log.info("New album: " + album + "created");
+			log.info("New album: " + album + " created");
 		}
 
 
