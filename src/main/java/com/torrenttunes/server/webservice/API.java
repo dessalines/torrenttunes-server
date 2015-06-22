@@ -597,6 +597,12 @@ public class API {
 				File mp3 = new File(path);				
 
 
+				// write out the request headers:
+				for (String h : req.headers()) {
+					log.info("Header:" + h + " = " + req.headers(h));
+				}
+				
+				
 				String range = req.headers("Range");
 				
 				res.header("Content-Length", String.valueOf(mp3.length())); 
@@ -609,11 +615,7 @@ public class API {
 				res.status(206);
 				
 				
-				// write out the request headers:
-				for (String h : req.headers()) {
-					log.info("Header:" + h + " = " + req.headers(h));
-				}
-				
+
 				// This one works, but doesn't stream
 				ServletOutputStream stream = raw.getOutputStream();
 
@@ -674,7 +676,7 @@ public class API {
 	
 	public static String contentRangeByteString(File mp3, String range) {
 
-		
+		log.info("Range=" + range);
 		String[] ranges = range.split("=")[1].split("-");
 		
 		Integer chunkSize = 1000000;
