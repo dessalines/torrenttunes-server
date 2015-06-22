@@ -696,6 +696,7 @@ public class API {
         
 		String responseRange = "bytes " + from + "-" + to + "/" + mp3.length();
 		
+		log.info(responseRange);
 		return responseRange;
 	
 	}
