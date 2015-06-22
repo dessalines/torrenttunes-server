@@ -695,15 +695,15 @@ public class API {
 		
 		log.info("ranges[] = " + Arrays.toString(ranges));
 		
-		Integer chunkSize = 3000000;
+		Integer chunkSize = 10000000;
 		Integer from = Integer.parseInt(ranges[0]);
-		Integer to = chunkSize + from;
-        if (to >= mp3.length()) {
-            to = (int) (mp3.length() - 1);
-        }
-        if (ranges.length == 2) {
-            to = Integer.parseInt(ranges[1]);
-        }
+//		Integer to = chunkSize + from;
+//        if (to >= mp3.length()) {
+           Integer to = (int) (mp3.length() - 1);
+//        }
+//        if (ranges.length == 2) {
+//            to = Integer.parseInt(ranges[1]);
+//        }
         
 		String responseRange = "bytes " + from + "-" + to + "/" + mp3.length();
 		
