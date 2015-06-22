@@ -613,8 +613,8 @@ public class API {
 				res.header("Date", new java.util.Date(mp3.lastModified()).toString());
 				res.header("Last-Modified", new java.util.Date(mp3.lastModified()).toString());
 				res.header("Content-Disposition", "attachment; filename=\"" + path + "\"");
-				res.header("X-Content-Duration", String.valueOf(mp3.length()));
-				res.header("Content-Duration", String.valueOf(mp3.length()));
+//				res.header("X-Content-Duration", String.valueOf(mp3.length()));
+//				res.header("Content-Duration", String.valueOf(mp3.length()));
 				res.header("Connection", "close");
 				res.header("Etag", "asdf");
 				res.header("Cache-Control", "no-cache, private");
@@ -695,15 +695,15 @@ public class API {
 		
 		log.info("ranges[] = " + Arrays.toString(ranges));
 		
-		Integer chunkSize = 10000000;
+		Integer chunkSize = 30;
 		Integer from = Integer.parseInt(ranges[0]);
-//		Integer to = chunkSize + from;
-//        if (to >= mp3.length()) {
-           Integer to = (int) (mp3.length() - 1);
-//        }
-//        if (ranges.length == 2) {
-//            to = Integer.parseInt(ranges[1]);
-//        }
+		Integer to = chunkSize + from;
+        if (to >= mp3.length()) {
+           to = (int) (mp3.length() - 1);
+        }
+        if (ranges.length == 2) {
+            to = Integer.parseInt(ranges[1]);
+        }
         
 		String responseRange = "bytes " + from + "-" + to + "/" + mp3.length();
 		
