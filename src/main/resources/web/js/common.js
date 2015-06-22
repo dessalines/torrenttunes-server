@@ -84,12 +84,13 @@ function setupSearch() {
     templates: {
       header: '<h3 class="search-set">Songs</h3>',
       suggestion: function(context) {
-        var ret = Mustache.render(songPlayerTemplate, context);
-        setupTrackSelect();
-        $('a', ret).on('click', function() {
-          alert('derp');
-        });
-        return ret;
+        // var ret = Mustache.render(songPlayerTemplate, context);
+        // setupTrackSelect();
+        // $('a', ret).on('click', function() {
+        //   alert('derp');
+        // });
+        // return ret;
+         return Mustache.render('<div>{{{search}}} </div>', context);
       }
     }
   }, {
