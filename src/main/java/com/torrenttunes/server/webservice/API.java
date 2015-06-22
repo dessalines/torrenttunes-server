@@ -677,7 +677,7 @@ public class API {
 	
 	public static String contentRangeByteString(File mp3, String range) {
 
-		if (range == null) {
+		if (range == null || range.equals("bytes=0-1")) {
 			range = "bytes=0-";
 		}
 		
