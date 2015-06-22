@@ -604,7 +604,7 @@ public class API {
 				
 				
 				String range = req.headers("Range");
-				res.type("audio/mpeg;");
+				res.type("audio/mpeg");
 				res.header("Content-Length", String.valueOf(mp3.length())); 
 				res.header("Accept-Ranges",  "bytes");
 				res.header("Content-Range", contentRangeByteString(mp3, range));
@@ -612,7 +612,7 @@ public class API {
 				res.header("Content-Disposition", "attachment; filename=\"" + path + "\"");
 				res.header("X-Content-Duration", String.valueOf(mp3.length()));
 				res.header("Content-Duration", String.valueOf(mp3.length()));
-				res.header("Connection", "keep-alive");
+				res.header("Connection", "close");
 //				res.status(206);
 				
 				
