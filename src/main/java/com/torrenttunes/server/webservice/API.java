@@ -676,8 +676,12 @@ public class API {
 	
 	public static String contentRangeByteString(File mp3, String range) {
 
-		log.info("Range=" + range);
+		if (range == null) {
+			range = "bytes=0-";
+		}
+		
 		String[] ranges = range.split("=")[1].split("-");
+		
 		
 		Integer chunkSize = 1000000;
 		Integer from = Integer.parseInt(ranges[0]);
