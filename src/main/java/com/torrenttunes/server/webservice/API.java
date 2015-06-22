@@ -609,6 +609,7 @@ public class API {
 				res.header("Accept-Ranges",  "bytes");
 				res.header("Content-Length", String.valueOf(mp3.length())); 
 				res.header("Content-Range", contentRangeByteString(mp3, range));
+				res.header("Date", new java.util.Date(mp3.lastModified()).toString());
 				res.header("Last-Modified", new java.util.Date(mp3.lastModified()).toString());
 				res.header("Content-Disposition", "attachment; filename=\"" + path + "\"");
 				res.header("X-Content-Duration", String.valueOf(mp3.length()));
@@ -619,6 +620,7 @@ public class API {
 				res.header("X-Pad","avoid browser bug");
 				res.header("Expires", "0");
 				res.header("Pragma", "public");
+				
 //				res.status(206);
 				
 				
