@@ -604,6 +604,7 @@ public class API {
 				
 				
 				String range = req.headers("Range");
+				log.info("range = " + range);
 				res.type("audio/mpeg");
 				res.header("Accept-Ranges",  "bytes");
 				res.header("Content-Length", String.valueOf(mp3.length())); 
