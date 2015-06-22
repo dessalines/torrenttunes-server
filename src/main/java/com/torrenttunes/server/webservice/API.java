@@ -612,6 +612,7 @@ public class API {
 //				res.header("Content-Disposition", "attachment; filename=\"" + path + "\"");
 				res.header("X-Content-Duration", String.valueOf(mp3.length()));
 				res.header("Content-Duration", String.valueOf(mp3.length()));
+				res.header("Connection", "keep-alive");
 				res.status(206);
 				
 				
