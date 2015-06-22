@@ -604,8 +604,8 @@ public class API {
 				res.header("Content-Range", contentRangeByteString(mp3, range));
 				res.header("Last-Modified", new java.util.Date(mp3.lastModified()).toString());
 				res.header("Content-Disposition", "attachment; filename=\"" + path + "\"");
-				res.header("X-Content-Duration", String.valueOf(mp3.length()));
-				res.header("Content-Duration", String.valueOf(mp3.length()));
+//				res.header("X-Content-Duration", String.valueOf(mp3.length()));
+//				res.header("Content-Duration", String.valueOf(mp3.length()));
 				res.status(206);
 				
 				// This one works, but doesn't stream
