@@ -583,7 +583,7 @@ public class API {
 		});
 		
 		get("/get_audio_file/:encodedPath", (req, res) -> {
-			res.type("audio/mpeg");
+			
 			//			res.header("Content-Disposition", "filename=\"music.mp3\"");
 			
 			HttpServletResponse raw = res.raw();
@@ -604,7 +604,7 @@ public class API {
 				
 				
 				String range = req.headers("Range");
-				
+				res.type("audio/mpeg;");
 				res.header("Content-Length", String.valueOf(mp3.length())); 
 				res.header("Accept-Ranges",  "bytes");
 				res.header("Content-Range", contentRangeByteString(mp3, range));
@@ -613,7 +613,7 @@ public class API {
 				res.header("X-Content-Duration", String.valueOf(mp3.length()));
 				res.header("Content-Duration", String.valueOf(mp3.length()));
 				res.header("Connection", "keep-alive");
-				res.status(206);
+//				res.status(206);
 				
 				
 
@@ -696,7 +696,6 @@ public class API {
         
 		String responseRange = "bytes " + from + "-" + to + "/" + mp3.length();
 		
-		log.info(responseRange);
 		return responseRange;
 	
 	}
