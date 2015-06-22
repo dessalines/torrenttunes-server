@@ -17,6 +17,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.ServletOutputStream;
@@ -685,14 +686,16 @@ public class API {
 	
 	public static String contentRangeByteString(File mp3, String range) {
 
+		
 		if (range == null || range.equals("bytes=0-1")) {
 			range = "bytes=0-";
 		}
 		
 		String[] ranges = range.split("=")[1].split("-");
 		
+		log.info("ranges[] = " + Arrays.toString(ranges));
 		
-		Integer chunkSize = 1000000;
+		Integer chunkSize = 3000000;
 		Integer from = Integer.parseInt(ranges[0]);
 		Integer to = chunkSize + from;
         if (to >= mp3.length()) {
@@ -704,6 +707,7 @@ public class API {
         
 		String responseRange = "bytes " + from + "-" + to + "/" + mp3.length();
 		
+		log.info("response range = " + responseRange);
 		return responseRange;
 	
 	}
