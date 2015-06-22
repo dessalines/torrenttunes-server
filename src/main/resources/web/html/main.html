@@ -140,18 +140,18 @@
                       {{#.}}
                       <div class="col-xs-3">
                         {{#album_coverart_thumbnail_small}}
-                        <a href="javascript:void(0);" onclick="showAlbumPage('{{mbid}}')"><img class="img-responsive center-block" src="{{album_coverart_thumbnail_small}}"></a>
+                        <a href="#" onclick="showAlbumPage('{{mbid}}')"><img class="img-responsive center-block" src="{{album_coverart_thumbnail_small}}"></a>
                         {{/album_coverart_thumbnail_small}} {{^album_coverart_thumbnail_small}}
-                        <a a href="javascript:void(0);" onclick="showAlbumPage('{{mbid}}')"><img class="img-responsive center-block" src="http://www.51allout.co.uk/wp-content/uploads/2012/02/Image-not-found-300x300.gif"></a>
+                        <a a href="#" onclick="showAlbumPage('{{mbid}}')"><img class="img-responsive center-block" src="http://www.51allout.co.uk/wp-content/uploads/2012/02/Image-not-found-300x300.gif"></a>
                         {{/album_coverart_thumbnail_small}}
                         <div class="spacer"></div>
                         <div class="text-overflow">
-                          <a href="javascript:void(0);" onclick="showArtistPageV2('{{artist_mbid}}')" class="text-normal"><b>{{{artist_name}}}</b></a>
+                          <a href="#" onclick="showArtistPageV2('{{artist_mbid}}')" class="text-muted"><b>{{{artist_name}}}</b></a>
                         </div>
                         <div class="text-overflow">
-                          <a href="javascript:void(0);" onclick="showAlbumPage('{{mbid}}')" class="text-normal"><i>{{{title}}}</i></a>
+                          <a href="#" onclick="showAlbumPage('{{mbid}}')" class="text-muted"><i>{{{title}}}</i></a>
                         </div>
-                        <p class="text-muted">{{year}} &middot; {{number_of_songs}} songs
+                        <p class="text-normal">{{year}} &middot; {{number_of_songs}} songs
                         </p>
                       </div>
                       {{/.}} {{^.}}
@@ -165,32 +165,32 @@
                 <hr>
                 <div id="trending_songs_div"></div>
                 <hr class="featurette-divider">
-                <div class="row">
-                  <div class="col-md-4">
+                <div id="description" class="row">
+                  <div class="col-md-6">
                     <div class="panel">
                       <div class="panel-body">
                         <div class="row">
                           <!-- <img src="holder.js/800x600/social" style="max-width: 100%;max-height: 100%"> -->
                           <div class="text-center">
-                            <a class="text-normal" href="https://github.com/tchoulihan/torrenttunes-client" target="_blank"><i class="fa fa-server fa-6"></i></a>
+                            <a class="text-normal" href="https://en.wikipedia.org/wiki/BitTorrent" target="_blank"><i class="fa fa-server fa-6"></i></a>
                           </div>
                         </div>
                         <div class="row">
                           <div class="col-md-12">
                             <h2 class="text-center">
-                        <a href="https://github.com/tchoulihan/torrenttunes-client" target="_blank">Decentralized</a>
+                        <a href="https://en.wikipedia.org/wiki/BitTorrent" target="_blank">Decentralized</a>
                       </h2>
                           </div>
                         </div>
                         <div class="row">
                           <div class="col-md-12">
-                            <h5 class="text-center text-muted"> Every song is a <i>.torrent</i> file, shared on open and public bittorrent trackers. </h5>
+                            <h5 class="text-center text-muted"> Every song is a <i>.torrent</i> file, tagged with <a class="text-normal" href="http://musicbrainz.org/"  target="_blank">MusicBrainz</a>, and shared on open and public <a href="https://en.wikipedia.org/wiki/BitTorrent" class="text-normal" target="_blank">BitTorrent</a> trackers. </h5>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div class="col-md-4">
+                  <div class="col-md-6">
                     <div class="panel">
                       <div class="panel-body">
                         <div class="row">
@@ -208,31 +208,57 @@
                         </div>
                         <div class="row">
                           <div class="col-md-12">
-                            <h5 class="text-center text-muted"> TorrentTunes is fully <a class="text-muted" href="https://github.com/tchoulihan/torrenttunes-client" target="_blank">open-source</a>, feel free to ask for features or bugixes on <a class="text-muted" href="https://github.com/tchoulihan/torrenttunes-client" target="_blank">github.</a></h5>
+                            <h5 class="text-center text-muted"> TorrentTunes is fully <a class="text-normal" href="https://github.com/tchoulihan/torrenttunes-client" target="_blank">open-source</a>, feel free to ask for features or bug fixes on <a class="text-normal" href="https://github.com/tchoulihan/torrenttunes-client" target="_blank">github.</a></h5>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div class="col-md-4">
+                  <div class="col-md-6">
                     <div class="panel">
                       <div class="panel-body">
                         <div class="row">
                           <!-- <img src="holder.js/800x600/social" style="max-width: 100%;max-height: 100%"> -->
                           <div class="text-center">
-                            <a class="text-normal" href="javascript:void(0);" data-toggle="modal" data-target="#donateModal"><i class="fa fa-coffee fa-6"></i></a>
+                            <a class="text-normal" href="#" data-toggle="modal" data-target="#donateModal"><i class="fa fa-coffee fa-6"></i></a>
                           </div>
                         </div>
                         <div class="row">
                           <div class="col-md-12">
                             <h2 class="text-center">
-                        <a href="javascript:void(0);" data-toggle="modal" data-target="#donateModal">Free</a>
+                        <a href="#" data-toggle="modal" data-target="#donateModal">Free</a>
                       </h2>
                           </div>
                         </div>
                         <div class="row">
                           <div class="col-md-12">
-                            <h5 class="text-center text-muted"> TorrentTunes is entirely free to use, but there are server costs. You can donate <a href="javascript:void(0);" class="text-muted" data-toggle="modal" data-target="#donateModal">here</a>.</h5>
+                            <h5 class="text-center text-muted"> TorrentTunes is entirely free to use, but you can support it by donating bitcoin <a href="#" class="text-normal" data-toggle="modal" data-target="#donateModal">here</a>.
+                          </h5>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="panel">
+                      <div class="panel-body">
+                        <div class="row">
+                          <!-- <img src="holder.js/800x600/social" style="max-width: 100%;max-height: 100%"> -->
+                          <div class="text-center">
+                            <a class="text-normal" href="https://github.com/tchoulihan/torrenttunes-client/releases/download/0.1.0/torrenttunes-client.jar" target="_blank"><i class="fa fa-download fa-6"></i></a>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-12">
+                            <h2 class="text-center">
+                        <a href="https://github.com/tchoulihan/torrenttunes-client/releases/download/0.1.0/torrenttunes-client.jar" target="_blank">Download</a>
+                      </h2>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-12">
+                            <h5 class="text-center text-muted"> <br>
+                          <a class="text-muted" href="https://github.com/tchoulihan/torrenttunes-client/releases/download/0.1.0/torrenttunes-client.jar" target="_blank"><img class="logo" src="../image/cd_icon_white_512.png" /> Install the TorrentTunes client</a><br>&nbsp;</h5>
                           </div>
                         </div>
                       </div>
@@ -289,22 +315,22 @@
               <div class="tab-content">
                 <div role="tabpanel" class="tab-pane fade in active" id="artistcatalog_main">
                   <h4> <a class="text-normal" href="#artistcatalog_album" aria-controls="artistcatalog_album" role="tab" data-toggle="tab"> Top Albums </a></h4>
-                  <hr>
+                  <br>
                   <div id="top_artist_albums_div">
                     <script id="top_artist_albums_template" type="x-tmpl-mustache">
                       <div class="row">
                         {{#.}}
                         <div class="col-xs-3">
                           {{#album_coverart_thumbnail_small}}
-                          <a href="javascript:void(0);" onclick="showAlbumPage('{{mbid}}')"><img class="img-responsive center-block" src="{{album_coverart_thumbnail_small}}"></a>
+                          <a href="#" onclick="showAlbumPage('{{mbid}}')"><img class="img-responsive center-block" src="{{album_coverart_thumbnail_small}}"></a>
                           {{/album_coverart_thumbnail_small}} {{^album_coverart_thumbnail_small}}
-                          <a a href="javascript:void(0);" onclick="showAlbumPage('{{mbid}}')"><img class="img-responsive center-block" src="http://www.51allout.co.uk/wp-content/uploads/2012/02/Image-not-found-300x300.gif"></a>
+                          <a a href="#" onclick="showAlbumPage('{{mbid}}')"><img class="img-responsive center-block" src="http://www.51allout.co.uk/wp-content/uploads/2012/02/Image-not-found-300x300.gif"></a>
                           {{/album_coverart_thumbnail_small}}
                           <div class="spacer"></div>
                           <div class="text-overflow">
-                            <a a href="javascript:void(0);" onclick="showAlbumPage('{{mbid}}')" class="text-normal"><b>{{{title}}}</b></a>
+                            <a a href="#" onclick="showAlbumPage('{{mbid}}')" class="text-muted"><b>{{{title}}}</b></a>
                           </div>
-                          <p class="text-muted">{{year}} &middot; {{number_of_songs}} songs
+                          <p class="text-normal">{{year}} &middot; {{number_of_songs}} songs
                           </p>
                         </div>
                         {{/.}} {{^.}}
@@ -312,6 +338,7 @@
                       </div>
                     </script>
                   </div>
+                  <br>
                   <div class="row">
                     <div class="col-md-12">
                       <h4><a class="text-normal" href="#artistcatalog_song" aria-controls="artistcatalog_song" role="tab" data-toggle="tab">Top Songs</a></h4>
@@ -340,7 +367,7 @@
                                   <span>
                         <div class="btn-group text-normal">
                               <a name="play-button_{{info_hash}}" class="track-select text-normal" href="javascript:void(0)" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>"><i class="fa fa-play fa-fw"></i></a> 
-                              <a class="text-normal" data-toggle="dropdown" href="javascript:void(0);">
+                              <a class="text-normal" data-toggle="dropdown" href="#">
                                 <i class="fa fa-angle-down"></i></a>
                                   <ul class="dropdown-menu add_to_playlist_class" role="menu">
                                     <li><a name="play-now_{{info_hash}}" class="track-select"><i class="fa fa-play fa-fw"></i> Play now</a></li>
@@ -353,7 +380,7 @@
                       </td>
                       <td class="text-overflow"><span>{{{title}}}</span></td>
                                 <td class="text-overflow"><span>{{#millisToMinutesAndSeconds}}{{duration_ms}}{{/millisToMinutesAndSeconds}}</span></td>
-                                <td class="text-overflow"> <a href="javascript:void(0);" onclick="showAlbumPage('{{release_group_mbid}}')" class="text-normal">{{{album}}}</a>
+                                <td class="text-overflow"> <a href="#" onclick="showAlbumPage('{{release_group_mbid}}')" class="text-normal">{{{album}}}</a>
                                 </td>
                                 <td class="text-overflow" align="right"> <span>{{plays}}</span>
                                 </td>
@@ -377,7 +404,7 @@
                 </div>
               </div>
             </div>
-           <div role="tabpanel" class="tab-pane fade" id="albumcatalogTab">
+            <div role="tabpanel" class="tab-pane fade" id="albumcatalogTab">
               <div id="album_catalog_div">
                 <script id="album_catalog_template" type="x-tmpl-mustache">
                   <div class="row">
@@ -402,22 +429,12 @@
                        </a>
                       </small>
                       </h1>
-                      <p class="text-muted"> {{year}} &middot; {{number_of_songs}} songs 
-
-                    {{#official_homepage}}&middot; 
-                     <a href="{{official_homepage}}" target="_blank" data-toggle="tooltip" data-placement="auto" title="Home Page"><i class="text-muted fa fa-fw fa-home"></i></a>
-                      {{/official_homepage}}
-                      {{#wikipedia_link}}&middot; 
-                      <a href="{{wikipedia_link}}" target="_blank" data-toggle="tooltip" data-placement="auto" title="Wikipedia"><i class="text-muted fa fa-fw fa-wikipedia"></i> </a>
-                      {{/wikipedia_link}}
-                      {{#allmusic_link}}&middot; 
-                      <a href="{{allmusic_link}}" target="_blank" data-toggle="tooltip" data-placement="auto" title="AllMusic"><i class="text-muted fa fa-fw fa-music"></i></a>
-                      {{/allmusic_link}}
-                      {{#lyrics}}&middot; 
-                      <a href="{{lyrics}}" target="_blank" data-toggle="tooltip" data-placement="auto" title="Lyrics"><i class="text-muted fa fa-fw fa-file-text-o"></i></a>
-                      {{/lyrics}}
-                      
-                      <br>
+                      <p class="text-muted"> {{year}} &middot; {{number_of_songs}} songs {{#official_homepage}}&middot;
+                        <a href="{{official_homepage}}" target="_blank" data-toggle="tooltip" data-placement="auto" title="Home Page"><i class="text-muted fa fa-fw fa-home"></i></a> {{/official_homepage}} {{#wikipedia_link}}&middot;
+                        <a href="{{wikipedia_link}}" target="_blank" data-toggle="tooltip" data-placement="auto" title="Wikipedia"><i class="text-muted fa fa-fw fa-wikipedia"></i> </a> {{/wikipedia_link}} {{#allmusic_link}}&middot;
+                        <a href="{{allmusic_link}}" target="_blank" data-toggle="tooltip" data-placement="auto" title="AllMusic"><i class="text-muted fa fa-fw fa-music"></i></a> {{/allmusic_link}} {{#lyrics}}&middot;
+                        <a href="{{lyrics}}" target="_blank" data-toggle="tooltip" data-placement="auto" title="Lyrics"><i class="text-muted fa fa-fw fa-file-text-o"></i></a> {{/lyrics}}
+                        <br>
                       </p>
                     </div>
                   </div>
@@ -577,16 +594,15 @@
                 <br>
                 <br>
                 <div class="row">
-                <div class="col-md-6">
-                  <div class="panel">
-                    <div class="panel-body">
-                      <a href="" target="_blank"><img class="logo pull-left" src="../image/cd_icon_white_512.png" /> Download TorrentTunes</a>
+                  <div class="col-md-6">
+                    <div class="panel">
+                      <div class="panel-body">
+                        <a href="https://github.com/tchoulihan/torrenttunes-client/releases/download/0.1.0/torrenttunes-client.jar" target="_blank"><img class="logo pull-left" src="../image/cd_icon_white_512.png" /> Download TorrentTunes</a>
+                      </div>
                     </div>
                   </div>
                 </div>
-                </div>
-                <br>
-                Requires:
+                <br> Requires:
                 <ul>
                   <li><a href="http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html" target="_blank" class="text-normal">Java 8</a> </li>
                   <li> Firewalls turned off(to allow torrenting)</li>
