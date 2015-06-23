@@ -621,10 +621,12 @@ public class API {
 
 //					new FileInputStream(mp3).getChannel().transferTo(raw.getOutputStream().get);
 			        
+					 int length = (int) (fromTo[1] - fromTo[0] + 1);
+					 
 					res.type("audio/mpeg");
 					
 					res.header("Accept-Ranges",  "bytes");
-					res.header("Content-Length", String.valueOf(mp3.length())); 
+					res.header("Content-Length", String.valueOf(length)); 
 					res.header("Content-Range", contentRangeByteString(fromTo));
 					res.header("Content-Disposition", "attachment; filename=\"" + mp3.getName() + "\"");
 					res.header("Date", new java.util.Date(mp3.lastModified()).toString());
@@ -656,7 +658,6 @@ public class API {
 					final RandomAccessFile raf = new RandomAccessFile(mp3, "r");
 			        raf.seek(fromTo[0]);
 			        
-			        int length = (int) (fromTo[1] - fromTo[0] + 1);
 			        
 			        byte[] buf = new byte[4096];
 			        
