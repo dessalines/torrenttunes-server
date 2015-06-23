@@ -660,6 +660,8 @@ public class API {
 				ServletOutputStream stream = raw.getOutputStream();
 
 				Files.copy(Paths.get(path), stream);
+				stream.flush();
+			
 				
 //				FileInputStream input = new FileInputStream(mp3);
 //				BufferedInputStream buf = new BufferedInputStream(input, 256);
