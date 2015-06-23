@@ -659,23 +659,25 @@ public class API {
 				// This one works, but doesn't stream
 				ServletOutputStream stream = raw.getOutputStream();
 
-				FileInputStream input = new FileInputStream(mp3);
-				BufferedInputStream buf = new BufferedInputStream(input, 256);
-				int readBytes = 0;
-
-				try {
-				//read from the file; write to the ServletOutputStream
-				while ((readBytes = buf.read()) != -1) {
-					stream.write(readBytes);
-				}
-				} catch (IOException ioe) {
-					  throw new Exception(ioe.getMessage());
-				} finally {
-				  if (stream != null)
-				    stream.close();
-				  if (buf != null)
-				    buf.close();
-				}
+				Files.copy(Paths.get(path), stream);
+				
+//				FileInputStream input = new FileInputStream(mp3);
+//				BufferedInputStream buf = new BufferedInputStream(input, 256);
+//				int readBytes = 0;
+//
+//				try {
+//				//read from the file; write to the ServletOutputStream
+//				while ((readBytes = buf.read()) != -1) {
+//					stream.write(readBytes);
+//				}
+//				} catch (IOException ioe) {
+//					  throw new Exception(ioe.getMessage());
+//				} finally {
+//				  if (stream != null)
+//				    stream.close();
+//				  if (buf != null)
+//				    buf.close();
+//				}
 
 
 
