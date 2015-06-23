@@ -636,7 +636,7 @@ public class API {
 			        
 			        raf.seek(from);
 			        int len = to - from + 1;
-			        writeAudioToOS(len, raf, raw.getOutputStream());
+//			        writeAudioToOS(len, raf, raw.getOutputStream());
 			        
 					res.type("audio/mpeg");
 					res.header("Accept-Ranges",  "bytes");
@@ -654,25 +654,34 @@ public class API {
 					res.header("Expires", "0");
 					res.header("Pragma", "no-cache");
 
+//					new FileInputStream(mp3).getChannel().transferTo(raw.getOutputStream().get);
 
 				// This one works, but doesn't stream
-//				ServletOutputStream stream = raw.getOutputStream();
-//
-//				FileInputStream input = new FileInputStream(mp3);
-//				BufferedInputStream buf = new BufferedInputStream(input);
-//				int readBytes = 0;
-//
-//				//read from the file; write to the ServletOutputStream
-//				while ((readBytes = buf.read()) != -1) {
-//					stream.write(readBytes);
-//				}
-//
-//
-//				stream.close();
-//				buf.close();
+				ServletOutputStream stream = raw.getOutputStream();
+
+				FileInputStream input = new FileInputStream(mp3);
+				BufferedInputStream buf = new BufferedInputStream(input);
+				int readBytes = 0;
+
+				try {
+				//read from the file; write to the ServletOutputStream
+				while ((readBytes = buf.read()) != -1) {
+					stream.write(readBytes);
+				}
+				} catch (IOException ioe) {
+					  throw new Exception(ioe.getMessage());
+				} finally {
+				  if (stream != null)
+				    stream.close();
+				  if (buf != null)
+				    buf.close();
+				}
 
 
 
+
+
+					
 
 				//				return buildStream(mp3, range);
 
