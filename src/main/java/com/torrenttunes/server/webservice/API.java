@@ -607,38 +607,12 @@ public class API {
 				for (String h : req.headers()) {
 					log.info("Header:" + h + " = " + req.headers(h));
 				}
-
-				RandomAccessFile raf = new RandomAccessFile(mp3, "r");
-
 				
-			
-
 				String range = req.headers("Range");
-				log.info("range = " + range);
 
 
 				//				res.status(206);
-				Integer chunk_size = 1000;
-				if (range == null || range.equals("bytes=0-1")) {
-					range = "bytes=0-";
-				}
-			       String[] ranges = range.split("=")[1].split("-");
-			        final int from = Integer.parseInt(ranges[0]);
-			        /**
-			         * Chunk media if the range upper bound is unspecified. Chrome sends "bytes=0-"
-			         */
-			        int to = chunk_size + from;
-			        if (to >= mp3.length()) {
-			            to = (int) (mp3.length() - 1);
-			        }
-			        if (ranges.length == 2) {
-			            to = Integer.parseInt(ranges[1]);
-			        }
-			        
-			        
-			        raf.seek(from);
-			        int len = to - from + 1;
-//			        writeAudioToOS(len, raf, raw.getOutputStream());
+
 			        
 
 
@@ -752,9 +726,9 @@ public class API {
 		if (range == null) {
 			range = "bytes=0-";
 		}
-
+	
 		String[] ranges = range.split("=")[1].split("-");
-
+		log.info(range);
 		log.info("ranges[] = " + Arrays.toString(ranges));
 
 		Integer chunkSize = 1000;
