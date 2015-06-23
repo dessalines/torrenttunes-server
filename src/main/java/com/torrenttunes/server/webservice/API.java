@@ -653,6 +653,7 @@ public class API {
 				ServletOutputStream stream = raw.getOutputStream();
 				if (range == null) {
 					res.header("Content-Length", String.valueOf(mp3.length())); 
+					res.header("Content-Range", "bytes 0-" + (mp3.length()-1) + "/" + mp3.length());
 					Files.copy(mp3.toPath(), stream);
 				} else {
 					log.info("writing random access file instead");
