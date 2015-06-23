@@ -637,7 +637,7 @@ public class API {
 					res.header("Connection", "keep-alive");
 //					String etag = com.google.common.io.Files.hash(mp3, Hashing.md5()).toString();
 //					res.header("Etag", etag);
-//					res.header("Cache-Control", "no-cache, private");
+					res.header("Cache-Control", "no-cache, private");
 					res.header("X-Pad","avoid browser bug");
 					res.header("Expires", "0");
 //					res.header("Pragma", "no-cache");
