@@ -18,6 +18,9 @@ import java.io.OutputStream;
 import java.io.RandomAccessFile;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.nio.channels.Channels;
+import java.nio.channels.FileChannel;
+import java.nio.channels.WritableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -651,16 +654,17 @@ public class API {
 				
 				FileInputStream input = new FileInputStream(mp3);
 				BufferedInputStream buf = new BufferedInputStream(input);
-				byte[] buffer =  new byte[512*16];
-				int readBytes = 0;
-				while((readBytes = buf.read(buffer, (int)fromTo[0], (int)fromTo[1])) != -1) {
-					stream.write(buffer, (int)fromTo[0], (int)fromTo[1]);
-				}
-				
-				input.close();
-//				buf.close();
-				stream.flush();
-				stream.close();
+
+			
+				 final FileChannel inputChannel = input.getChannel();
+                 final WritableByteChannel outputChannel = Channels.newChannel(stream);
+                 try {
+                     inputChannel.transferTo(0, inputChannel.size(), outputChannel);
+                 } finally {
+                     // closing the channels
+                     inputChannel.close();
+                     outputChannel.close();
+                 }
 				
 				
 				
