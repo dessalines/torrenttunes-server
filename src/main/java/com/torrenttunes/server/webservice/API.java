@@ -626,8 +626,8 @@ public class API {
 					res.type("audio/mpeg");
 					
 					res.header("Accept-Ranges",  "bytes");
-//					res.header("Content-Length", String.valueOf(length)); 
-					res.header("Content-Length", String.valueOf(mp3.length())); 
+					res.header("Content-Length", String.valueOf(length)); 
+//					res.header("Content-Length", String.valueOf(mp3.length())); 
 					res.header("Content-Range", contentRangeByteString(fromTo));
 					res.header("Content-Disposition", "attachment; filename=\"" + mp3.getName() + "\"");
 					res.header("Date", new java.util.Date(mp3.lastModified()).toString());
@@ -760,7 +760,7 @@ public class API {
 		log.info(range);
 		log.info("ranges[] = " + Arrays.toString(ranges));
 
-		Integer chunkSize = 300000;
+		Integer chunkSize = 4096;
 		Integer from = Integer.parseInt(ranges[0]);
 		Integer to = chunkSize + from;
 		if (to >= mp3.length()) {
