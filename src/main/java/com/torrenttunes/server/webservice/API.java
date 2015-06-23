@@ -660,14 +660,11 @@ public class API {
 					res.header("Pragma", "no-cache");
 					
 				// This one works, but doesn't stream
+				
 				ServletOutputStream stream = raw.getOutputStream();
-				FileInputStream input = new FileInputStream(mp3);
-				BufferedInputStream buf = new BufferedInputStream(input);
 
-				IOUtils.copy(buf, stream);
-				buf.close();
+				Files.copy(mp3.toPath(), stream);
 				stream.flush();
-				stream.close();
 				
 				
 
