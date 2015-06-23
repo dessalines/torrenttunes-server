@@ -642,7 +642,7 @@ public class API {
 //					res.header("Content-Transfer-Encoding", "binary");
 //					res.header("Transfer-Encoding", "chunked");
 					res.header("Keep-Alive", "timeout=15, max=100");
-//					res.header("If-None-Match", "webkit-no-cache");
+					res.header("If-None-Match", "webkit-no-cache");
 //					res.header("X-Sendfile", path);
 //					res.header("X-Stream", true);
 					res.status(206);
@@ -652,7 +652,7 @@ public class API {
 				if (range == null) {
 					Files.copy(mp3.toPath(), stream);
 				} else {
-					
+					log.info("writing random access file instead");
 					final RandomAccessFile raf = new RandomAccessFile(mp3, "r");
 			        raf.seek(fromTo[0]);
 			        
