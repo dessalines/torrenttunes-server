@@ -34,6 +34,7 @@ import org.codehaus.jackson.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.hash.Hashing;
 import com.torrenttunes.server.DataSources;
 import com.torrenttunes.server.Tools;
 import com.torrenttunes.server.db.Actions;
@@ -610,7 +611,7 @@ public class API {
 				RandomAccessFile raf = new RandomAccessFile(mp3, "r");
 
 				
-
+			
 
 				String range = req.headers("Range");
 				log.info("range = " + range);
@@ -643,37 +644,42 @@ public class API {
 
 //					new FileInputStream(mp3).getChannel().transferTo(raw.getOutputStream().get);
 			        
-					res.type("audio/mpeg");
-					res.header("Accept-Ranges",  "bytes");
+					res.type("audio/mpeg3;audio/x-mpeg-3;video/mpeg;video/x-mpeg;text/xml");
+					
+//					res.header("Accept-Ranges",  "bytes");
 					res.header("Content-Length", String.valueOf(mp3.length())); 
-					res.header("Content-Range", contentRangeByteString(mp3, range));
-					res.header("Content-Disposition", "inline; filename=\"" + mp3.getName() + "\"");
+//					res.header("Content-Range", contentRangeByteString(mp3, range));
+					res.header("Content-Disposition", "attachment; filename=\"" + mp3.getName() + ".MP3\"");
 					res.header("Date", new java.util.Date(mp3.lastModified()).toString());
 					res.header("Last-Modified", new java.util.Date(mp3.lastModified()).toString());
+					res.header("Server", "Apache");
 //									res.header("X-Content-Duration", "30");
 //									res.header("Content-Duration", "30");
-//					res.header("Connection", "keep-alive");
-//					res.header("Etag", "asdf");
+					res.header("Connection", "keep-alive");
+					String etag = com.google.common.io.Files.hash(mp3, Hashing.md5()).toString();
+					res.header("Etag", etag);
 //					res.header("Cache-Control", "no-cache, private");
 //					res.header("X-Pad","avoid browser bug");
 //					res.header("Expires", "0");
 //					res.header("Pragma", "no-cache");
 //					res.header("Content-Transfer-Encoding", "binary");
 //					res.header("Transfer-Encoding", "chunked");
-//					res.header("Keep-Alive", "timeoute=5, max=100");
+					res.header("Keep-Alive", "timeout=15, max=100");
 //					res.header("If-None-Match", "webkit-no-cache");
 //					res.header("X-Sendfile", path);
 //					res.header("X-Stream", true);
-					res.status(206);
+//					res.status(206);
 				// This one works, but doesn't stream
 				
 				ServletOutputStream stream = raw.getOutputStream();
 
 				Files.copy(mp3.toPath(), stream);
 				stream.flush();
+				stream.close();
 				
 				
-
+				
+			
 				
 			
 				
@@ -695,9 +701,9 @@ public class API {
 //				    buf.close();
 //				}
 
+				
 
-
-
+				
 
 					
 
