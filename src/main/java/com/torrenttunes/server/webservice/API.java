@@ -648,7 +648,7 @@ public class API {
 					
 					res.header("Accept-Ranges",  "bytes");
 					res.header("Content-Length", String.valueOf(mp3.length())); 
-//					res.header("Content-Range", contentRangeByteString(mp3, range));
+					res.header("Content-Range", contentRangeByteString(mp3, range));
 					res.header("Content-Disposition", "attachment; filename=\"" + mp3.getName() + ".MP3\"");
 					res.header("Date", new java.util.Date(mp3.lastModified()).toString());
 					res.header("Last-Modified", new java.util.Date(mp3.lastModified()).toString());
@@ -749,7 +749,7 @@ public class API {
 	public static String contentRangeByteString(File mp3, String range) {
 
 
-		if (range == null || range.equals("bytes=0-1")) {
+		if (range == null) {
 			range = "bytes=0-";
 		}
 
