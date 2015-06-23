@@ -663,7 +663,6 @@ public class API {
 			        
 					 try {
 				            while( length != 0) {
-				            	log.info("len = " + length);
 				                int read = raf.read(buf, 0, buf.length > length ? length : buf.length);
 				                stream.write(buf, 0, read);
 				                length -= read;
@@ -675,7 +674,7 @@ public class API {
 				}
 				
 				stream.flush();
-//				stream.close();
+				stream.close();
 
 				
 				
