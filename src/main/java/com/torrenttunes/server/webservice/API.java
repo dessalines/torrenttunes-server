@@ -677,7 +677,7 @@ public class API {
 				}
 				
 				stream.flush();
-				stream.close();
+//				stream.close();
 
 				
 				
