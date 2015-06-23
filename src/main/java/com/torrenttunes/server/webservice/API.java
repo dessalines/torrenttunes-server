@@ -660,7 +660,7 @@ public class API {
 				ServletOutputStream stream = raw.getOutputStream();
 
 				FileInputStream input = new FileInputStream(mp3);
-				BufferedInputStream buf = new BufferedInputStream(input);
+				BufferedInputStream buf = new BufferedInputStream(input, 256);
 				int readBytes = 0;
 
 				try {
