@@ -748,7 +748,11 @@ public class API {
 		long[] ret = new long[3];
 		
 		if (range == null) {
-			range = "bytes=0-";
+			ret[0] = 0;
+			ret[1] = mp3.length() -1;
+			ret[2] = mp3.length();
+			
+			return ret;
 		}
 	
 		String[] ranges = range.split("=")[1].split("-");
