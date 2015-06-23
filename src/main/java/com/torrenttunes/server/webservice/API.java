@@ -618,7 +618,7 @@ public class API {
 
 //					new FileInputStream(mp3).getChannel().transferTo(raw.getOutputStream().get);
 			        
-					res.type("audio/mpeg3;audio/mpeg;audio/x-mpeg-3;video/mpeg;video/x-mpeg;text/xml");
+					res.type("audio/mpeg");
 					
 					res.header("Accept-Ranges",  "bytes");
 					res.header("Content-Length", String.valueOf(mp3.length())); 
@@ -658,7 +658,7 @@ public class API {
 				}
 				
 				input.close();
-				buf.close();
+//				buf.close();
 				stream.flush();
 				stream.close();
 				
