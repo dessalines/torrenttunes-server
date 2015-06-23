@@ -51,6 +51,9 @@
 <key type="UNIQUE" name="">
 <part>info_hash</part>
 </key>
+<key type="UNIQUE" name="">
+<part>mbid</part>
+</key>
 </table>
 <table x="296" y="99" name="release_group">
 <row name="mbid" null="0" autoincrement="0">

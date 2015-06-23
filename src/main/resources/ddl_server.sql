@@ -13,7 +13,8 @@ CREATE TABLE 'song' (
 'plays' INTEGER NOT NULL  DEFAULT 0,
 'seeders' TEXT DEFAULT NULL,
 UNIQUE (torrent_path),
-UNIQUE (info_hash)
+UNIQUE (info_hash),
+UNIQUE (mbid)
 );
 
 CREATE TABLE 'release_group' (
