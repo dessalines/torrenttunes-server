@@ -651,28 +651,28 @@ public class API {
 				// This one works, but doesn't stream
 				
 				ServletOutputStream stream = raw.getOutputStream();
-//				if (range == null) {
+				if (range == null) {
 					Files.copy(mp3.toPath(), stream);
-//				} else {
-//					log.info("writing random access file instead");
-//					final RandomAccessFile raf = new RandomAccessFile(mp3, "r");
-//			        raf.seek(fromTo[0]);
-//			        
-//			        
-//			        byte[] buf = new byte[4096];
-//			        
-//					 try {
-//				            while( length != 0) {
-//				            	log.info("len = " + length);
-//				                int read = raf.read(buf, 0, buf.length > length ? length : buf.length);
-//				                stream.write(buf, 0, read);
-//				                length -= read;
-//				            }
-//				        } finally {
-//				            raf.close();
-//				        }
-//					 
-//				}
+				} else {
+					log.info("writing random access file instead");
+					final RandomAccessFile raf = new RandomAccessFile(mp3, "r");
+			        raf.seek(fromTo[0]);
+			        
+			        
+			        byte[] buf = new byte[4096];
+			        
+					 try {
+				            while( length != 0) {
+				            	log.info("len = " + length);
+				                int read = raf.read(buf, 0, buf.length > length ? length : buf.length);
+				                stream.write(buf, 0, read);
+				                length -= read;
+				            }
+				        } finally {
+				            raf.close();
+				        }
+					 
+				}
 				
 				stream.flush();
 				stream.close();
@@ -756,7 +756,7 @@ public class API {
 		log.info(range);
 		log.info("ranges[] = " + Arrays.toString(ranges));
 
-		Integer chunkSize = 512*16;
+		Integer chunkSize = 300000;
 		Integer from = Integer.parseInt(ranges[0]);
 		Integer to = chunkSize + from;
 		if (to >= mp3.length()) {
