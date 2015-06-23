@@ -756,7 +756,7 @@ public class API {
 		log.info(range);
 		log.info("ranges[] = " + Arrays.toString(ranges));
 
-		Integer chunkSize = 3000000;
+		Integer chunkSize = 300000;
 		Integer from = Integer.parseInt(ranges[0]);
 		Integer to = chunkSize + from;
 		if (to >= mp3.length()) {
