@@ -646,13 +646,13 @@ public class API {
 					res.type("audio/mpeg");
 					res.header("Accept-Ranges",  "bytes");
 					res.header("Content-Length", String.valueOf(mp3.length())); 
-//					res.header("Content-Range", contentRangeByteString(mp3, range));
+					res.header("Content-Range", contentRangeByteString(mp3, range));
 					res.header("Content-Disposition", "inline; filename=\"" + mp3.getName() + "\"");
 					res.header("Date", new java.util.Date(mp3.lastModified()).toString());
 					res.header("Last-Modified", new java.util.Date(mp3.lastModified()).toString());
 					
-					//				res.header("X-Content-Duration", String.valueOf(mp3.length()));
-					//				res.header("Content-Duration", String.valueOf(mp3.length()));
+									res.header("X-Content-Duration", "30");
+									res.header("Content-Duration", "30");
 					res.header("Connection", "keep-alive");
 //					res.header("Etag", "asdf");
 					res.header("Cache-Control", "no-cache, private");
