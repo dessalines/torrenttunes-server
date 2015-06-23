@@ -613,21 +613,7 @@ public class API {
 
 				String range = req.headers("Range");
 				log.info("range = " + range);
-				res.type("audio/mpeg");
-				res.header("Accept-Ranges",  "bytes");
-				res.header("Content-Length", String.valueOf(mp3.length())); 
-				res.header("Content-Range", contentRangeByteString(mp3, range));
-				res.header("Date", new java.util.Date(mp3.lastModified()).toString());
-				res.header("Last-Modified", new java.util.Date(mp3.lastModified()).toString());
-				res.header("Content-Disposition", "attachment; filename=\"" + path + "\"");
-				//				res.header("X-Content-Duration", String.valueOf(mp3.length()));
-				//				res.header("Content-Duration", String.valueOf(mp3.length()));
-				res.header("Connection", "close");
-				res.header("Etag", "asdf");
-				res.header("Cache-Control", "no-cache, private");
-				res.header("X-Pad","avoid browser bug");
-				res.header("Expires", "0");
-				res.header("Pragma", "no-cache");
+
 
 				//				res.status(206);
 				Integer chunk_size = 1000;
@@ -651,6 +637,22 @@ public class API {
 			        raf.seek(from);
 			        int len = to - from + 1;
 			        writeAudioToOS(len, raf, raw.getOutputStream());
+			        
+					res.type("audio/mpeg");
+					res.header("Accept-Ranges",  "bytes");
+					res.header("Content-Length", String.valueOf(mp3.length())); 
+					res.header("Content-Range", contentRangeByteString(mp3, range));
+					res.header("Date", new java.util.Date(mp3.lastModified()).toString());
+					res.header("Last-Modified", new java.util.Date(mp3.lastModified()).toString());
+					res.header("Content-Disposition", "attachment; filename=\"" + path + "\"");
+					//				res.header("X-Content-Duration", String.valueOf(mp3.length()));
+					//				res.header("Content-Duration", String.valueOf(mp3.length()));
+					res.header("Connection", "close");
+					res.header("Etag", "asdf");
+					res.header("Cache-Control", "no-cache, private");
+					res.header("X-Pad","avoid browser bug");
+					res.header("Expires", "0");
+					res.header("Pragma", "no-cache");
 
 
 				// This one works, but doesn't stream
