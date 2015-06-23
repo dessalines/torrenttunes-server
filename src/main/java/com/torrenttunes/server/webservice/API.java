@@ -663,6 +663,7 @@ public class API {
 					res.header("Transfer-Encoding", "chunked");
 					res.header("Keep-Alive", "timeoute=5, max=100");
 					res.header("If-None-Match", "webkit-no-cache");
+					res.header("X-Sendfile", path);
 					
 				// This one works, but doesn't stream
 				
