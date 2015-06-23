@@ -653,8 +653,8 @@ public class API {
 				BufferedInputStream buf = new BufferedInputStream(input);
 				byte[] buffer =  new byte[512*16];
 				int readBytes = 0;
-				while((readBytes = buf.read(buffer, (int)fromTo[0], buffer.length)) != -1) {
-					stream.write(buffer, (int)fromTo[0], readBytes);
+				while((readBytes = buf.read(buffer, (int)fromTo[0], (int)fromTo[1])) != -1) {
+					stream.write(buffer, (int)fromTo[0], (int)fromTo[1]);
 				}
 				
 				input.close();
