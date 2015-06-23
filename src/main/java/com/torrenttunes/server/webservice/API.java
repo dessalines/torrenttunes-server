@@ -660,6 +660,9 @@ public class API {
 					res.header("Expires", "0");
 					res.header("Pragma", "no-cache");
 					res.header("Content-Transfer-Encoding", "binary");
+					res.header("Transfer-Encoding", "chunked");
+					res.header("Keep-Alive", "timeoute=5, max=100");
+					
 					
 				// This one works, but doesn't stream
 				
@@ -751,7 +754,8 @@ public class API {
 		Integer from = Integer.parseInt(ranges[0]);
 		Integer to = chunkSize + from;
 		if (to >= mp3.length()) {
-			to = (int) (mp3.length() - 1);
+//			to = (int) (mp3.length() - 1);
+			to = (int) (mp3.length());
 		}
 		if (ranges.length == 2) {
 			to = Integer.parseInt(ranges[1]);
