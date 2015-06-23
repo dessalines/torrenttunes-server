@@ -614,7 +614,7 @@ public class API {
 				//				res.status(206);
 
 			        
-
+					long[] fromTo = fromTo(mp3, range);
 
 //					new FileInputStream(mp3).getChannel().transferTo(raw.getOutputStream().get);
 			        
@@ -622,16 +622,16 @@ public class API {
 					
 					res.header("Accept-Ranges",  "bytes");
 					res.header("Content-Length", String.valueOf(mp3.length())); 
-					res.header("Content-Range", contentRangeByteString(mp3, range));
-					res.header("Content-Disposition", "attachment; filename=\"" + mp3.getName() + ".MP3\"");
+					res.header("Content-Range", contentRangeByteString(fromTo));
+					res.header("Content-Disposition", "attachment; filename=\"" + mp3.getName() + "\"");
 					res.header("Date", new java.util.Date(mp3.lastModified()).toString());
 					res.header("Last-Modified", new java.util.Date(mp3.lastModified()).toString());
 					res.header("Server", "Apache");
 //									res.header("X-Content-Duration", "30");
 //									res.header("Content-Duration", "30");
 					res.header("Connection", "keep-alive");
-					String etag = com.google.common.io.Files.hash(mp3, Hashing.md5()).toString();
-					res.header("Etag", etag);
+//					String etag = com.google.common.io.Files.hash(mp3, Hashing.md5()).toString();
+//					res.header("Etag", etag);
 //					res.header("Cache-Control", "no-cache, private");
 //					res.header("X-Pad","avoid browser bug");
 //					res.header("Expires", "0");
@@ -642,12 +642,23 @@ public class API {
 //					res.header("If-None-Match", "webkit-no-cache");
 //					res.header("X-Sendfile", path);
 //					res.header("X-Stream", true);
-//					res.status(206);
+					res.status(206);
 				// This one works, but doesn't stream
 				
 				ServletOutputStream stream = raw.getOutputStream();
 
-				Files.copy(mp3.toPath(), stream);
+//				Files.copy(mp3.toPath(), stream);
+				
+				FileInputStream input = new FileInputStream(mp3);
+				BufferedInputStream buf = new BufferedInputStream(input);
+				byte[] buffer =  new byte[512*16];
+				int readBytes = 0;
+				while((readBytes = buf.read(buffer, (int)fromTo[0], buffer.length)) != -1) {
+					stream.write(buffer, (int)fromTo[0], readBytes);
+				}
+				
+				input.close();
+				buf.close();
 				stream.flush();
 				stream.close();
 				
@@ -719,10 +730,9 @@ public class API {
 
 	}
 
-
-	public static String contentRangeByteString(File mp3, String range) {
-
-
+	public static long[] fromTo(File mp3, String range) {
+		long[] ret = new long[3];
+		
 		if (range == null) {
 			range = "bytes=0-";
 		}
@@ -731,18 +741,27 @@ public class API {
 		log.info(range);
 		log.info("ranges[] = " + Arrays.toString(ranges));
 
-		Integer chunkSize = 1000;
+		Integer chunkSize = 512*16;
 		Integer from = Integer.parseInt(ranges[0]);
 		Integer to = chunkSize + from;
-//		if (to >= mp3.length()) {
+		if (to >= mp3.length()) {
 			to = (int) (mp3.length() - 1);
-//			to = (int) (mp3.length());
-//		}
+		}
 		if (ranges.length == 2) {
 			to = Integer.parseInt(ranges[1]);
 		}
+		
+		ret[0] = from;
+		ret[1] = to;
+		ret[2] = mp3.length();
+		
+		return ret;
+		
+	}
 
-		String responseRange = "bytes " + from + "-" + to + "/" + mp3.length();
+	public static String contentRangeByteString(long[] fromTo) {
+
+		String responseRange = "bytes " + fromTo[0] + "-" + fromTo[1] + "/" + fromTo[2];
 
 		log.info("response range = " + responseRange);
 		return responseRange;
