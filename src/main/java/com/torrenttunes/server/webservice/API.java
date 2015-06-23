@@ -644,9 +644,9 @@ public class API {
 
 //					new FileInputStream(mp3).getChannel().transferTo(raw.getOutputStream().get);
 			        
-					res.type("audio/mpeg3;audio/x-mpeg-3;video/mpeg;video/x-mpeg;text/xml");
+					res.type("audio/mpeg3;audio/mpeg;audio/x-mpeg-3;video/mpeg;video/x-mpeg;text/xml");
 					
-//					res.header("Accept-Ranges",  "bytes");
+					res.header("Accept-Ranges",  "bytes");
 					res.header("Content-Length", String.valueOf(mp3.length())); 
 //					res.header("Content-Range", contentRangeByteString(mp3, range));
 					res.header("Content-Disposition", "attachment; filename=\"" + mp3.getName() + ".MP3\"");
