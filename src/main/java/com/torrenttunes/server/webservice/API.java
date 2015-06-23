@@ -664,7 +664,7 @@ public class API {
 					res.header("Keep-Alive", "timeoute=5, max=100");
 					res.header("If-None-Match", "webkit-no-cache");
 					res.header("X-Sendfile", path);
-					
+					res.status(206);
 				// This one works, but doesn't stream
 				
 				ServletOutputStream stream = raw.getOutputStream();
