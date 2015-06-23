@@ -643,6 +643,22 @@ public class API {
 
 //					new FileInputStream(mp3).getChannel().transferTo(raw.getOutputStream().get);
 
+					res.type("audio/mpeg");
+					res.header("Accept-Ranges",  "bytes");
+					res.header("Content-Length", String.valueOf(mp3.length())); 
+					res.header("Content-Range", contentRangeByteString(mp3, range));
+					res.header("Date", new java.util.Date(mp3.lastModified()).toString());
+					res.header("Last-Modified", new java.util.Date(mp3.lastModified()).toString());
+					res.header("Content-Disposition", "attachment; filename=\"" + path + "\"");
+					//				res.header("X-Content-Duration", String.valueOf(mp3.length()));
+					//				res.header("Content-Duration", String.valueOf(mp3.length()));
+					res.header("Connection", "keep-alive");
+//					res.header("Etag", "asdf");
+					res.header("Cache-Control", "no-cache, private");
+					res.header("X-Pad","avoid browser bug");
+					res.header("Expires", "0");
+					res.header("Pragma", "no-cache");
+					
 				// This one works, but doesn't stream
 				ServletOutputStream stream = raw.getOutputStream();
 				FileInputStream input = new FileInputStream(mp3);
@@ -650,23 +666,11 @@ public class API {
 
 				IOUtils.copy(buf, stream);
 				buf.close();
+				stream.flush();
 				stream.close();
 				
-				res.type("audio/mpeg");
-				res.header("Accept-Ranges",  "bytes");
-				res.header("Content-Length", String.valueOf(mp3.length())); 
-				res.header("Content-Range", contentRangeByteString(mp3, range));
-				res.header("Date", new java.util.Date(mp3.lastModified()).toString());
-				res.header("Last-Modified", new java.util.Date(mp3.lastModified()).toString());
-				res.header("Content-Disposition", "attachment; filename=\"" + path + "\"");
-				//				res.header("X-Content-Duration", String.valueOf(mp3.length()));
-				//				res.header("Content-Duration", String.valueOf(mp3.length()));
-				res.header("Connection", "keep-alive");
-//				res.header("Etag", "asdf");
-				res.header("Cache-Control", "no-cache, private");
-				res.header("X-Pad","avoid browser bug");
-				res.header("Expires", "0");
-				res.header("Pragma", "no-cache");
+				
+
 				
 			
 				
