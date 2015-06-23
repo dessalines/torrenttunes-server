@@ -747,7 +747,7 @@ public class API {
 	public static long[] fromTo(File mp3, String range) {
 		long[] ret = new long[3];
 		
-		if (range == null) {
+		if (range == null || range.equals("bytes=0-")) {
 			ret[0] = 0;
 			ret[1] = mp3.length() -1;
 			ret[2] = mp3.length();
