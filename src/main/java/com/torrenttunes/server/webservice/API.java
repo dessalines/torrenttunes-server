@@ -649,23 +649,32 @@ public class API {
 				// This one works, but doesn't stream
 				
 				ServletOutputStream stream = raw.getOutputStream();
-
-//				Files.copy(mp3.toPath(), stream);
+				if (range == null) {
+					Files.copy(mp3.toPath(), stream);
+				} else {
+					
+					final RandomAccessFile raf = new RandomAccessFile(mp3, "r");
+			        raf.seek(fromTo[0]);
+			        
+			        int length = (int) (fromTo[1] - fromTo[0] + 1);
+			        
+			        byte[] buf = new byte[4096];
+			        
+					 try {
+				            while( length != 0) {
+				                int read = raf.read(buf, 0, buf.length > length ? length : buf.length);
+				                stream.write(buf, 0, read);
+				                length -= read;
+				            }
+				        } finally {
+				            raf.close();
+				        }
+					 
+				}
 				
-				FileInputStream input = new FileInputStream(mp3);
-				BufferedInputStream buf = new BufferedInputStream(input);
+				stream.flush();
+				stream.close();
 
-			
-				 final FileChannel inputChannel = input.getChannel();
-                 final WritableByteChannel outputChannel = Channels.newChannel(stream);
-                 try {
-                     inputChannel.transferTo(0, inputChannel.size(), outputChannel);
-                 } finally {
-                     // closing the channels
-                     inputChannel.close();
-                     outputChannel.close();
-                 }
-				
 				
 				
 			
