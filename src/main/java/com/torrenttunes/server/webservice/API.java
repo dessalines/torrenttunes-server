@@ -659,7 +659,7 @@ public class API {
 					res.header("X-Pad","avoid browser bug");
 					res.header("Expires", "0");
 					res.header("Pragma", "no-cache");
-					res.header("Content-Transfer-Encoding", "chunked");
+					res.header("Content-Transfer-Encoding", "binary");
 					
 				// This one works, but doesn't stream
 				
