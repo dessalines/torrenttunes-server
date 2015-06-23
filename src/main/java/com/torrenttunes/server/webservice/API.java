@@ -644,7 +644,7 @@ public class API {
 //					new FileInputStream(mp3).getChannel().transferTo(raw.getOutputStream().get);
 
 					res.type("audio/mpeg");
-					res.header("Accept-Ranges",  "bytes");
+//					res.header("Accept-Ranges",  "bytes");
 					res.header("Content-Length", String.valueOf(mp3.length())); 
 //					res.header("Content-Range", contentRangeByteString(mp3, range));
 					res.header("Content-Disposition", "inline; filename=\"" + mp3.getName() + "\"");
