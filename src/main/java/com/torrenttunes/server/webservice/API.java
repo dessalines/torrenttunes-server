@@ -643,7 +643,7 @@ public class API {
 
 //					new FileInputStream(mp3).getChannel().transferTo(raw.getOutputStream().get);
 
-					res.type("application/octet-stream");
+					res.type("audio/mpeg");
 					res.header("Accept-Ranges",  "bytes");
 					res.header("Content-Length", String.valueOf(mp3.length())); 
 					res.header("Content-Range", contentRangeByteString(mp3, range));
@@ -659,6 +659,7 @@ public class API {
 					res.header("X-Pad","avoid browser bug");
 					res.header("Expires", "0");
 					res.header("Pragma", "no-cache");
+					res.header("Content-Transfer-Encoding", "chunked");
 					
 				// This one works, but doesn't stream
 				
