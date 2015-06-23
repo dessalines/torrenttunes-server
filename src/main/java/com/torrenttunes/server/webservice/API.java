@@ -631,6 +631,9 @@ public class API {
 
 				//				res.status(206);
 				Integer chunk_size = 1000;
+				if (range == null || range.equals("bytes=0-1")) {
+					range = "bytes=0-";
+				}
 			       String[] ranges = range.split("=")[1].split("-");
 			        final int from = Integer.parseInt(ranges[0]);
 			        /**
