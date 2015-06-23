@@ -29,6 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.io.IOUtils;
 import org.codehaus.jackson.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -658,9 +659,12 @@ public class API {
 
 				// This one works, but doesn't stream
 				ServletOutputStream stream = raw.getOutputStream();
+				FileInputStream input = new FileInputStream(mp3);
+				BufferedInputStream buf = new BufferedInputStream(input);
 
-				Files.copy(Paths.get(path), stream);
-				stream.flush();
+				IOUtils.copy(buf, stream);
+				buf.close();
+				stream.close();
 			
 				
 //				FileInputStream input = new FileInputStream(mp3);
