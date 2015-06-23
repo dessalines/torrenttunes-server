@@ -13,6 +13,9 @@ import static spark.Spark.post;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.RandomAccessFile;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.file.Files;
@@ -103,7 +106,7 @@ public class API {
 
 				Tools.dbInit();
 				Actions.updateSongInfo(jsonNode);
-				
+
 
 				return "Saved info";
 			} catch (Exception e) {
@@ -114,17 +117,17 @@ public class API {
 				Tools.dbClose();
 			}
 		});
-		
+
 		post("/add_play_count/:infoHash", (req, res) -> {
 
 			try {
 				Tools.allowAllHeaders(req, res);
 				String infoHash = req.params(":infoHash");
-				
+
 				Tools.dbInit();
 				Actions.addToPlayCount(infoHash);
-				
-				
+
+
 
 				return "Added play count";
 			} catch (Exception e) {
@@ -135,21 +138,21 @@ public class API {
 				Tools.dbClose();
 			}
 		});
-		
+
 		get("/seeder_upload/:infoHash/:seeders", (req, res) -> {
 
 			try {
 				Tools.allowAllHeaders(req, res);
 				String infoHash = req.params(":infoHash");
 				String seeders = req.params(":seeders");
-				
-				
+
+
 				log.info("Seeder upload received for infohash: " + infoHash);
-				
+
 				Tools.dbInit();
 				Actions.updateSeeders(infoHash, seeders);
-				
-				
+
+
 
 				return "Set seeders";
 			} catch (Exception e) {
@@ -160,19 +163,19 @@ public class API {
 				Tools.dbClose();
 			}
 		});
-		
+
 		get("/download_torrent/:infoHash", (req, res) -> {
 
 			try {
 				String infoHash = req.params(":infoHash");
 
 				Tools.dbInit();
-				
+
 				// get torrent file location from infoHash
-				
+
 				String torrentPath = SONG.findFirst("info_hash = ?", infoHash).
 						getString("torrent_path");
-				
+
 				log.info("torrent downloaded from : " + torrentPath);
 				HttpServletResponse raw = res.raw();
 				raw.getOutputStream().write(Files.readAllBytes(Paths.get(torrentPath)));
@@ -180,7 +183,7 @@ public class API {
 				raw.getOutputStream().close();
 
 				return res.raw();
-				
+
 			} catch (Exception e) {
 				res.status(666);
 				e.printStackTrace();
@@ -189,7 +192,7 @@ public class API {
 				Tools.dbClose();
 			}
 		});
-		
+
 		get("/download_torrent_info/:infoHash", (req, res) -> {
 
 			try {
@@ -197,14 +200,14 @@ public class API {
 				Tools.dbInit();
 				SongView sv = SONG_VIEW.findFirst("info_hash = ?", infoHash);
 				String json = sv.toJson(false);
-	
-				
+
+
 				// Reannounce the torrent:
 				// get the torrent
-//				String torrentFile = sv.getString("torrent_path");
-//				TrackedTorrent tt = TrackedTorrent.load(new File(torrentFile));
-//				tracker.announce(tt);
-				
+				//				String torrentFile = sv.getString("torrent_path");
+				//				TrackedTorrent tt = TrackedTorrent.load(new File(torrentFile));
+				//				tracker.announce(tt);
+
 				log.info("torrent json: " + json);
 				return json;
 
@@ -216,7 +219,7 @@ public class API {
 				Tools.dbClose();
 			}
 		});
-		
+
 
 		get("/get_songs", (req, res) -> {
 
@@ -224,7 +227,7 @@ public class API {
 
 				Tools.dbInit();
 				String json = SONG.findAll().toJson(false);
-	
+
 
 				return json;
 
@@ -509,7 +512,7 @@ public class API {
 
 
 		});
-		
+
 		get("/get_artists", (req, res) -> {
 
 			try {
@@ -533,7 +536,7 @@ public class API {
 
 
 		});
-		
+
 		get("/get_trending_albums", (req, res) -> {
 
 			try {
@@ -557,8 +560,8 @@ public class API {
 
 
 		});
-		
-		
+
+
 		get("/get_trending_songs", (req, res) -> {
 
 			try {
@@ -582,19 +585,19 @@ public class API {
 
 
 		});
-		
+
 		get("/get_audio_file/:encodedPath", (req, res) -> {
-			
+
 			//			res.header("Content-Disposition", "filename=\"music.mp3\"");
-			
+
 			HttpServletResponse raw = res.raw();
-			
+
 			try {
 				Tools.allowAllHeaders(req, res);
 
 				String path = URLDecoder.decode(req.params(":encodedPath"), "UTF-8");
 
-				
+
 				File mp3 = new File(path);				
 
 
@@ -602,8 +605,12 @@ public class API {
 				for (String h : req.headers()) {
 					log.info("Header:" + h + " = " + req.headers(h));
 				}
+
+				RandomAccessFile raf = new RandomAccessFile(mp3, "r");
+
 				
-				
+
+
 				String range = req.headers("Range");
 				log.info("range = " + range);
 				res.type("audio/mpeg");
@@ -613,39 +620,56 @@ public class API {
 				res.header("Date", new java.util.Date(mp3.lastModified()).toString());
 				res.header("Last-Modified", new java.util.Date(mp3.lastModified()).toString());
 				res.header("Content-Disposition", "attachment; filename=\"" + path + "\"");
-//				res.header("X-Content-Duration", String.valueOf(mp3.length()));
-//				res.header("Content-Duration", String.valueOf(mp3.length()));
+				//				res.header("X-Content-Duration", String.valueOf(mp3.length()));
+				//				res.header("Content-Duration", String.valueOf(mp3.length()));
 				res.header("Connection", "close");
 				res.header("Etag", "asdf");
 				res.header("Cache-Control", "no-cache, private");
 				res.header("X-Pad","avoid browser bug");
 				res.header("Expires", "0");
-				res.header("Pragma", "public");
-				
-//				res.status(206);
-				
-				
+				res.header("Pragma", "no-cache");
+
+				//				res.status(206);
+				Integer chunk_size = 1000;
+			       String[] ranges = range.split("=")[1].split("-");
+			        final int from = Integer.parseInt(ranges[0]);
+			        /**
+			         * Chunk media if the range upper bound is unspecified. Chrome sends "bytes=0-"
+			         */
+			        int to = chunk_size + from;
+			        if (to >= mp3.length()) {
+			            to = (int) (mp3.length() - 1);
+			        }
+			        if (ranges.length == 2) {
+			            to = Integer.parseInt(ranges[1]);
+			        }
+			        
+			        
+			        raf.seek(from);
+			        int len = to - from + 1;
+			        writeAudioToOS(len, raf, raw.getOutputStream());
+
 
 				// This one works, but doesn't stream
-				ServletOutputStream stream = raw.getOutputStream();
+//				ServletOutputStream stream = raw.getOutputStream();
+//
+//				FileInputStream input = new FileInputStream(mp3);
+//				BufferedInputStream buf = new BufferedInputStream(input);
+//				int readBytes = 0;
+//
+//				//read from the file; write to the ServletOutputStream
+//				while ((readBytes = buf.read()) != -1) {
+//					stream.write(readBytes);
+//				}
+//
+//
+//				stream.close();
+//				buf.close();
 
-				FileInputStream input = new FileInputStream(mp3);
-				BufferedInputStream buf = new BufferedInputStream(input);
-				int readBytes = 0;
-				
-				//read from the file; write to the ServletOutputStream
-				while ((readBytes = buf.read()) != -1) {
-					stream.write(readBytes);
-				}
 
 
-				stream.close();
-				buf.close();
-				
 
-
-				
-//				return buildStream(mp3, range);
+				//				return buildStream(mp3, range);
 
 				return res.raw();
 
@@ -682,34 +706,52 @@ public class API {
 		return queryStr.toString();
 
 	}
-	
-	
+
+
 	public static String contentRangeByteString(File mp3, String range) {
 
-		
+
 		if (range == null || range.equals("bytes=0-1")) {
 			range = "bytes=0-";
 		}
-		
+
 		String[] ranges = range.split("=")[1].split("-");
-		
+
 		log.info("ranges[] = " + Arrays.toString(ranges));
-		
-		Integer chunkSize = 30;
+
+		Integer chunkSize = 1000;
 		Integer from = Integer.parseInt(ranges[0]);
 		Integer to = chunkSize + from;
-        if (to >= mp3.length()) {
-           to = (int) (mp3.length() - 1);
-        }
-        if (ranges.length == 2) {
-            to = Integer.parseInt(ranges[1]);
-        }
-        
+		if (to >= mp3.length()) {
+			to = (int) (mp3.length() - 1);
+		}
+		if (ranges.length == 2) {
+			to = Integer.parseInt(ranges[1]);
+		}
+
 		String responseRange = "bytes " + from + "-" + to + "/" + mp3.length();
-		
+
 		log.info("response range = " + responseRange);
 		return responseRange;
-	
+
 	}
+
+	public static void writeAudioToOS(Integer length, RandomAccessFile raf, OutputStream os) throws IOException {
+
+		byte[] buf = new byte[4096];
+		try {
+			while( length != 0) {
+				int read = raf.read(buf, 0, buf.length > length ? length : buf.length);
+				os.write(buf, 0, read);
+				length -= read;
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			raf.close();
+		}
+	}
+
 
 }
