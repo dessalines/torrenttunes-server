@@ -4,7 +4,7 @@ public class DataSources {
 
 	public static String APP_NAME = "torrenttunes-server";
 	
-	public static Integer SPARK_WEB_PORT = 4567;
+	public static Integer SPARK_WEB_PORT = 80;
 	
 	public static final String WEB_SERVICE_URL = "http://localhost:" + SPARK_WEB_PORT + "/";
 	
@@ -54,10 +54,8 @@ public class DataSources {
 		return WEB_HTML() + "/" + pageName + ".html";
 	}
 	
-	public static final String TRACKER_IP = "104.236.44.89";
+	public static final String TRACKER_IP = "torrenttunes.ml";
 	
-	public static final String TRACKER_WEB_PORT = "4567";
-	
-	public static final String TRACKER_URL = "http://" + TRACKER_IP + ":" + TRACKER_WEB_PORT + "/";
+	public static final String TRACKER_URL = "http://" + TRACKER_IP + ":" + SPARK_WEB_PORT + "/";
 	
 }
