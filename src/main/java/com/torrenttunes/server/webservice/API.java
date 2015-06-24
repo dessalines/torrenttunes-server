@@ -346,7 +346,7 @@ public class API {
 				String json = null;
 
 				json = ALBUM_VIEW.find("artist_mbid = ?", artistMbid).
-						orderBy("plays desc").limit(5).toJson(false);
+						orderBy("plays desc").limit(4).toJson(false);
 
 				return json;
 
