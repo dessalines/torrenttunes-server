@@ -26,8 +26,8 @@ public class Actions {
 		try {
 
 			log.info("Saving " + torrentFile.getName() + " to the DB");
-
-
+			
+			
 			// First get the MBID from the filename
 			String mbid = torrentFile.getName().split("_")[0].split("mbid-")[1];
 
@@ -70,7 +70,6 @@ public class Actions {
 		// First, check to see if the album or artist need to be created:
 		Artist artistRow = ARTIST.findFirst("mbid = ?", artistMbid);
 		if (artistRow == null) {
-			log.info("derp1");
 			// Fetch some links and images from musicbrainz
 			com.musicbrainz.mp3.tagger.Tools.Artist mbInfo = 
 					com.musicbrainz.mp3.tagger.Tools.Artist.fetchArtist(artistMbid);
@@ -142,7 +141,7 @@ public class Actions {
 				"duration_ms", durationMS,
 				"track_number", trackNumber);
 		song.saveIt();
-		log.info("New song: " + title + "created");
+		log.info("New song: " + title + " created");
 		
 
 

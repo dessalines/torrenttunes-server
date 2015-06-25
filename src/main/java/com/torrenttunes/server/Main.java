@@ -55,13 +55,13 @@ public class Main {
 		com.torrenttunes.client.db.InitializeTables.initializeTables();
 		
 		// Startup the tracker
-		createTracker();
+//		createTracker();
 
 		// First find all the torrent files stored on your tracker
-		announceTorrentFiles(tracker);	
+//		announceTorrentFiles(tracker);	
 
 		// Start the tracker
-		tracker.start();
+//		tracker.start();
 		
 		// Update the seeder counts in the db
 //		UpdateSeederCountService.create(tracker).startAsync();
