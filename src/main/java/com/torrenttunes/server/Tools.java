@@ -445,7 +445,7 @@ public class Tools {
 			Tools.dbInit();
 			Actions.saveTorrentToDB(f, tt);
 			Tools.dbClose();
-		} catch(IOException e) {
+		} catch(IOException | NullPointerException e) {
 			e.printStackTrace();
 		}
 	}
