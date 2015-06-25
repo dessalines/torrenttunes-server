@@ -132,6 +132,9 @@ public class Actions {
 		// Find it by the MBID
 		Song song = SONG.findFirst("mbid = ?", songMbid);
 		
+		log.info("mbid = " + songMbid);
+		log.info(song.toJson(true));
+		
 		
 		
 		song.set("title", title,
