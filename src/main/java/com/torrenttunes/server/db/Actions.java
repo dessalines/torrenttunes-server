@@ -29,7 +29,7 @@ public class Actions {
 
 
 			// First get the MBID from the filename
-			String mbid = torrentFile.getName().split("_")[0];
+			String mbid = torrentFile.getName().split("_")[0].split("mbid-")[1];
 
 			// Save the song
 			Song song = SONG.create("torrent_path", torrentFile.getAbsolutePath(),
