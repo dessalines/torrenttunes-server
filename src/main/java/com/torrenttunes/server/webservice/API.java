@@ -262,6 +262,8 @@ public class API {
 				log.info(queryStr);
 
 				json = SONG_SEARCH_VIEW.find(queryStr.toString()).limit(5).toJson(false);
+				
+				log.info(json);
 
 				return json;
 
