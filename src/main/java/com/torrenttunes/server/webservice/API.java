@@ -258,7 +258,7 @@ public class API {
 
 				String json = null;
 
-				String queryStr = constructQueryString(query, "search");
+				String queryStr = constructQueryString(query, "search_song");
 				log.info(queryStr);
 
 				json = SONG_SEARCH_VIEW.find(queryStr.toString()).limit(5).toJson(false);
@@ -287,7 +287,7 @@ public class API {
 
 				String json = null;
 
-				String queryStr = constructQueryString(query, "search");
+				String queryStr = constructQueryString(query, "search_artist");
 				log.info(queryStr);
 
 				json = ARTIST_SEARCH_VIEW.find(queryStr.toString()).limit(5).toJson(false);
@@ -316,7 +316,7 @@ public class API {
 
 				String json = null;
 
-				String queryStr = constructQueryString(query, "search");
+				String queryStr = constructQueryString(query, "search_album");
 				log.info(queryStr);
 
 				json = ALBUM_SEARCH_VIEW.find(queryStr.toString()).limit(5).toJson(false);
