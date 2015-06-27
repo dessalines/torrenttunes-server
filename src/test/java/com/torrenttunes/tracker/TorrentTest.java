@@ -1,7 +1,13 @@
 package com.torrenttunes.tracker;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.RandomAccessFile;
+
+import javax.servlet.ServletOutputStream;
 
 import junit.framework.TestCase;
 
@@ -11,6 +17,7 @@ import com.google.common.base.Charsets;
 import com.google.common.hash.Hashing;
 import com.torrenttunes.server.DataSources;
 import com.torrenttunes.server.Tools;
+import com.torrenttunes.server.webservice.API;
 import com.turn.ttorrent.common.Torrent;
 
 public class TorrentTest extends TestCase {
@@ -42,6 +49,18 @@ public class TorrentTest extends TestCase {
 		String wikiUrl = "https://en.wikipedia.org/wiki/Sufjan_Stevens";
 		String image = Tools.getImageFromWikipedia(wikiUrl);
 		System.out.println(image);
+	}
+	
+	public void testWrite() throws IOException {
+		int[] fromTo = API.fromTo(new File(DataSources.SAMPLE_SONG), "bytes=0-");
+		int length = (int) (fromTo[1] - fromTo[0] + 1);
+		final RandomAccessFile raf = new RandomAccessFile(DataSources.SAMPLE_SONG, "r");
+		raf.seek(fromTo[0]);
+		
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		API.writeAudioToOS(length, raf, bos);
+		raf.close();
+		bos.close();
 	}
 
 

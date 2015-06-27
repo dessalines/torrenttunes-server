@@ -21,6 +21,10 @@ public class DataSources {
 			"/4dc5a38c-e053-4c12-a028-34b1a89075be_f29a2d2fb98be7afc69b0cb562fd5e38472fb44fa4790d1b11ff9565675d0fd6.torrent";
 	}
 	
+	public static final String SAMPLE_MUSIC_DIR = "/home/tyler/Downloads";
+	
+	public static final String SAMPLE_SONG = SAMPLE_MUSIC_DIR + "/04 One Evening.mp3";
+	
 	public static final String DB_FILE() {return HOME_DIR() + "/db/db_server.sqlite";}
 	
 	

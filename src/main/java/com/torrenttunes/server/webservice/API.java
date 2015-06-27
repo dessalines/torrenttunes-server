@@ -788,6 +788,7 @@ public class API {
 			os.write(buf, 0, read);
 			length -= read;
 		}
+		log.info("before closing");
 		
 		
 
