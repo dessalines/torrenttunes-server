@@ -639,7 +639,7 @@ public class API {
 //					res.header("Server", "Apache");
 //									res.header("X-Content-Duration", "30");
 //									res.header("Content-Duration", "30");
-//					res.header("Connection", "keep-alive");
+					res.header("Connection", "close");
 //					String etag = com.google.common.io.Files.hash(mp3, Hashing.md5()).toString();
 //					res.header("Etag", etag);
 //					res.header("Cache-Control", "no-cache, private");
@@ -671,16 +671,6 @@ public class API {
 				
 				stream.close();
 
-				
-				
-			
-		
-
-				
-
-				
-
-					
 
 				//				return buildStream(mp3, range);
 
@@ -731,7 +721,7 @@ public class API {
 //			
 //			return ret;
 			
-			range = "bytes=0-";
+//			range = "bytes=0-";
 			
 		}
 	
@@ -775,7 +765,6 @@ public class API {
 				int read = raf.read(buf, 0, buf.length > length ? length : buf.length);
 				os.write(buf, 0, read);
 				length -= read;
-				os.flush();
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
