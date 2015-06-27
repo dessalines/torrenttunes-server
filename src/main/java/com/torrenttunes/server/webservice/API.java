@@ -751,18 +751,21 @@ public class API {
 		long[] ret = new long[3];
 		
 		if (range == null || range.equals("bytes=0-")) {
-			ret[0] = 0;
-			ret[1] = mp3.length() -1;
-			ret[2] = mp3.length();
+//			ret[0] = 0;
+//			ret[1] = mp3.length() -1;
+//			ret[2] = mp3.length();
+//			
+//			return ret;
 			
-			return ret;
+			range = "bytes=0-";
+			
 		}
 	
 		String[] ranges = range.split("=")[1].split("-");
 		log.info(range);
 		log.info("ranges[] = " + Arrays.toString(ranges));
 
-		Integer chunkSize = 1000000;
+		Integer chunkSize = 100000;
 		Integer from = Integer.parseInt(ranges[0]);
 		Integer to = chunkSize + from;
 		if (to >= mp3.length()) {
