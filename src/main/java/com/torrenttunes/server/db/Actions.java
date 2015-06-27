@@ -173,14 +173,18 @@ public class Actions {
 					continue;
 				}
 				
-				ReleaseGroup foundAlbum = RELEASE_GROUP.findFirst("mbid=?", albumMbid);
-				log.info(foundAlbum.toJson(false));
-				foundAlbum.set(
-						"album_coverart_url", coverArtURL,
-						"album_coverart_thumbnail_large", coverArtLargeThumbnail,
-						"album_coverart_thumbnail_small", coverArtSmallThumbnail);
-
-				foundAlbum.saveIt();
+				RELEASE_GROUP.update(
+						// Updates
+						"album_coverart_url", 
+						"album_coverart_thumbnail_large", 
+						"album_coverart_thumbnail_small", 
+						// Conditions
+						"mbid = ?", 
+						coverArtURL,
+						coverArtLargeThumbnail,
+						coverArtSmallThumbnail,
+						albumMbid);
+						
 
 			}
 
