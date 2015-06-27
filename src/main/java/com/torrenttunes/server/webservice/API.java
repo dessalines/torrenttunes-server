@@ -675,7 +675,7 @@ public class API {
 				final RandomAccessFile raf = new RandomAccessFile(mp3, "r");
 				raf.seek(fromTo[0]);
 				writeAudioToOS(length, raf, stream);
-				
+				raf.close();
 //				FileInputStream file = new FileInputStream(mp3);
 //				
 //				file.skip(fromTo[0]);
@@ -789,7 +789,6 @@ public class API {
 			length -= read;
 		}
 		
-		raf.close();
 		
 
 		
