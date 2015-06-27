@@ -651,7 +651,7 @@ public class API {
 //					res.header("If-None-Match", "webkit-no-cache");
 //					res.header("X-Sendfile", path);
 //					res.header("X-Stream", true);
-					res.status(206);
+//					res.status(206);
 				// This one works, but doesn't stream
 				
 				ServletOutputStream stream = raw.getOutputStream();
