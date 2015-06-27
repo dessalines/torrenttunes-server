@@ -622,7 +622,7 @@ public class API {
 				//				res.status(206);
 
 				ServletOutputStream stream = raw.getOutputStream();
-
+			
 				
 				if (range == null) {
 					res.header("Content-Length", String.valueOf(mp3.length())); 
@@ -650,10 +650,10 @@ public class API {
 				//					res.header("Content-Disposition", "attachment; filename=\"" + mp3.getName() + "\"");
 				res.header("Date", new java.util.Date(mp3.lastModified()).toString());
 				res.header("Last-Modified", new java.util.Date(mp3.lastModified()).toString());
-				res.header("Server", "Apache");
+//				res.header("Server", "Apache");
 				//									res.header("X-Content-Duration", "30");
 				//									res.header("Content-Duration", "30");
-				res.header("Connection", "close");
+				res.header("Connection", "Keep-Alive");
 				//					String etag = com.google.common.io.Files.hash(mp3, Hashing.md5()).toString();
 				//					res.header("Etag", etag);
 				//					res.header("Cache-Control", "no-cache, private");
@@ -780,7 +780,7 @@ public class API {
 
 	}
 
-	public static void writeAudioToOS(Integer length, RandomAccessFile raf, OutputStream os) throws IOException {
+	public static void writeAudioToOS(Integer length, RandomAccessFile raf, ServletOutputStream os) throws IOException {
 
 		byte[] buf = new byte[32*1024];
 		while(length != 0) {
@@ -789,7 +789,7 @@ public class API {
 			length -= read;
 		}
 		log.info("before closing");
-		
+//		
 		
 
 		

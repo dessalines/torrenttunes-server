@@ -57,10 +57,10 @@ public class TorrentTest extends TestCase {
 		final RandomAccessFile raf = new RandomAccessFile(DataSources.SAMPLE_SONG, "r");
 		raf.seek(fromTo[0]);
 		
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		API.writeAudioToOS(length, raf, bos);
+//		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+//		API.writeAudioToOS(length, raf, bos);
 		raf.close();
-		bos.close();
+//		bos.close();
 	}
 
 
