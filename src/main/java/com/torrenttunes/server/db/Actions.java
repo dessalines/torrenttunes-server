@@ -172,12 +172,14 @@ public class Actions {
 					e.printStackTrace();
 					continue;
 				}
-				cAlbum.set(
+				
+				ReleaseGroup foundAlbum = RELEASE_GROUP.findFirst("mbid=?", albumMbid);
+				foundAlbum.set(
 						"album_coverart_url", coverArtURL,
 						"album_coverart_thumbnail_large", coverArtLargeThumbnail,
 						"album_coverart_thumbnail_small", coverArtSmallThumbnail);
 
-				cAlbum.saveIt();
+				foundAlbum.saveIt();
 
 			}
 
