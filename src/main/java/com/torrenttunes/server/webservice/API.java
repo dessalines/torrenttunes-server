@@ -663,12 +663,12 @@ public class API {
 					final RandomAccessFile raf = new RandomAccessFile(mp3, "r");
 			        raf.seek(fromTo[0]);
 			        
-//			        writeAudioToOS(length, raf, stream);
-			        Files.copy(mp3.toPath(), stream);
+			        writeAudioToOS(length, raf, stream);
+//			        Files.copy(mp3.toPath(), stream);
 					 
 				}
 				
-				stream.flush();
+//				stream.flush();
 				stream.close();
 
 				
