@@ -175,16 +175,16 @@ public class Actions {
 				
 				RELEASE_GROUP.update(
 						// Updates
-						"album_coverart_url", 
-						"album_coverart_thumbnail_large", 
-						"album_coverart_thumbnail_small", 
+						"album_coverart_url = ?", 
+						"album_coverart_thumbnail_large = ?", 
+						"album_coverart_thumbnail_small = ?", 
 						// Conditions
 						"mbid = ?", 
 						coverArtURL,
 						coverArtLargeThumbnail,
 						coverArtSmallThumbnail,
 						albumMbid);
-						
+			
 
 			}
 
