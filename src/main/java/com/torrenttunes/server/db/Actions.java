@@ -174,6 +174,7 @@ public class Actions {
 				}
 				
 				ReleaseGroup foundAlbum = RELEASE_GROUP.findFirst("mbid=?", albumMbid);
+				log.info(foundAlbum.toJson(false));
 				foundAlbum.set(
 						"album_coverart_url", coverArtURL,
 						"album_coverart_thumbnail_large", coverArtLargeThumbnail,
