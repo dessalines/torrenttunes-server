@@ -766,18 +766,15 @@ public class API {
 
 	public static void writeAudioToOS(Integer length, RandomAccessFile raf, OutputStream os) throws IOException {
 
-		FileInputStream fis = new FileInputStream(raf.getFD());
-		BufferedInputStream bis = new BufferedInputStream(fis);
+//		FileInputStream fis = new FileInputStream(raf.getFD());
+//		BufferedInputStream bis = new BufferedInputStream(fis);
 		byte[] buf = new byte[65536];
 		while(length != 0) {
-//			int read = bis.read(buf, 0, buf.length > length ? length : buf.length);
-			int read = bis.read();
+			int read = raf.read(buf, 0, buf.length > length ? length : buf.length);
 			os.write(buf, 0, read);
 			length -= read;
 		}
 		
-		bis.close();
-		fis.close();
 		raf.close();
 		
 		
