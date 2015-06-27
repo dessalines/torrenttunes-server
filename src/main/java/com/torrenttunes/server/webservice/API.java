@@ -618,6 +618,15 @@ public class API {
 
 				//				res.status(206);
 
+				ServletOutputStream stream = raw.getOutputStream();
+				
+				if (range == null) {
+					res.header("Content-Length", String.valueOf(mp3.length())); 
+					Files.copy(mp3.toPath(), stream);
+					
+					return res.raw();
+					
+				}
 			        
 					long[] fromTo = fromTo(mp3, range);
 
@@ -655,10 +664,8 @@ public class API {
 					
 				// This one works, but doesn't stream
 				
-				ServletOutputStream stream = raw.getOutputStream();
-				if (range == null) {
-					Files.copy(mp3.toPath(), stream);
-				} else {
+
+		
 					log.info("writing random access file instead");
 					final RandomAccessFile raf = new RandomAccessFile(mp3, "r");
 			        raf.seek(fromTo[0]);
@@ -666,7 +673,7 @@ public class API {
 			        writeAudioToOS(length, raf, stream);
 //			        Files.copy(mp3.toPath(), stream);
 					 
-				}
+				
 				
 				
 				stream.close();
