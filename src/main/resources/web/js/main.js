@@ -656,7 +656,7 @@ function buildLiFromTrackObject(trackObj) {
     trackObj['artist'] + '</b> - ' + 
     trackObj['title'] + '</a></li>';
 
-    console.log(trackObj['artist']);
+    console.log(decodeURIComponent(trackObj['artist']));
 
   // var li = '<li><a href="file://' + trackObj['file_path'] + '"><b>' +
   //   trackObj['artist'] + '</b> - ' + trackObj['title'] + '</a></li>';
