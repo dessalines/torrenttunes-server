@@ -688,11 +688,11 @@ public class API {
 //					stream.write(read);
 //				}
 				
+				
 
 
 
-
-				stream.close();
+				stream.flush();
 
 
 				//				return buildStream(mp3, range);
