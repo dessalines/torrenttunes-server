@@ -659,7 +659,7 @@ public class API {
 				} else {
 					log.info("writing random access file instead");
 					final RandomAccessFile raf = new RandomAccessFile(mp3, "r");
-			        raf.seek(fromTo[0]);
+//			        raf.seek(fromTo[0]);
 			        
 			        
 			        writeAudioToOS(length, raf, stream);
@@ -786,7 +786,7 @@ public class API {
 
 	public static void writeAudioToOS(Integer length, RandomAccessFile raf, OutputStream os) throws IOException {
 
-		byte[] buf = new byte[409600];
+		byte[] buf = new byte[4096];
 		try {
 			while( length != 0) {
 				int read = raf.read(buf, 0, buf.length > length ? length : buf.length);
