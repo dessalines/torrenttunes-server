@@ -693,7 +693,7 @@ public class API {
 
 
 				stream.flush();
-
+				stream.close();
 
 				//				return buildStream(mp3, range);
 
