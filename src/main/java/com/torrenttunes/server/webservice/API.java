@@ -11,6 +11,8 @@ import static spark.Spark.get;
 import static spark.Spark.post;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -33,6 +35,7 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.input.BoundedInputStream;
 import org.codehaus.jackson.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -668,10 +671,22 @@ public class API {
 
 
 				log.info("writing random access file instead");
-				final RandomAccessFile raf = new RandomAccessFile(mp3, "r");
-				raf.seek(fromTo[0]);
-
-				writeAudioToOS(length, raf, stream);
+//				final RandomAccessFile raf = new RandomAccessFile(mp3, "r");
+//				raf.seek(fromTo[0]);
+//				writeAudioToOS(length, raf, stream);
+				
+				FileInputStream file = new FileInputStream(mp3);
+				
+				file.skip(fromTo[0]);
+				BufferedReader br = new BufferedReader(
+						   new InputStreamReader(new BoundedInputStream(file,fromTo[1] - fromTo[0]))
+						);
+				
+				int read = 0;
+				while ((read=br.read()) != -1) {
+					stream.write(read);
+				}
+				
 
 
 
@@ -766,8 +781,8 @@ public class API {
 
 	public static void writeAudioToOS(Integer length, RandomAccessFile raf, OutputStream os) throws IOException {
 
-//		FileInputStream fis = new FileInputStream(raf.getFD());
-//		BufferedInputStream bis = new BufferedInputStream(fis);
+		FileInputStream fis = new FileInputStream(raf.getFD());
+		BufferedInputStream bis = new BufferedInputStream(fis);
 		byte[] buf = new byte[65536];
 		while(length != 0) {
 			int read = raf.read(buf, 0, buf.length > length ? length : buf.length);
@@ -776,6 +791,8 @@ public class API {
 		}
 		
 		raf.close();
+		
+
 		
 		
 
