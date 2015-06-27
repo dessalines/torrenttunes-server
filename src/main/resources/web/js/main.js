@@ -653,8 +653,10 @@ function buildLiFromTrackObject(trackObj) {
 
 
   var li = '<li><a href="' + encodedAudioFilePath + '"><b>' +
-    decodeURIComponent(trackObj['artist']) + '</b> - ' + 
-    decodeURIComponent(trackObj['title']) + '</a></li>';
+    trackObj['artist'] + '</b> - ' + 
+    trackObj['title'] + '</a></li>';
+
+    console.log(trackObj['artist']);
 
   // var li = '<li><a href="file://' + trackObj['file_path'] + '"><b>' +
   //   trackObj['artist'] + '</b> - ' + trackObj['title'] + '</a></li>';
