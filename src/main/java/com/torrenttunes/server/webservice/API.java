@@ -621,7 +621,7 @@ public class API {
 
 				//				res.status(206);
 
-				ServletOutputStream stream = raw.getOutputStream();
+				OutputStream stream = raw.getOutputStream();
 			
 				
 				if (range == null) {
@@ -675,29 +675,12 @@ public class API {
 				final RandomAccessFile raf = new RandomAccessFile(mp3, "r");
 				raf.seek(fromTo[0]);
 				writeAudioToOS(length, raf, stream);
+			
 				raf.close();
-//				FileInputStream file = new FileInputStream(mp3);
-//				
-//				file.skip(fromTo[0]);
-//				BufferedReader br = new BufferedReader(
-//						   new InputStreamReader(new BoundedInputStream(file,fromTo[1] - fromTo[0]))
-//						);
-//				
-//				int read = 0;
-//				while ((read=br.read()) != -1) {
-//					stream.write(read);
-//				}
-				
-				
-
-
 
 				stream.flush();
 				stream.close();
 
-				//				return buildStream(mp3, range);
-
-				log.info("returning res.raw()");
 				return res.raw();
 
 			} catch (Exception e) {
@@ -780,7 +763,7 @@ public class API {
 
 	}
 
-	public static void writeAudioToOS(Integer length, RandomAccessFile raf, ServletOutputStream os) throws IOException {
+	public static void writeAudioToOS(Integer length, RandomAccessFile raf, OutputStream os) throws IOException {
 
 		byte[] buf = new byte[32*1024];
 		while(length != 0) {
