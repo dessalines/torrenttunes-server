@@ -628,26 +628,27 @@ public class API {
 					res.type("audio/mpeg");
 					
 					res.header("Accept-Ranges",  "bytes");
-					res.header("Content-Length", String.valueOf(length)); 
+
 //					res.header("Content-Length", String.valueOf(mp3.length())); 
 					res.header("Content-Range", contentRangeByteString(fromTo));
-					res.header("Content-Disposition", "attachment; filename=\"" + mp3.getName() + "\"");
-					res.header("Date", new java.util.Date(mp3.lastModified()).toString());
+					res.header("Content-Length", String.valueOf(length)); 
+//					res.header("Content-Disposition", "attachment; filename=\"" + mp3.getName() + "\"");
+//					res.header("Date", new java.util.Date(mp3.lastModified()).toString());
 					res.header("Last-Modified", new java.util.Date(mp3.lastModified()).toString());
 //					res.header("Server", "Apache");
 //									res.header("X-Content-Duration", "30");
 //									res.header("Content-Duration", "30");
-					res.header("Connection", "keep-alive");
+//					res.header("Connection", "keep-alive");
 //					String etag = com.google.common.io.Files.hash(mp3, Hashing.md5()).toString();
 //					res.header("Etag", etag);
-					res.header("Cache-Control", "no-cache, private");
-					res.header("X-Pad","avoid browser bug");
-					res.header("Expires", "0");
+//					res.header("Cache-Control", "no-cache, private");
+//					res.header("X-Pad","avoid browser bug");
+//					res.header("Expires", "0");
 //					res.header("Pragma", "no-cache");
 //					res.header("Content-Transfer-Encoding", "binary");
-					res.header("Transfer-Encoding", "chunked");
-					res.header("Keep-Alive", "timeout=15, max=100");
-					res.header("If-None-Match", "webkit-no-cache");
+//					res.header("Transfer-Encoding", "chunked");
+//					res.header("Keep-Alive", "timeout=15, max=100");
+//					res.header("If-None-Match", "webkit-no-cache");
 //					res.header("X-Sendfile", path);
 //					res.header("X-Stream", true);
 					res.status(206);
@@ -659,8 +660,7 @@ public class API {
 				} else {
 					log.info("writing random access file instead");
 					final RandomAccessFile raf = new RandomAccessFile(mp3, "r");
-//			        raf.seek(fromTo[0]);
-			        
+			        raf.seek(fromTo[0]);
 			        
 			        writeAudioToOS(length, raf, stream);
 					 
@@ -672,26 +672,7 @@ public class API {
 				
 				
 			
-				
-			
-				
-//				FileInputStream input = new FileInputStream(mp3);
-//				BufferedInputStream buf = new BufferedInputStream(input, 256);
-//				int readBytes = 0;
-//
-//				try {
-//				//read from the file; write to the ServletOutputStream
-//				while ((readBytes = buf.read()) != -1) {
-//					stream.write(readBytes);
-//				}
-//				} catch (IOException ioe) {
-//					  throw new Exception(ioe.getMessage());
-//				} finally {
-//				  if (stream != null)
-//				    stream.close();
-//				  if (buf != null)
-//				    buf.close();
-//				}
+		
 
 				
 
