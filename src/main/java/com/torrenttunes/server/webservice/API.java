@@ -625,6 +625,7 @@ public class API {
 			        
 					 int length = (int) (fromTo[1] - fromTo[0] + 1);
 					 
+					 res.status(206);
 					res.type("audio/mpeg");
 					
 					res.header("Accept-Ranges",  "bytes");
@@ -651,7 +652,7 @@ public class API {
 //					res.header("If-None-Match", "webkit-no-cache");
 //					res.header("X-Sendfile", path);
 //					res.header("X-Stream", true);
-					res.status(200);
+					
 				// This one works, but doesn't stream
 				
 				ServletOutputStream stream = raw.getOutputStream();
