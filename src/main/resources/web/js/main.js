@@ -647,18 +647,17 @@ function playNow(trackObj) {
 }
 
 function buildLiFromTrackObject(trackObj) {
-  // var encodedAudioFilePath = localSparkService + 'get_audio_file/' +
-  //   encodeURIComponent(trackObj['file_path']);
+  var encodedAudioFilePath = externalSparkService + 'get_audio_file/' +
+    encodeURIComponent(trackObj['file_path']);
 
 
 
-  // var li = '<li><a href="' + encodedAudioFilePath + '"><b>' +
-  //   trackObj['artist'] + '</b> - ' + trackObj['title'] + '</a></li>';
-
-
-  var li = '<li><a href="file://' + trackObj['file_path'] + '"><b>' +
+  var li = '<li><a href="' + encodedAudioFilePath + '"><b>' +
     decodeURIComponent(trackObj['artist']) + '</b> - ' + 
-      decodeURIComponent(trackObj['title']) + '</a></li>';
+    decodeURIComponent(trackObj['title']) + '</a></li>';
+
+  // var li = '<li><a href="file://' + trackObj['file_path'] + '"><b>' +
+  //   trackObj['artist'] + '</b> - ' + trackObj['title'] + '</a></li>';
 
   // console.log(li);
   // console.log(encodedAudioFilePath);
