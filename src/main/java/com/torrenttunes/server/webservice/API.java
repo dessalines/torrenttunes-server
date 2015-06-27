@@ -668,7 +668,7 @@ public class API {
 					 
 				}
 				
-//				stream.flush();
+				
 				stream.close();
 
 				
@@ -775,6 +775,7 @@ public class API {
 				int read = raf.read(buf, 0, buf.length > length ? length : buf.length);
 				os.write(buf, 0, read);
 				length -= read;
+				os.flush();
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
