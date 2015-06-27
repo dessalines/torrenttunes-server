@@ -609,9 +609,9 @@ public class API {
 
 
 				// write out the request headers:
-				for (String h : req.headers()) {
-					log.info("Header:" + h + " = " + req.headers(h));
-				}
+//				for (String h : req.headers()) {
+//					log.info("Header:" + h + " = " + req.headers(h));
+//				}
 				
 				String range = req.headers("Range");
 
@@ -769,7 +769,7 @@ public class API {
 
 		byte[] buf = new byte[4096];
 		try {
-			while( length != 0) {
+			while(length != 0) {
 				int read = raf.read(buf, 0, buf.length > length ? length : buf.length);
 				os.write(buf, 0, read);
 				length -= read;
