@@ -28,8 +28,8 @@ public class Actions {
 		try {
 
 			log.info("Saving " + torrentFile.getName() + " to the DB");
-			
-			
+
+
 			// First get the MBID from the filename
 			String mbid = torrentFile.getName().split("_")[0].split("mbid-")[1];
 
@@ -64,7 +64,7 @@ public class Actions {
 		Long durationMS = jsonNode.get("duration_ms").asLong();
 		Integer trackNumber = jsonNode.get("track_number").asInt();
 		String year = jsonNode.get("year").asText();
-		
+
 		log.info("Updating song info for song: " + title);
 
 		// First, check to see if the album or artist need to be created:
@@ -81,7 +81,7 @@ public class Actions {
 			}
 
 
-			
+
 			artistRow = ARTIST.createIt("mbid", artistMbid,
 					"name", artist,
 					"image_url", imageURL,
@@ -132,55 +132,61 @@ public class Actions {
 
 		// Find it by the MBID
 		Song song = SONG.findFirst("mbid = ?", songMbid);
-		
+
 		log.info("mbid = " + songMbid);
 		log.info(song.toJson(true));
-		
-		
-		
+
+
+
 		song.set("title", title,
 				"release_group_mbid", albumMbid,
 				"duration_ms", durationMS,
 				"track_number", trackNumber);
 		song.saveIt();
 		log.info("New song: " + title + " created");
-		
+
 
 
 	}
-	
+
 	public static void refetchAlbumArt() {
-		
-		
+
+
 		List<ReleaseGroup> albums = RELEASE_GROUP.findAll();
-		
+
 		for (ReleaseGroup cAlbum : albums) {
 			String albumMbid = cAlbum.getString("mbid");
-			
-			// Fetch the coverart
-			String coverArtURL = null, coverArtLargeThumbnail = null, coverArtSmallThumbnail = null;
-			try {
-				CoverArt coverArt = CoverArt.fetchCoverArt(albumMbid);
-				coverArtURL = coverArt.getImageURL();
-				coverArtLargeThumbnail = coverArt.getLargeThumbnailURL();
-				coverArtSmallThumbnail = coverArt.getSmallThumbnailURL();
-			} catch(NoSuchElementException e) {
-				e.printStackTrace();
-				continue;
-			}
-			cAlbum.set(
-			"album_coverart_url", coverArtURL,
-			"album_coverart_thumbnail_large", coverArtLargeThumbnail,
-			"album_coverart_thumbnail_small", coverArtSmallThumbnail);
-			
-			cAlbum.saveIt();
-			
-			
-		}
-		
+			String albumTitle = cAlbum.getString("title");
 
-		
-		
+			if (cAlbum.getString("album_coverart_url").equals(null)) {
+				log.info("no cover art found, refetching for album: " + albumTitle + " , mbid: " + albumMbid);
+
+				// Fetch the coverart
+				String coverArtURL = null, coverArtLargeThumbnail = null, coverArtSmallThumbnail = null;
+				try {
+					CoverArt coverArt = CoverArt.fetchCoverArt(albumMbid);
+					coverArtURL = coverArt.getImageURL();
+					coverArtLargeThumbnail = coverArt.getLargeThumbnailURL();
+					coverArtSmallThumbnail = coverArt.getSmallThumbnailURL();
+				} catch(NoSuchElementException e) {
+					e.printStackTrace();
+					continue;
+				}
+				cAlbum.set(
+						"album_coverart_url", coverArtURL,
+						"album_coverart_thumbnail_large", coverArtLargeThumbnail,
+						"album_coverart_thumbnail_small", coverArtSmallThumbnail);
+
+				cAlbum.saveIt();
+
+			}
+
+
+		}
+
+
+
+
 	}
 
 
