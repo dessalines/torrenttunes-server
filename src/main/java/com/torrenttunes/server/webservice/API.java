@@ -749,8 +749,8 @@ public class API {
 		
 		ret[0] = from;
 		ret[1] = to;
-		ret[2] = mp3.length();
-//		ret[2] = (int) (ret[1] - ret[0] + 1);
+//		ret[2] = mp3.length();
+		ret[2] = (int) (ret[1] - ret[0] + 1);
 		
 		return ret;
 		
