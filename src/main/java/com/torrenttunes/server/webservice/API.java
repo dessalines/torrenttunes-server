@@ -262,7 +262,7 @@ public class API {
 				log.info(queryStr);
 
 				json = SONG_SEARCH_VIEW.find(queryStr.toString()).limit(5).toJson(false);
-				
+
 				log.info(json);
 
 				return json;
@@ -609,73 +609,73 @@ public class API {
 
 
 				// write out the request headers:
-//				for (String h : req.headers()) {
-//					log.info("Header:" + h + " = " + req.headers(h));
-//				}
-				
+				//				for (String h : req.headers()) {
+				//					log.info("Header:" + h + " = " + req.headers(h));
+				//				}
+
 				String range = req.headers("Range");
 
 
 				//				res.status(206);
 
 				ServletOutputStream stream = raw.getOutputStream();
-				
+
+
 				if (range == null) {
 					res.header("Content-Length", String.valueOf(mp3.length())); 
 					Files.copy(mp3.toPath(), stream);
-					
+
 					return res.raw();
-					
+
 				}
-			        
-					long[] fromTo = fromTo(mp3, range);
 
-//					new FileInputStream(mp3).getChannel().transferTo(raw.getOutputStream().get);
-			        
-					 int length = (int) (fromTo[1] - fromTo[0] + 1);
-					 
-					 res.status(206);
-					res.type("audio/mpeg");
-					
-					res.header("Accept-Ranges",  "bytes");
+				int[] fromTo = fromTo(mp3, range);
 
-//					res.header("Content-Length", String.valueOf(mp3.length())); 
-					res.header("Content-Range", contentRangeByteString(fromTo));
-					res.header("Content-Length", String.valueOf(length)); 
-//					res.header("Content-Disposition", "attachment; filename=\"" + mp3.getName() + "\"");
-//					res.header("Date", new java.util.Date(mp3.lastModified()).toString());
-					res.header("Last-Modified", new java.util.Date(mp3.lastModified()).toString());
-//					res.header("Server", "Apache");
-//									res.header("X-Content-Duration", "30");
-//									res.header("Content-Duration", "30");
-					res.header("Connection", "close");
-//					String etag = com.google.common.io.Files.hash(mp3, Hashing.md5()).toString();
-//					res.header("Etag", etag);
-//					res.header("Cache-Control", "no-cache, private");
-//					res.header("X-Pad","avoid browser bug");
-//					res.header("Expires", "0");
-//					res.header("Pragma", "no-cache");
-//					res.header("Content-Transfer-Encoding", "binary");
-//					res.header("Transfer-Encoding", "chunked");
-//					res.header("Keep-Alive", "timeout=15, max=100");
-//					res.header("If-None-Match", "webkit-no-cache");
-//					res.header("X-Sendfile", path);
-//					res.header("X-Stream", true);
-					
+				//					new FileInputStream(mp3).getChannel().transferTo(raw.getOutputStream().get);
+
+				int length = (int) (fromTo[1] - fromTo[0] + 1);
+
+				res.status(206);
+				res.type("audio/mpeg");
+
+				res.header("Accept-Ranges",  "bytes");
+
+				//					res.header("Content-Length", String.valueOf(mp3.length())); 
+				res.header("Content-Range", contentRangeByteString(fromTo));
+				res.header("Content-Length", String.valueOf(length)); 
+				//					res.header("Content-Disposition", "attachment; filename=\"" + mp3.getName() + "\"");
+				res.header("Date", new java.util.Date(mp3.lastModified()).toString());
+				res.header("Last-Modified", new java.util.Date(mp3.lastModified()).toString());
+				res.header("Server", "Apache");
+				//									res.header("X-Content-Duration", "30");
+				//									res.header("Content-Duration", "30");
+				res.header("Connection", "close");
+				//					String etag = com.google.common.io.Files.hash(mp3, Hashing.md5()).toString();
+				//					res.header("Etag", etag);
+				//					res.header("Cache-Control", "no-cache, private");
+				//					res.header("X-Pad","avoid browser bug");
+				//					res.header("Expires", "0");
+				//					res.header("Pragma", "no-cache");
+				res.header("Content-Transfer-Encoding", "binary");
+				res.header("Transfer-Encoding", "chunked");
+				res.header("Keep-Alive", "timeout=15, max=100");
+				//					res.header("If-None-Match", "webkit-no-cache");
+				//					res.header("X-Sendfile", path);
+				//					res.header("X-Stream", true);
+
 				// This one works, but doesn't stream
-				
 
-		
-					log.info("writing random access file instead");
-					final RandomAccessFile raf = new RandomAccessFile(mp3, "r");
-			        raf.seek(fromTo[0]);
-			        
-			        writeAudioToOS(length, raf, stream);
-//			        Files.copy(mp3.toPath(), stream);
-					 
-				
-				
-				
+
+
+				log.info("writing random access file instead");
+				final RandomAccessFile raf = new RandomAccessFile(mp3, "r");
+				raf.seek(fromTo[0]);
+
+				writeAudioToOS(length, raf, stream);
+
+
+
+
 				stream.close();
 
 
@@ -718,20 +718,20 @@ public class API {
 
 	}
 
-	public static long[] fromTo(File mp3, String range) {
-		long[] ret = new long[3];
-		
+	public static int[] fromTo(File mp3, String range) {
+		int[] ret = new int[3];
+
 		if (range == null || range.equals("bytes=0-")) {
-//			ret[0] = 0;
-//			ret[1] = mp3.length() -1;
-//			ret[2] = mp3.length();
-//			
-//			return ret;
-			
-//			range = "bytes=0-";
-			
+			//			ret[0] = 0;
+			//			ret[1] = mp3.length() -1;
+			//			ret[2] = mp3.length();
+			//			
+			//			return ret;
+
+			//			range = "bytes=0-";
+
 		}
-	
+
 		String[] ranges = range.split("=")[1].split("-");
 		log.info(range);
 		log.info("ranges[] = " + Arrays.toString(ranges));
@@ -745,17 +745,17 @@ public class API {
 		if (ranges.length == 2) {
 			to = Integer.parseInt(ranges[1]);
 		}
-		
+
 		ret[0] = from;
 		ret[1] = to;
-		ret[2] = mp3.length();
-//		ret[2] = (int) (ret[1] - ret[0] + 1);
-		
+		ret[2] = (int) mp3.length();
+		//		ret[2] = (int) (ret[1] - ret[0] + 1);
+
 		return ret;
-		
+
 	}
 
-	public static String contentRangeByteString(long[] fromTo) {
+	public static String contentRangeByteString(int[] fromTo) {
 
 		String responseRange = "bytes " + fromTo[0] + "-" + fromTo[1] + "/" + fromTo[2];
 
@@ -767,18 +767,12 @@ public class API {
 	public static void writeAudioToOS(Integer length, RandomAccessFile raf, OutputStream os) throws IOException {
 
 		byte[] buf = new byte[4096];
-		try {
-			while(length != 0) {
-				int read = raf.read(buf, 0, buf.length > length ? length : buf.length);
-				os.write(buf, 0, read);
-				length -= read;
-			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			raf.close();
+		while(length != 0) {
+			int read = raf.read(buf, 0, buf.length > length ? length : buf.length);
+			os.write(buf, 0, read);
+			length -= read;
 		}
+
 	}
 
 
