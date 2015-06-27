@@ -70,6 +70,7 @@ public class Actions {
 		// First, check to see if the album or artist need to be created:
 		Artist artistRow = ARTIST.findFirst("mbid = ?", artistMbid);
 		if (artistRow == null) {
+			log.info("new artist");
 			// Fetch some links and images from musicbrainz
 			com.musicbrainz.mp3.tagger.Tools.Artist mbInfo = 
 					com.musicbrainz.mp3.tagger.Tools.Artist.fetchArtist(artistMbid);
@@ -99,6 +100,7 @@ public class Actions {
 		// Do the same for album
 		ReleaseGroup releaseRow = RELEASE_GROUP.findFirst("mbid = ?" , albumMbid);
 		if (releaseRow == null) {
+			log.info("new album");
 			// Fetch some links and images from musicbrainz
 			com.musicbrainz.mp3.tagger.Tools.ReleaseGroup mbInfo = 
 					com.musicbrainz.mp3.tagger.Tools.ReleaseGroup.fetchReleaseGroup(albumMbid);
