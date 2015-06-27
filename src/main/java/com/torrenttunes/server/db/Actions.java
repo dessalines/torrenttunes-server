@@ -158,7 +158,7 @@ public class Actions {
 			String albumMbid = cAlbum.getString("mbid");
 			String albumTitle = cAlbum.getString("title");
 
-			if (cAlbum.getString("album_coverart_url").equals(null)) {
+			if (cAlbum.getString("album_coverart_url") == null) {
 				log.info("no cover art found, refetching for album: " + albumTitle + " , mbid: " + albumMbid);
 
 				// Fetch the coverart
