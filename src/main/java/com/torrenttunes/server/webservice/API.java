@@ -635,8 +635,26 @@ public class API {
 
 				int length = (int) (fromTo[1] - fromTo[0] + 1);
 
+				
+
+
+
+				log.info("writing random access file instead");
+				final RandomAccessFile raf = new RandomAccessFile(mp3, "r");
+				raf.seek(fromTo[0]);
+
+				writeAudioToOS(length, raf, stream);
+
+
+
+
+				stream.close();
+
+
+				//				return buildStream(mp3, range);
+				
 				res.status(206);
-				res.type("audio/mpeg");
+				res.type("audio/mp3");
 
 				res.header("Accept-Ranges",  "bytes");
 
@@ -664,22 +682,7 @@ public class API {
 				//					res.header("X-Stream", true);
 
 				// This one works, but doesn't stream
-
-
-
-				log.info("writing random access file instead");
-				final RandomAccessFile raf = new RandomAccessFile(mp3, "r");
-				raf.seek(fromTo[0]);
-
-				writeAudioToOS(length, raf, stream);
-
-
-
-
-				stream.close();
-
-
-				//				return buildStream(mp3, range);
+				
 
 				log.info("returning res.raw()");
 				return res.raw();
