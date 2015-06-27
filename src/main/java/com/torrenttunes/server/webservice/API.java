@@ -662,17 +662,7 @@ public class API {
 			        raf.seek(fromTo[0]);
 			        
 			        
-			        byte[] buf = new byte[4096];
-			        
-					 try {
-				            while( length != 0) {
-				                int read = raf.read(buf, 0, buf.length > length ? length : buf.length);
-				                stream.write(buf, 0, read);
-				                length -= read;
-				            }
-				        } finally {
-				            raf.close();
-				        }
+			        writeAudioToOS(length, raf, stream);
 					 
 				}
 				
@@ -796,7 +786,7 @@ public class API {
 
 	public static void writeAudioToOS(Integer length, RandomAccessFile raf, OutputStream os) throws IOException {
 
-		byte[] buf = new byte[4096];
+		byte[] buf = new byte[409600];
 		try {
 			while( length != 0) {
 				int read = raf.read(buf, 0, buf.length > length ? length : buf.length);
