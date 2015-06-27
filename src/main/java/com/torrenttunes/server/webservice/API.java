@@ -620,7 +620,7 @@ public class API {
 
 				ServletOutputStream stream = raw.getOutputStream();
 
-
+				
 				if (range == null) {
 					res.header("Content-Length", String.valueOf(mp3.length())); 
 					Files.copy(mp3.toPath(), stream);
@@ -635,26 +635,8 @@ public class API {
 
 				int length = (int) (fromTo[1] - fromTo[0] + 1);
 
-				
-
-
-
-				log.info("writing random access file instead");
-				final RandomAccessFile raf = new RandomAccessFile(mp3, "r");
-				raf.seek(fromTo[0]);
-
-				writeAudioToOS(length, raf, stream);
-
-
-
-
-				stream.close();
-
-
-				//				return buildStream(mp3, range);
-				
 				res.status(206);
-				res.type("audio/mp3");
+				res.type("audio/mpeg");
 
 				res.header("Accept-Ranges",  "bytes");
 
@@ -682,7 +664,22 @@ public class API {
 				//					res.header("X-Stream", true);
 
 				// This one works, but doesn't stream
-				
+
+
+
+				log.info("writing random access file instead");
+				final RandomAccessFile raf = new RandomAccessFile(mp3, "r");
+				raf.seek(fromTo[0]);
+
+				writeAudioToOS(length, raf, stream);
+
+
+
+
+				stream.close();
+
+
+				//				return buildStream(mp3, range);
 
 				log.info("returning res.raw()");
 				return res.raw();
@@ -769,12 +766,20 @@ public class API {
 
 	public static void writeAudioToOS(Integer length, RandomAccessFile raf, OutputStream os) throws IOException {
 
-		byte[] buf = new byte[4096];
+		FileInputStream fis = new FileInputStream(raf.getFD());
+		BufferedInputStream bis = new BufferedInputStream(fis);
+		byte[] buf = new byte[65536];
 		while(length != 0) {
-			int read = raf.read(buf, 0, buf.length > length ? length : buf.length);
+			int read = bis.read(buf, 0, buf.length > length ? length : buf.length);
 			os.write(buf, 0, read);
 			length -= read;
 		}
+		
+		bis.close();
+		fis.close();
+		raf.close();
+		
+		
 
 	}
 
