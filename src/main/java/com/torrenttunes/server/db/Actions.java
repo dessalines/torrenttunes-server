@@ -3,6 +3,7 @@ package com.torrenttunes.server.db;
 import static com.torrenttunes.server.db.Tables.*;
 
 import java.io.File;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.codehaus.jackson.JsonNode;
@@ -13,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import com.musicbrainz.mp3.tagger.Tools.CoverArt;
 import com.musicbrainz.mp3.tagger.Tools.Song.MusicBrainzRecordingQuery;
 import com.torrenttunes.server.Tools;
+import com.torrenttunes.server.db.Tables.ReleaseGroup;
 import com.torrenttunes.server.db.Tables.Song;
 import com.turn.ttorrent.tracker.TrackedTorrent;
 
@@ -52,8 +54,6 @@ public class Actions {
 
 	public static void updateSongInfo(JsonNode jsonNode) {
 
-		
-		
 		// Get the variables
 		String songMbid = jsonNode.get("mbid").asText();
 		String title = jsonNode.get("title").asText();
@@ -110,7 +110,9 @@ public class Actions {
 				coverArtURL = coverArt.getImageURL();
 				coverArtLargeThumbnail = coverArt.getLargeThumbnailURL();
 				coverArtSmallThumbnail = coverArt.getSmallThumbnailURL();
-			} catch(NoSuchElementException e) {}
+			} catch(NoSuchElementException e) {
+				e.printStackTrace();
+			}
 
 			releaseRow = RELEASE_GROUP.createIt("mbid", albumMbid,
 					"title", album,
@@ -145,6 +147,40 @@ public class Actions {
 		
 
 
+	}
+	
+	public static void refetchAlbumArt() {
+		
+		
+		List<ReleaseGroup> albums = RELEASE_GROUP.findAll();
+		
+		for (ReleaseGroup cAlbum : albums) {
+			String albumMbid = cAlbum.getString("mbid");
+			
+			// Fetch the coverart
+			String coverArtURL = null, coverArtLargeThumbnail = null, coverArtSmallThumbnail = null;
+			try {
+				CoverArt coverArt = CoverArt.fetchCoverArt(albumMbid);
+				coverArtURL = coverArt.getImageURL();
+				coverArtLargeThumbnail = coverArt.getLargeThumbnailURL();
+				coverArtSmallThumbnail = coverArt.getSmallThumbnailURL();
+			} catch(NoSuchElementException e) {
+				e.printStackTrace();
+				continue;
+			}
+			cAlbum.set(
+			"album_coverart_url", coverArtURL,
+			"album_coverart_thumbnail_large", coverArtLargeThumbnail,
+			"album_coverart_thumbnail_small", coverArtSmallThumbnail);
+			
+			cAlbum.saveIt();
+			
+			
+		}
+		
+
+		
+		
 	}
 
 
