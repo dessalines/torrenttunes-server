@@ -632,7 +632,7 @@ public class API {
 //					res.header("Content-Length", String.valueOf(mp3.length())); 
 					res.header("Content-Range", contentRangeByteString(fromTo));
 					res.header("Content-Length", String.valueOf(length)); 
-//					res.header("Content-Disposition", "attachment; filename=\"" + mp3.getName() + "\"");
+					res.header("Content-Disposition", "attachment; filename=\"" + mp3.getName() + "\"");
 //					res.header("Date", new java.util.Date(mp3.lastModified()).toString());
 					res.header("Last-Modified", new java.util.Date(mp3.lastModified()).toString());
 //					res.header("Server", "Apache");
@@ -651,7 +651,7 @@ public class API {
 //					res.header("If-None-Match", "webkit-no-cache");
 //					res.header("X-Sendfile", path);
 //					res.header("X-Stream", true);
-//					res.status(206);
+					res.status(200);
 				// This one works, but doesn't stream
 				
 				ServletOutputStream stream = raw.getOutputStream();
