@@ -770,7 +770,8 @@ public class API {
 		BufferedInputStream bis = new BufferedInputStream(fis);
 		byte[] buf = new byte[65536];
 		while(length != 0) {
-			int read = bis.read(buf, 0, buf.length > length ? length : buf.length);
+//			int read = bis.read(buf, 0, buf.length > length ? length : buf.length);
+			int read = bis.read();
 			os.write(buf, 0, read);
 			length -= read;
 		}
