@@ -423,7 +423,6 @@ function addPlaylistDropdowns() {
     console.log(playlists);
     // fillMustacheWithJson(playlists, addToPlaylistTemplate, ".add_to_playlist_class");
     if (playlists.length > 0) {
-      $('.add_to_playlist_class').removeClass("hide");
       Mustache.parse(addToPlaylistTemplate);
       var rendered = Mustache.render(addToPlaylistTemplate, playlists);
       $(rendered).appendTo(".add_to_playlist_class");
