@@ -44,25 +44,30 @@ public class TorrentTest extends TestCase {
 
 
 	}
-	
+
 	public void testWikiImage() {
 		String wikiUrl = "https://en.wikipedia.org/wiki/Sufjan_Stevens";
 		String image = Tools.getImageFromWikipedia(wikiUrl);
 		System.out.println(image);
 	}
-	
-	public void testWrite() throws IOException {
-		int[] fromTo = API.fromTo(new File(DataSources.SAMPLE_SONG), "bytes=0-");
-		int length = (int) (fromTo[1] - fromTo[0] + 1);
-		final RandomAccessFile raf = new RandomAccessFile(DataSources.SAMPLE_SONG, "r");
-		raf.seek(fromTo[0]);
-		
-//		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-//		API.writeAudioToOS(length, raf, bos);
-		raf.close();
-//		bos.close();
+
+	public void testWikiImage2()  {
+		String artistMbid = "66c662b6-6e2f-4930-8610-912e24c63ed1";
+
+		// Fetch some links and images from musicbrainz
+		com.musicbrainz.mp3.tagger.Tools.Artist mbInfo = 
+				com.musicbrainz.mp3.tagger.Tools.Artist.fetchArtist(artistMbid);
+
+		System.out.println(mbInfo.getWikipedia());
+		String imageURL = null;
+		if (mbInfo.getWikipedia() != null) {
+			imageURL = Tools.getImageFromWikipedia(mbInfo.getWikipedia());
+			System.out.println(imageURL);
+		}
+
 	}
-	
+
+
 
 
 }

@@ -547,8 +547,9 @@ public class Tools {
 	public static String getImageFromWikipedia(String wikipedia) {
 		
 		// First extract the title
-		String[] wikiUrlSplit = wikipedia.split("/");
-		String title = wikiUrlSplit[wikiUrlSplit.length-1];
+		String[] wikiUrlSplit = wikipedia.split("/wiki/");
+		String title = wikiUrlSplit[1];
+		
 		
 		String wikiQuery = "https://en.wikipedia.org/w/api.php?action=query&titles=" + title + 
 				"&prop=pageimages&pithumbsize=300&format=json&piprop=original";
