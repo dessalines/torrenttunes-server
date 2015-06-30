@@ -72,7 +72,17 @@ function errorTest() {
   });
 }
 
+function setupClickableArtistPlaying() {
+  $('.artist_playing_clickable').click(function(e) {
 
+    var mbid = $(this).attr('name');
+    console.log(e);
+    console.log(mbid);
+
+    showArtistPageV2(mbid);
+
+  });
+}
 
 
 
@@ -645,6 +655,7 @@ function playNow(trackObj) {
     // player.actions.play(); 
   }
   // player.actions.play();
+  setupClickableArtistPlaying();
 
 }
 
@@ -655,7 +666,8 @@ function buildLiFromTrackObject(trackObj) {
 
 
   var li = '<li><a href="' + encodedAudioFilePath + '"><b>' +
-    htmlDecode(htmlDecode(trackObj['artist'])) + '</b> - ' + 
+  '<span class="artist_playing_clickable" name="' + trackObj['artist_mbid'] + '">' +
+    htmlDecode(htmlDecode(trackObj['artist'])) + '</span></b> - ' + 
     htmlDecode(htmlDecode(trackObj['title']))+ '</a></li>';
 
     console.log(trackObj['artist']);
