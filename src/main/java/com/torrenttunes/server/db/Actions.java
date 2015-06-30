@@ -52,20 +52,26 @@ public class Actions {
 	}
 
 
-	public static void updateSongInfo(JsonNode jsonNode) {
+	public static void updateSongInfo(JsonNode json) {
 
 		// Get the variables
-		String songMbid = jsonNode.get("mbid").asText();
-		String title = jsonNode.get("title").asText();
-		String artist = jsonNode.get("artist").asText();
-		String artistMbid = jsonNode.get("artist_mbid").asText();
-		String album = jsonNode.get("album").asText();
-		String albumMbid = jsonNode.get("album_mbid").asText();
-		Long durationMS = jsonNode.get("duration_ms").asLong();
-		Integer trackNumber = jsonNode.get("track_number").asInt();
-		String year = jsonNode.get("year").asText();
+		String songMbid = json.get("recordingMBID").asText();
+		String title = json.get("recording").asText();
+		String artist = json.get("artist").asText();
+		String artistMbid = json.get("artistMBID").asText();
+		Long durationMS = json.get("duration_ms").asLong();
 
-		log.info("Updating song info for song: " + title);
+		log.info("Updating song info for song: " + title + " , mbid: " + songMbid);
+
+		// Find it by the MBID
+		Song song = SONG.findFirst("mbid = ?", songMbid);
+
+
+		song.set("title", title,
+				"duration_ms", durationMS).saveIt();
+		log.info("New song: " + title + " updated");
+
+
 
 		// First, check to see if the album or artist need to be created:
 		Artist artistRow = ARTIST.findFirst("mbid = ?", artistMbid);
@@ -97,55 +103,72 @@ public class Actions {
 			log.info("New artist: " + artist + " created");
 		}
 
-		// Do the same for album
-		ReleaseGroup releaseRow = RELEASE_GROUP.findFirst("mbid = ?" , albumMbid);
-		if (releaseRow == null) {
-			log.info("new album");
-			// Fetch some links and images from musicbrainz
-			com.musicbrainz.mp3.tagger.Tools.ReleaseGroup mbInfo = 
-					com.musicbrainz.mp3.tagger.Tools.ReleaseGroup.fetchReleaseGroup(albumMbid);
 
-			// Fetch the coverart
-			String coverArtURL = null, coverArtLargeThumbnail = null, coverArtSmallThumbnail = null;
-			try {
-				CoverArt coverArt = CoverArt.fetchCoverArt(albumMbid);
-				coverArtURL = coverArt.getImageURL();
-				coverArtLargeThumbnail = coverArt.getLargeThumbnailURL();
-				coverArtSmallThumbnail = coverArt.getSmallThumbnailURL();
-			} catch(NoSuchElementException e) {
-				e.printStackTrace();
+		// Loop over every album found, necessary for release_groups and tracks
+		int i = 0;
+		JsonNode releaseGroupInfos = json.get("releaseGroupInfos");
+
+		while (releaseGroupInfos.has(i)) {
+			JsonNode cReleaseGroupInfo = releaseGroupInfos.get(i++);
+
+			String albumMbid = cReleaseGroupInfo.get("mbid").asText();
+			Integer discNo = cReleaseGroupInfo.get("discNo").asInt();
+			Integer trackNo = cReleaseGroupInfo.get("trackNo").asInt();
+
+
+			ReleaseGroup releaseRow = RELEASE_GROUP.findFirst("mbid = ?" , albumMbid);
+
+			// If the album doesn't exist, create the row
+			if (releaseRow == null) {
+				log.info("new album");
+				// Fetch some links and images from musicbrainz
+				com.musicbrainz.mp3.tagger.Tools.ReleaseGroup mbInfo = 
+						com.musicbrainz.mp3.tagger.Tools.ReleaseGroup.fetchReleaseGroup(albumMbid);
+
+				// Fetch the coverart
+				String coverArtURL = null, coverArtLargeThumbnail = null, coverArtSmallThumbnail = null;
+				try {
+					CoverArt coverArt = CoverArt.fetchCoverArt(albumMbid);
+					coverArtURL = coverArt.getImageURL();
+					coverArtLargeThumbnail = coverArt.getLargeThumbnailURL();
+					coverArtSmallThumbnail = coverArt.getSmallThumbnailURL();
+				} catch(NoSuchElementException e) {
+					e.printStackTrace();
+				}
+
+				releaseRow = RELEASE_GROUP.createIt("mbid", albumMbid,
+						"title", mbInfo.getTitle(),
+						"artist_mbid", artistMbid,
+						"year", mbInfo.getYear(),
+						"wikipedia_link", mbInfo.getWikipedia(),
+						"allmusic_link", mbInfo.getAllMusic(),
+						"official_homepage", mbInfo.getOfficialHomepage(),
+						"lyrics", mbInfo.getLyrics(),
+						"album_coverart_url", coverArtURL,
+						"album_coverart_thumbnail_large", coverArtLargeThumbnail,
+						"album_coverart_thumbnail_small", coverArtSmallThumbnail);
+				log.info("New album: " + mbInfo.getTitle() + " created");
 			}
 
-			releaseRow = RELEASE_GROUP.createIt("mbid", albumMbid,
-					"title", album,
-					"artist_mbid", artistMbid,
-					"year", year,
-					"wikipedia_link", mbInfo.getWikipedia(),
-					"allmusic_link", mbInfo.getAllMusic(),
-					"official_homepage", mbInfo.getOfficialHomepage(),
-					"lyrics", mbInfo.getLyrics(),
-					"album_coverart_url", coverArtURL,
-					"album_coverart_thumbnail_large", coverArtLargeThumbnail,
-					"album_coverart_thumbnail_small", coverArtSmallThumbnail);
-			log.info("New album: " + album + " created");
+			// Now that both the song and release_group are made, add the song_release_group
+			// row that links them together
+			try {
+				SONG_RELEASE_GROUP.createIt("song_mbid", songMbid,
+						"release_group_mbid", albumMbid,
+						"disc_number", discNo,
+						"track_number", trackNo);
+			} catch(DBException e) {
+				e.printStackTrace();
+				log.error("That song release group row already exists");
+			}
+
 		}
 
 
 
-		// Find it by the MBID
-		Song song = SONG.findFirst("mbid = ?", songMbid);
-
-		log.info("mbid = " + songMbid);
-		log.info(song.toJson(true));
 
 
 
-		song.set("title", title,
-				"release_group_mbid", albumMbid,
-				"duration_ms", durationMS,
-				"track_number", trackNumber);
-		song.saveIt();
-		log.info("New song: " + title + " created");
 
 
 
@@ -174,7 +197,7 @@ public class Actions {
 					e.printStackTrace();
 					continue;
 				}
-				
+
 				RELEASE_GROUP.update(
 						// Updates
 						"album_coverart_url = ?, album_coverart_thumbnail_large = ?, album_coverart_thumbnail_small = ?", 
@@ -184,7 +207,7 @@ public class Actions {
 						coverArtLargeThumbnail,
 						coverArtSmallThumbnail,
 						albumMbid);
-			
+
 
 			}
 

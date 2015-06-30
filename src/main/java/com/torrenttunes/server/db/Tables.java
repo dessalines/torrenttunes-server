@@ -23,6 +23,10 @@ public class Tables {
 	public static class ReleaseGroup extends Model {}
 	public static final ReleaseGroup RELEASE_GROUP = new ReleaseGroup();
 	
+	@Table("song_release_group")
+	public static class SongReleaseGroup extends Model {}
+	public static final SongReleaseGroup SONG_RELEASE_GROUP = new SongReleaseGroup();
+	
 	@Table("album_view")
 	public static class AlbumView extends Model {}
 	public static final AlbumView ALBUM_VIEW = new AlbumView();
