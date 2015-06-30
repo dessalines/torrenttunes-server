@@ -59,7 +59,7 @@ public class Actions {
 		String title = json.get("recording").asText();
 		String artist = json.get("artist").asText();
 		String artistMbid = json.get("artistMBID").asText();
-		Long durationMS = json.get("duration_ms").asLong();
+		Long durationMS = json.get("duration").asLong();
 
 		log.info("Updating song info for song: " + title + " , mbid: " + songMbid);
 
