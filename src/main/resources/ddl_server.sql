@@ -7,9 +7,7 @@ CREATE TABLE 'song' (
 'info_hash' TEXT NOT NULL  DEFAULT 'NULL',
 'mbid' TEXT NOT NULL  DEFAULT 'NULL',
 'title' TEXT DEFAULT NULL,
-'release_group_mbid' TEXT DEFAULT NULL REFERENCES 'release_group' ('mbid'),
 'duration_ms' INTEGER DEFAULT NULL,
-'track_number' INTEGER DEFAULT NULL,
 'plays' INTEGER NOT NULL  DEFAULT 0,
 'seeders' TEXT DEFAULT NULL,
 UNIQUE (torrent_path),
@@ -18,7 +16,7 @@ UNIQUE (mbid)
 );
 
 CREATE TABLE 'release_group' (
-'mbid' TEXT NOT NULL  DEFAULT 'NULL' PRIMARY KEY,
+'mbid' TEXT NOT NULL  DEFAULT 'NULL' PRIMARY KEY REFERENCES 'song_release_group' ('release_group_mbid'),
 'title' TEXT NOT NULL  DEFAULT 'NULL',
 'artist_mbid' TEXT NOT NULL  DEFAULT 'NULL' REFERENCES 'artist' ('mbid'),
 'year' TEXT DEFAULT NULL,
@@ -43,6 +41,15 @@ CREATE TABLE 'artist' (
 'youtube' TEXT DEFAULT NULL,
 'soundcloud' TEXT DEFAULT NULL,
 'lastfm' TEXT DEFAULT NULL
+);
+
+CREATE TABLE 'song_release_group' (
+'id' INTEGER DEFAULT NULL PRIMARY KEY AUTOINCREMENT,
+'song_mbid' TEXT DEFAULT NULL REFERENCES 'song' ('mbid'),
+'release_group_mbid' TEXT DEFAULT NULL,
+'disc_number' INTEGER DEFAULT NULL,
+'track_number' INTEGER DEFAULT NULL,
+UNIQUE (release_group_mbid, song_mbid)
 );
 
 

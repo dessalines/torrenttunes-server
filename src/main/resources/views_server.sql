@@ -6,6 +6,7 @@ song.title,
 release_group_mbid,
 duration_ms, 
 plays,
+disc_number,
 track_number,
 release_group.title as album,
 artist_mbid,
@@ -16,8 +17,10 @@ album_coverart_thumbnail_large,
 album_coverart_thumbnail_small,
 seeders
 from song
+inner join song_release_group
+on song.mbid = song_release_group.song_mbid 
 inner join release_group
-on song.release_group_mbid = release_group.mbid
+on release_group.mbid = song_release_group.release_group_mbid
 inner join artist 
 on release_group.artist_mbid = artist.mbid;
 
@@ -28,8 +31,10 @@ info_hash,
 seeders,
 artist.name || ' - ' || release_group.title || ' - ' ||  song.title as search_song
 from song
+inner join song_release_group
+on song.mbid = song_release_group.song_mbid 
 inner join release_group
-on song.release_group_mbid = release_group.mbid
+on release_group.mbid = song_release_group.release_group_mbid
 inner join artist 
 on release_group.artist_mbid = artist.mbid;
 
@@ -57,11 +62,13 @@ release_group.allmusic_link,
 album_coverart_url,
 album_coverart_thumbnail_large,
 album_coverart_thumbnail_small,
-count(song.id) as number_of_songs,
+count(song_release_group.id) as number_of_songs,
 sum(plays) as plays
 from release_group
-left join song
-on song.release_group_mbid = release_group.mbid
+inner join song_release_group
+on release_group.mbid = song_release_group.release_group_mbid
+inner join song 
+on song.mbid = song_release_group.song_mbid
 inner join artist
 on release_group.artist_mbid = artist.mbid
 group by release_group.mbid;

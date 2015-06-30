@@ -10,7 +10,7 @@
             <type label="Real" default="0" length="0" sql="REAL" quote="" color="rgb(238,238,170)"/>
             <type label="None" default="" length="0" sql="NONE" quote="" color="rgb(200,255,200)"/>
         </group>
-    </datatypes><table x="652" y="99" name="song">
+    </datatypes><table x="720" y="98" name="song">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -26,14 +26,7 @@
 <row name="title" null="1" autoincrement="0">
 <datatype>TEXT</datatype>
 <default>NULL</default></row>
-<row name="release_group_mbid" null="1" autoincrement="0">
-<datatype>TEXT</datatype>
-<default>NULL</default><relation table="release_group" row="mbid" />
-</row>
 <row name="duration_ms" null="1" autoincrement="0">
-<datatype>INTEGER</datatype>
-<default>NULL</default></row>
-<row name="track_number" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
 <row name="plays" null="0" autoincrement="0">
@@ -55,10 +48,11 @@
 <part>mbid</part>
 </key>
 </table>
-<table x="296" y="99" name="release_group">
+<table x="214" y="98" name="release_group">
 <row name="mbid" null="0" autoincrement="0">
 <datatype>TEXT</datatype>
-<default>'NULL'</default></row>
+<default>'NULL'</default><relation table="song_release_group" row="release_group_mbid" />
+</row>
 <row name="title" null="0" autoincrement="0">
 <datatype>TEXT</datatype>
 <default>'NULL'</default></row>
@@ -94,7 +88,7 @@
 <part>mbid</part>
 </key>
 </table>
-<table x="70" y="101" name="artist">
+<table x="34" y="100" name="artist">
 <row name="mbid" null="0" autoincrement="0">
 <datatype>TEXT</datatype>
 <default>'NULL'</default></row>
@@ -130,6 +124,31 @@
 <default>NULL</default></row>
 <key type="PRIMARY" name="">
 <part>mbid</part>
+</key>
+</table>
+<table x="482" y="97" name="song_release_group">
+<row name="id" null="1" autoincrement="1">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="song_mbid" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+<default>NULL</default><relation table="song" row="mbid" />
+</row>
+<row name="release_group_mbid" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+<default>NULL</default></row>
+<row name="disc_number" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="track_number" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+<key type="UNIQUE" name="">
+<part>release_group_mbid</part>
+<part>song_mbid</part>
 </key>
 </table>
 </sql>
