@@ -47,6 +47,8 @@ public class Actions {
 			} else {
 				e.printStackTrace();
 			}
+		} catch(ArrayIndexOutOfBoundsException e2) {
+			log.error("Filename was too long");
 		}
 
 	}
