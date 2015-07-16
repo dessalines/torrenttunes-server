@@ -15,6 +15,10 @@ public class Tables {
 	public static class SongView extends Model {}
 	public static final SongView SONG_VIEW = new SongView();
 	
+	@Table("song_view_grouped")
+	public static class SongViewGrouped extends Model {}
+	public static final SongViewGrouped SONG_VIEW_GROUPED = new SongViewGrouped();
+	
 	@Table("artist")
 	public static class Artist extends Model {}
 	public static final Artist ARTIST = new Artist();

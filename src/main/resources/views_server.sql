@@ -22,7 +22,12 @@ on song.mbid = song_release_group.song_mbid
 inner join release_group
 on release_group.mbid = song_release_group.release_group_mbid
 inner join artist 
-on release_group.artist_mbid = artist.mbid;
+on release_group.artist_mbid = artist.mbid
+;
+
+CREATE VIEW song_view_grouped as 
+select * from song_view
+group by song_mbid;
 
 CREATE VIEW song_search_view AS
 select song.mbid as song_mbid,

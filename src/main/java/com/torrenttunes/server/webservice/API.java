@@ -7,6 +7,7 @@ import static com.torrenttunes.server.db.Tables.ARTIST_SEARCH_VIEW;
 import static com.torrenttunes.server.db.Tables.SONG;
 import static com.torrenttunes.server.db.Tables.SONG_SEARCH_VIEW;
 import static com.torrenttunes.server.db.Tables.SONG_VIEW;
+import static com.torrenttunes.server.db.Tables.SONG_VIEW_GROUPED;
 import static spark.Spark.get;
 import static spark.Spark.post;
 
@@ -377,7 +378,7 @@ public class API {
 
 				String json = null;
 
-				json = SONG_VIEW.find("artist_mbid = ?", artistMbid).
+				json = SONG_VIEW_GROUPED.find("artist_mbid = ?", artistMbid).
 						orderBy("plays desc").limit(25).toJson(false);
 
 				return json;
@@ -431,7 +432,7 @@ public class API {
 
 				String json = null;
 
-				json = SONG_VIEW.find("artist_mbid = ?", artistMbid).
+				json = SONG_VIEW_GROUPED.find("artist_mbid = ?", artistMbid).
 						orderBy("plays desc").toJson(false);
 
 				return json;
@@ -581,7 +582,7 @@ public class API {
 
 
 				String json = null;
-				json = SONG_VIEW.findAll().orderBy("plays desc").limit(40).toJson(false);
+				json = SONG_VIEW_GROUPED.findAll().orderBy("plays desc").limit(40).toJson(false);
 
 				return json;
 
