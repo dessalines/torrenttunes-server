@@ -1,5 +1,9 @@
 package com.torrenttunes.server;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 public class DataSources {
 
 	public static String APP_NAME = "torrenttunes-server";
@@ -62,4 +66,7 @@ public class DataSources {
 	
 	public static final String TRACKER_URL = "http://" + TRACKER_IP + ":" + SPARK_WEB_PORT + "/";
 	
+	
+	public static final Set<String> NON_STREAMING_BROWSERS = new HashSet<String>(Arrays.asList(
+			"Firefox"));
 }

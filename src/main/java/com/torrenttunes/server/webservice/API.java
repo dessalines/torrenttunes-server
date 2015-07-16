@@ -597,6 +597,8 @@ public class API {
 
 		});
 
+		
+		
 		get("/get_audio_file/:encodedPath", (req, res) -> {
 
 			//			res.header("Content-Disposition", "filename=\"music.mp3\"");
@@ -619,13 +621,15 @@ public class API {
 
 				String range = req.headers("Range");
 
+				Boolean nonStreamingBrowser = req.headers("User-Agent").toLowerCase().contains("firefox");
+			
 
 				//				res.status(206);
 
 				OutputStream stream = raw.getOutputStream();
 			
 				
-				if (range == null) {
+				if (range == null || nonStreamingBrowser) {
 					res.header("Content-Length", String.valueOf(mp3.length())); 
 					Files.copy(mp3.toPath(), stream);
 
