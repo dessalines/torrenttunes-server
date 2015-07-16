@@ -613,9 +613,9 @@ public class API {
 
 
 				// write out the request headers:
-				//				for (String h : req.headers()) {
-				//					log.info("Header:" + h + " = " + req.headers(h));
-				//				}
+								for (String h : req.headers()) {
+									log.info("Header:" + h + " = " + req.headers(h));
+								}
 
 				String range = req.headers("Range");
 
