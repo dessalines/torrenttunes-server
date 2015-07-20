@@ -127,9 +127,10 @@ public class Actions {
 				int j = 0;
 			
 				while (secondaryTypesJson.has(j)) {
-					secondaryTypes += secondaryTypesJson.get(j);
+					secondaryTypes += secondaryTypesJson.get(j++);
 				}
 			}
+			log.info("secondary types = " + secondaryTypes);
 			log.info("got here4");
 			
 			
