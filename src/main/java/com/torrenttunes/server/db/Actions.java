@@ -184,6 +184,8 @@ public class Actions {
 			}
 
 		}
+		
+		log.info("Done with song info:" + title);
 
 
 	}
