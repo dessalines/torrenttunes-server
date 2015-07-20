@@ -6,11 +6,15 @@ import java.util.Set;
 
 public class DataSources {
 
-	public static String APP_NAME = "torrenttunes-server";
+	public static String APP_NAME = "torrenttunes-server-dev";
 	
-	public static Integer SPARK_WEB_PORT = 80;
+	public static Integer SPARK_WEB_PORT = 4567; // Main is port 80, dev is port 4567
 	
 	public static final String WEB_SERVICE_URL = "http://localhost:" + SPARK_WEB_PORT + "/";
+	
+	public static final String TRACKER_IP = "torrenttunes.ml";
+	
+	public static final String TRACKER_URL = "http://" + TRACKER_IP + ":" + SPARK_WEB_PORT + "/";
 	
 	
 	// The path to the ytm dir
@@ -62,9 +66,6 @@ public class DataSources {
 		return WEB_HTML() + "/" + pageName + ".html";
 	}
 	
-	public static final String TRACKER_IP = "torrenttunes.ml";
-	
-	public static final String TRACKER_URL = "http://" + TRACKER_IP + ":" + SPARK_WEB_PORT + "/";
 	
 	
 	public static final Set<String> NON_STREAMING_BROWSERS = new HashSet<String>(Arrays.asList(

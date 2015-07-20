@@ -1,6 +1,3 @@
-
-
-
 CREATE TABLE 'song' (
 'id' INTEGER DEFAULT NULL PRIMARY KEY AUTOINCREMENT,
 'torrent_path' TEXT NOT NULL  DEFAULT 'NULL',
@@ -26,7 +23,9 @@ CREATE TABLE 'release_group' (
 'lyrics' TEXT DEFAULT NULL,
 'album_coverart_url' TEXT DEFAULT NULL,
 'album_coverart_thumbnail_large' TEXT DEFAULT NULL,
-'album_coverart_thumbnail_small' TEXT DEFAULT NULL
+'album_coverart_thumbnail_small' TEXT DEFAULT NULL,
+'primary_type' TEXT DEFAULT NULL,
+'secondary_types' TEXT DEFAULT NULL
 );
 
 CREATE TABLE 'artist' (
@@ -51,5 +50,4 @@ CREATE TABLE 'song_release_group' (
 'track_number' INTEGER DEFAULT NULL,
 UNIQUE (release_group_mbid, song_mbid)
 );
-
 

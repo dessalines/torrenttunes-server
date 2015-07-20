@@ -116,6 +116,22 @@ public class Actions {
 			String albumMbid = cReleaseGroupInfo.get("mbid").asText();
 			Integer discNo = cReleaseGroupInfo.get("discNo").asInt();
 			Integer trackNo = cReleaseGroupInfo.get("trackNo").asInt();
+			String primaryType = cReleaseGroupInfo.get("primaryType").asText();
+			JsonNode secondaryTypesJson = cReleaseGroupInfo.get("secondaryTypes");
+			
+			String secondaryTypes = null;
+			if (secondaryTypesJson != null) {
+				secondaryTypes = "";
+				int j = 0;
+			
+				while (secondaryTypesJson.has(j)) {
+					secondaryTypes += secondaryTypesJson.get(j);
+				}
+			}
+			
+			
+			
+			
 
 
 			ReleaseGroup releaseRow = RELEASE_GROUP.findFirst("mbid = ?" , albumMbid);
@@ -148,7 +164,9 @@ public class Actions {
 						"lyrics", mbInfo.getLyrics(),
 						"album_coverart_url", coverArtURL,
 						"album_coverart_thumbnail_large", coverArtLargeThumbnail,
-						"album_coverart_thumbnail_small", coverArtSmallThumbnail);
+						"album_coverart_thumbnail_small", coverArtSmallThumbnail,
+						"primary_type", primaryType,
+						"secondary_types", secondaryTypes);
 				log.info("New album: " + mbInfo.getTitle() + " created");
 			}
 

@@ -67,6 +67,8 @@ release_group.allmusic_link,
 album_coverart_url,
 album_coverart_thumbnail_large,
 album_coverart_thumbnail_small,
+primary_type,
+secondary_types,
 count(song_release_group.id) as number_of_songs,
 sum(plays) as plays
 from release_group
