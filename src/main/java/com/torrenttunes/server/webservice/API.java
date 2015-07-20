@@ -407,7 +407,34 @@ public class API {
 
 				String json = null;
 
-				json = ALBUM_VIEW.find("artist_mbid = ?", artistMbid).
+				json = ALBUM_VIEW.find("artist_mbid = ? AND secondary_types is ?", artistMbid, null).
+						orderBy("year desc").toJson(false);
+
+				return json;
+
+			} catch (Exception e) {
+				res.status(666);
+				e.printStackTrace();
+				return e.getMessage();
+			} finally {
+				Tools.dbClose();
+			}
+
+
+		});
+		
+		get("/get_all_compilations/:artistMbid", (req, res) -> {
+
+			try {
+				Tools.logRequestInfo(req);
+				Tools.allowAllHeaders(req, res);
+				Tools.dbInit();
+
+				String artistMbid = req.params(":artistMbid");
+
+				String json = null;
+
+				json = ALBUM_VIEW.find("artist_mbid = ? AND secondary_types is not ?", artistMbid, null).
 						orderBy("year desc").toJson(false);
 
 				return json;

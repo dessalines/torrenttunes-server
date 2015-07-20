@@ -105,11 +105,9 @@ public class Actions {
 			log.info("New artist: " + artist + " created");
 		}
 
-		log.info("got here1");
 		// Loop over every album found, necessary for release_groups and tracks
 		int i = 0;
 		JsonNode releaseGroupInfos = json.get("releaseGroupInfos");
-		log.info("got here2");
 		while (releaseGroupInfos.has(i)) {
 			JsonNode cReleaseGroupInfo = releaseGroupInfos.get(i++);
 
@@ -117,7 +115,6 @@ public class Actions {
 			Integer discNo = cReleaseGroupInfo.get("discNo").asInt();
 			Integer trackNo = cReleaseGroupInfo.get("trackNo").asInt();
 			String primaryType = cReleaseGroupInfo.get("primaryType").asText();
-			log.info("got here3");
 			JsonNode secondaryTypesJson = cReleaseGroupInfo.get("secondaryTypes");
 			
 			
@@ -125,20 +122,17 @@ public class Actions {
 			if (secondaryTypesJson != null) {
 				secondaryTypes = "";
 				int j = 0;
-			
 				while (secondaryTypesJson.has(j)) {
 					secondaryTypes += secondaryTypesJson.get(j++);
 				}
 			}
 			log.info("secondary types = " + secondaryTypes);
-			log.info("got here4");
 			
 			
 			
 
 
 			ReleaseGroup releaseRow = RELEASE_GROUP.findFirst("mbid = ?" , albumMbid);
-			log.info("got here5");
 			// If the album doesn't exist, create the row
 			if (releaseRow == null) {
 				log.info("new album");
@@ -187,8 +181,6 @@ public class Actions {
 			}
 
 		}
-		
-		log.info("Done with song info:" + title);
 
 
 	}
