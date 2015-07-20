@@ -538,7 +538,7 @@ public class API {
 
 				String json = null;
 				json = SONG_VIEW.find("release_group_mbid = ?", albumMbid).
-						orderBy("track_number asc").toJson(false);
+						orderBy("disc_number asc, track_number asc").toJson(false);
 
 				return json;
 
