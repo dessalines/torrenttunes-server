@@ -119,11 +119,11 @@ public class Actions {
 			
 			
 			String secondaryTypes = null;
-			if (secondaryTypesJson != null) {
+			if (secondaryTypesJson.isArray()) {
 				secondaryTypes = "";
 				int j = 0;
 				while (secondaryTypesJson.has(j)) {
-					secondaryTypes += secondaryTypesJson.get(j++);
+					secondaryTypes += secondaryTypesJson.get(j++).asText();
 				}
 			}
 			log.info("secondary types = " + secondaryTypes);
