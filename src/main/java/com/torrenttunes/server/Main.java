@@ -43,7 +43,7 @@ public class Main {
 		log.setLevel(Level.toLevel(loglevel));
 		
 		// Initialize
-		com.torrenttunes.client.tools.DataSources.APP_NAME = "torrenttunes-server";
+		com.torrenttunes.client.tools.DataSources.APP_NAME = DataSources.APP_NAME;
 		Tools.setupDirectories();
 		
 		Tools.copyResourcesToHomeDir(true);

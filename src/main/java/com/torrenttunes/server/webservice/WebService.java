@@ -34,7 +34,7 @@ public class WebService {
 		externalStaticFileLocation(DataSources.WEB_HOME());
 //		externalStaticFileLocation(com.torrenttunes.client.tools.DataSources.MUSIC_STORAGE_PATH);
 		
-		com.torrenttunes.client.tools.DataSources.APP_NAME = "torrenttunes-server";
+		com.torrenttunes.client.tools.DataSources.APP_NAME = DataSources.APP_NAME;
 		Platform.setup();
 		API.setup(tracker);
 		

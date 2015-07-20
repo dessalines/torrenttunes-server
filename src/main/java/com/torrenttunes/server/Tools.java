@@ -160,7 +160,7 @@ public class Tools {
 			log.info("Setting up ~/." + DataSources.APP_NAME + " dirs");
 			new File(DataSources.HOME_DIR()).mkdirs();
 			new File(DataSources.TORRENTS_DIR()).mkdirs();
-			com.torrenttunes.client.tools.DataSources.APP_NAME = "torrenttunes-server";
+			com.torrenttunes.client.tools.DataSources.APP_NAME = DataSources.APP_NAME;
 			com.torrenttunes.client.tools.DataSources.MUSIC_STORAGE_PATH = 
 					DataSources.HOME_DIR() + "/music";
 			new File(com.torrenttunes.client.tools.DataSources.MUSIC_STORAGE_PATH).mkdirs();
