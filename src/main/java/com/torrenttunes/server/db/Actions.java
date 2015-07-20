@@ -177,19 +177,13 @@ public class Actions {
 						"release_group_mbid", albumMbid,
 						"disc_number", discNo,
 						"track_number", trackNo);
+				log.info("Song release group:" + songMbid, " created");
 			} catch(DBException e) {
 				e.printStackTrace();
 				log.error("That song release group row already exists");
 			}
 
 		}
-
-
-
-
-
-
-
 
 
 	}
