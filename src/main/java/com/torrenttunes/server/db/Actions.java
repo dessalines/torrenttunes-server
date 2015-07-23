@@ -23,36 +23,6 @@ public class Actions {
 	static final Logger log = LoggerFactory.getLogger(Actions.class);
 
 
-	@Deprecated
-	public static void saveTorrentToDB(File torrentFile, TrackedTorrent t) {
-
-		try {
-
-			log.info("Saving " + torrentFile.getName() + " to the DB");
-
-
-			// First get the MBID from the filename
-			String mbid = torrentFile.getName().split("_sha2")[0].split("mbid-")[1];
-
-			// Save the song
-			Song song = SONG.create("torrent_path", torrentFile.getAbsolutePath(),
-					"info_hash", t.getHexInfoHash().toLowerCase(),
-					"mbid", mbid,
-					"seeders", t.seeders());
-
-			Boolean success = song.saveIt();
-
-		} catch(DBException e) {		
-			if (e.getMessage().contains("[SQLITE_CONSTRAINT]")) {
-				log.error("Not adding " + torrentFile.getName() + ", Song was already in the DB");
-			} else {
-				e.printStackTrace();
-			}
-		} catch(ArrayIndexOutOfBoundsException e2) {
-			log.error("Filename was too long");
-		}
-
-	}
 	
 	public static void saveTorrentToDB(File torrentFile, String infoHash) {
 

@@ -81,7 +81,7 @@ public class API {
 				item.write(torrentFile);
 
 
-				Tools.announceAndSaveTorrentFileToDB(tracker, torrentFile);
+				Tools.saveTorrentFileToDB(torrentFile);
 
 				// a first test
 

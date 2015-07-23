@@ -434,24 +434,7 @@ public class Tools {
 		return name;
 	}
 
-	@Deprecated
-	public static void announceAndSaveTorrentFileToDB(Tracker tracker, File f) {
-		try {
-			log.info("Announcing file: " + f.getName());
-			TrackedTorrent tt = TrackedTorrent.load(f);
-
-
-			//			tracker.announce(tt);
-
-			// Save to the DB
-			Tools.dbInit();
-			Actions.saveTorrentToDB(f, tt);
-			Tools.dbClose();
-		} catch(IOException | NullPointerException e) {
-			e.printStackTrace();
-		}
-	}
-
+	
 	public static void saveTorrentFileToDB(File f) {
 		try {
 //			infoHash = Torrent.load(f).getHexInfoHash().toLowerCase();
@@ -460,6 +443,7 @@ public class Tools {
 			TorrentInfo ti = TorrentInfo.bdecode(fileBytes);
 			
 			String infoHash = ti.getInfoHash().toHex().toLowerCase();
+
 
 			Actions.saveTorrentToDB(f, infoHash);
 		} catch (IOException e) {
