@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 import com.torrenttunes.client.webservice.Platform;
 import com.torrenttunes.server.DataSources;
 import com.torrenttunes.server.Tools;
-import com.turn.ttorrent.tracker.Tracker;
+
 
 
 public class WebService {
@@ -18,7 +18,7 @@ public class WebService {
 
 	
 	
-	public static void start(Tracker tracker) {
+	public static void start() {
 		
 
 		com.torrenttunes.client.tools.DataSources.MUSIC_STORAGE_PATH = 
@@ -36,7 +36,7 @@ public class WebService {
 		
 		com.torrenttunes.client.tools.DataSources.APP_NAME = DataSources.APP_NAME;
 		Platform.setup();
-		API.setup(tracker);
+		API.setup();
 		
 	
 		get("/hello", (req, res) -> {

@@ -46,15 +46,14 @@ import com.torrenttunes.server.DataSources;
 import com.torrenttunes.server.Tools;
 import com.torrenttunes.server.db.Actions;
 import com.torrenttunes.server.db.Tables.SongView;
-import com.turn.ttorrent.tracker.TrackedTorrent;
-import com.turn.ttorrent.tracker.Tracker;
+
 
 public class API {
 
 	static final Logger log = LoggerFactory.getLogger(API.class);
 
 
-	public static void setup(Tracker tracker) {
+	public static void setup() {
 
 		post("/torrent_upload", (req, res) -> {
 

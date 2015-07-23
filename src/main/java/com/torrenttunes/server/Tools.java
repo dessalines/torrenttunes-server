@@ -53,9 +53,7 @@ import com.google.common.io.Files;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.torrenttunes.server.db.Actions;
-import com.turn.ttorrent.common.Torrent;
-import com.turn.ttorrent.tracker.TrackedTorrent;
-import com.turn.ttorrent.tracker.Tracker;
+
 
 import de.javakaffee.kryoserializers.KryoReflectionFactorySupport;
 
@@ -172,29 +170,7 @@ public class Tools {
 		}
 	}
 
-	@Deprecated
-	public static String convertTorrentToMagnetLink(Torrent t) {
-
-
-		System.out.println();
-		//magnet:?xt=urn:btih:09c17295ccc24af400a2a91495af440b27766b5e&dn=Fugazi+-+Studio+Discography+1989-2001+%5BFLAC%5D
-
-		StringBuilder s = new StringBuilder();
-		s.append("magnet:?xt=urn:btih:" + t.getHexInfoHash().toLowerCase());
-		s.append("&dn=");
-		s.append(encodeURL(t.getName()));
-		return s.toString();
-	}
-
-	public static void torrentInfo(Torrent t) {
-		log.info("Name: " + t.getName());
-		log.info("Created by: " + t.getCreatedBy());
-		log.info("Hex info hash: " + t.getHexInfoHash());
-		log.info("Announce List: " + t.getAnnounceList());
-		log.info("Filenames: " + t.getFilenames());
-
-
-	}
+	
 
 	public static String encodeURL(String s) {
 		try {
@@ -206,92 +182,7 @@ public class Tools {
 		return null;
 	}
 
-	public static byte[] serializeTorrentFile(Torrent t) {
 
-		byte[] out = null;
-		try {
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			t.save(baos);
-
-			out = baos.toByteArray();
-			baos.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return out;
-	}
-
-
-
-	public static Torrent deserializeTorrentFile(byte[] data) {
-		Torrent t = null;
-		try {
-			t = new Torrent(data, false);
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return t;
-	}
-
-	public static String serializeTorrentFile2(Torrent t) {
-
-		String out = null;
-		try {
-			Output output = new Output(new ByteArrayOutputStream());
-
-			KRYO.writeObject(output, t);
-			ByteArrayOutputStream baos = (ByteArrayOutputStream) output.getOutputStream();
-
-			out = baos.toString("UTF-8");
-
-			output.close();
-			baos.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return out;
-	}
-
-
-
-	public static Torrent deserializeTorrentFile2(String data) {
-		Torrent t = null;
-		try {
-
-			byte[] b = data.getBytes("UTF-8");
-
-			ByteArrayInputStream bais = new ByteArrayInputStream(b);
-
-			Input input = new Input(bais);
-
-			t = KRYO.readObject(input, Torrent.class);			
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return t;
-	}
-
-	public static File saveTorrentToFile(Torrent t) {
-		File file = new File(DataSources.TORRENTS_DIR() + "/" + t.getName());
-		try {
-			FileOutputStream fos = new FileOutputStream(file);
-			t.save(fos);
-			fos.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		return file;
-
-	}
 
 	public static void copyResourcesToHomeDir(Boolean copyAnyway) {
 

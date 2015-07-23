@@ -18,11 +18,9 @@ import com.google.common.hash.Hashing;
 import com.torrenttunes.server.DataSources;
 import com.torrenttunes.server.Tools;
 import com.torrenttunes.server.webservice.API;
-import com.turn.ttorrent.common.Torrent;
 
 public class TorrentTest extends TestCase {
 
-	Torrent torrent;
 
 	@Before
 	public void setUp() throws IOException {

@@ -15,7 +15,6 @@ import ch.qos.logback.classic.Logger;
 import com.torrenttunes.client.LibtorrentEngine;
 import com.torrenttunes.server.db.InitializeTables;
 import com.torrenttunes.server.webservice.WebService;
-import com.turn.ttorrent.tracker.Tracker;
 
 public class Main {
 
@@ -26,9 +25,6 @@ public class Main {
 
 	@Option(name="-loglevel", usage="Sets the log level [INFO, DEBUG, etc.]")     
 	private String loglevel = "INFO";
-
-	Tracker tracker;
-
 
 	public void doMain(String[] args) {
 
@@ -54,24 +50,12 @@ public class Main {
 		InitializeTables.initializeTables();
 		com.torrenttunes.client.db.InitializeTables.initializeTables();
 
-		// Startup the tracker
-		createTracker();
-
 		// First find all the torrent files stored on your tracker
-		announceTorrentFiles(tracker);	
-
-		// Start the tracker
-		tracker.start();
-
-		// Update the seeder counts in the db
-		//		UpdateSeederCountService.create(tracker).startAsync();
-
-		// Start up the client(used for caching requests from the web)
-		//		com.torrenttunes.client.Main.main(new String[]{});
+		saveTorrentFiles();	
 
 
 		// Startup the web service
-		WebService.start(tracker);
+		WebService.start();
 
 		LibtorrentEngine.INSTANCE.startSeedingLibrary();
 
@@ -80,16 +64,7 @@ public class Main {
 	}
 
 
-	public void createTracker() {
-		try {
-			tracker = new Tracker(new InetSocketAddress(6969));
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public static void announceTorrentFiles(Tracker tracker) {
+	public static void saveTorrentFiles() {
 		
 		for (File f : new File(DataSources.TORRENTS_DIR()).listFiles(Tools.TORRENT_FILE_FILTER)) {
 			Tools.saveTorrentFileToDB(f);

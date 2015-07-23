@@ -157,11 +157,6 @@
 			<version>1.0.13</version>
 		</dependency>
 
-		<dependency>
-			<groupId>com.turn</groupId>
-			<artifactId>ttorrent</artifactId>
-			<version>1.4</version>
-		</dependency>
 
 	</dependencies>
 </project>
