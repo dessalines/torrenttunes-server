@@ -23,37 +23,37 @@ public class Main {
 
 	@Option(name="-uninstall",usage="Uninstall torrenttunes-client.(WARNING, this deletes your library)")
 	private boolean uninstall;
-	
+
 	@Option(name="-loglevel", usage="Sets the log level [INFO, DEBUG, etc.]")     
 	private String loglevel = "INFO";
-	
+
 	Tracker tracker;
 
-	
+
 	public void doMain(String[] args) {
-		
+
 		parseArguments(args);
-		
+
 		// See if the user wants to uninstall it
 		if (uninstall) {
 			Tools.uninstall();
 		}
-		
-		
+
+
 		log.setLevel(Level.toLevel(loglevel));
-		
+
 		// Initialize
 		com.torrenttunes.client.tools.DataSources.APP_NAME = DataSources.APP_NAME;
 		Tools.setupDirectories();
-		
+
 		Tools.copyResourcesToHomeDir(true);
-		
+
 		Tools.addExternalWebServiceVarToTools();
-		
-		
+
+
 		InitializeTables.initializeTables();
 		com.torrenttunes.client.db.InitializeTables.initializeTables();
-		
+
 		// Startup the tracker
 		createTracker();
 
@@ -62,42 +62,44 @@ public class Main {
 
 		// Start the tracker
 		tracker.start();
-		
+
 		// Update the seeder counts in the db
-//		UpdateSeederCountService.create(tracker).startAsync();
-		
+		//		UpdateSeederCountService.create(tracker).startAsync();
+
 		// Start up the client(used for caching requests from the web)
-//		com.torrenttunes.client.Main.main(new String[]{});
-		
-		
+		//		com.torrenttunes.client.Main.main(new String[]{});
+
+
 		// Startup the web service
 		WebService.start(tracker);
-		
+
 		LibtorrentEngine.INSTANCE.startSeedingLibrary();
-		
-	
-		
+
+
+
 	}
 
 
 	public void createTracker() {
 		try {
 			tracker = new Tracker(new InetSocketAddress(6969));
-			
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
 	public static void announceTorrentFiles(Tracker tracker) {
+		Tools.dbInit();
 		
 		for (File f : new File(DataSources.TORRENTS_DIR()).listFiles(Tools.TORRENT_FILE_FILTER)) {
 			Tools.saveTorrentFileToDB(f);
-
 		}
 		
+		Tools.dbClose();
+
 	}
-	
+
 	private void parseArguments(String[] args) {
 		CmdLineParser parser = new CmdLineParser(this);
 
@@ -120,11 +122,11 @@ public class Main {
 			return;
 		}
 	}
-	
+
 
 	public static void main(String[] args) {
 		new Main().doMain(args);
-	
+
 	}
 
 
