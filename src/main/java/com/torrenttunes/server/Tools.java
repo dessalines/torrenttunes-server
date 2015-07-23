@@ -445,8 +445,10 @@ public class Tools {
 			String infoHash = ti.getInfoHash().toHex().toLowerCase();
 
 
-	
+			Tools.dbInit();
 			Actions.saveTorrentToDB(f, infoHash);
+			Tools.dbClose();
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

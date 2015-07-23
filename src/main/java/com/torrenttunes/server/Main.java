@@ -90,13 +90,11 @@ public class Main {
 	}
 
 	public static void announceTorrentFiles(Tracker tracker) {
-		Tools.dbInit();
 		
 		for (File f : new File(DataSources.TORRENTS_DIR()).listFiles(Tools.TORRENT_FILE_FILTER)) {
 			Tools.saveTorrentFileToDB(f);
 		}
 		
-		Tools.dbClose();
 
 	}
 
