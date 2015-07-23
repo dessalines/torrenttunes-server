@@ -46,6 +46,7 @@ import spark.Response;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
+import com.frostwire.jlibtorrent.TorrentInfo;
 import com.google.common.base.Charsets;
 import com.google.common.hash.Hashing;
 import com.google.common.io.Files;
@@ -66,10 +67,10 @@ public class Tools {
 
 	public static final Gson GSON = new Gson();
 	public static final Gson GSON2 = new GsonBuilder().setPrettyPrinting().create();
-	
+
 	public static final ObjectMapper MAPPER = new ObjectMapper();
-	
-	
+
+
 	public static void allowOnlyLocalHeaders(Request req, Response res) {
 
 
@@ -147,8 +148,8 @@ public class Tools {
 		return postMap;
 
 	}
-	
-	
+
+
 	public static FilenameFilter TORRENT_FILE_FILTER = new FilenameFilter() {
 		public boolean accept(File dir, String name) {
 			return name.endsWith(".torrent");
@@ -165,7 +166,7 @@ public class Tools {
 					DataSources.HOME_DIR() + "/music";
 			new File(com.torrenttunes.client.tools.DataSources.MUSIC_STORAGE_PATH).mkdirs();
 			new File(com.torrenttunes.client.tools.DataSources.TORRENTS_DIR()).mkdirs();
-			
+
 		} else {
 			log.info("Home directory already exists");
 		}
@@ -211,7 +212,7 @@ public class Tools {
 		try {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			t.save(baos);
-			
+
 			out = baos.toByteArray();
 			baos.close();
 		} catch (IOException e) {
@@ -433,13 +434,14 @@ public class Tools {
 		return name;
 	}
 
+	@Deprecated
 	public static void announceAndSaveTorrentFileToDB(Tracker tracker, File f) {
 		try {
 			log.info("Announcing file: " + f.getName());
 			TrackedTorrent tt = TrackedTorrent.load(f);
-			
-			
-			tracker.announce(tt);
+
+
+			//			tracker.announce(tt);
 
 			// Save to the DB
 			Tools.dbInit();
@@ -449,7 +451,23 @@ public class Tools {
 			e.printStackTrace();
 		}
 	}
-	
+
+	public static void saveTorrentFileToDB(File f) {
+		try {
+//			infoHash = Torrent.load(f).getHexInfoHash().toLowerCase();
+
+			byte[] fileBytes = java.nio.file.Files.readAllBytes(Paths.get(f.getAbsolutePath()));
+			TorrentInfo ti = TorrentInfo.bdecode(fileBytes);
+			
+			String infoHash = ti.getInfoHash().toHex().toLowerCase();
+
+			Actions.saveTorrentToDB(f, infoHash);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	public static JsonNode jsonToNode(String json) {
 
 		try {
@@ -490,17 +508,17 @@ public class Tools {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static String convertWikimediaCommonsURLToImageUrl(String wmLink) {	
-		
+
 		String fileName = wmLink.split("File:")[1];
-		
+
 		String md5 = Hashing.md5().hashString(fileName, Charsets.UTF_8).toString();
-		
+
 		String weirdPathString = md5.substring(0, 1) + "/" + md5.substring(0, 2) + "/";
 		String imageURL = "https://upload.wikimedia.org/wikipedia/commons/" + weirdPathString + 
 				fileName;
-		
+
 		return imageURL;
 	}
 
@@ -517,7 +535,7 @@ public class Tools {
 		}
 		return s;
 	}
-	
+
 	public static void addExternalWebServiceVarToTools() {
 
 		log.info("tools.js = " + DataSources.TOOLS_JS());
@@ -545,35 +563,35 @@ public class Tools {
 	}
 
 	public static String getImageFromWikipedia(String wikipedia) {
-		
+
 		// First extract the title
 		String[] wikiUrlSplit = wikipedia.split("/wiki/");
 		String title = wikiUrlSplit[1];
-		
-		
+
+
 		String wikiQuery = "https://en.wikipedia.org/w/api.php?action=query&titles=" + title + 
 				"&prop=pageimages&pithumbsize=300&format=json&piprop=original";
-		
+
 		String wikiJson = httpGetString(wikiQuery);
-		
+
 		JsonNode node = jsonToNode(wikiJson);
-		
+
 		JsonNode pages = node.get("query").get("pages");
-		
+
 		String pageId = pages.getFieldNames().next();
-		
+
 		String image = pages.get(pageId).get("thumbnail").get("original").asText();
-		
+
 		return image;
 	}
-	
+
 	public static final String httpGetString(String url) {
 		String res = "";
 		try {
 			URL externalURL = new URL(url);
 
 			URLConnection yc = externalURL.openConnection();
-//			yc.setRequestProperty("User-Agent", USER_AGENT);
+			//			yc.setRequestProperty("User-Agent", USER_AGENT);
 
 			BufferedReader in = new BufferedReader(
 					new InputStreamReader(
