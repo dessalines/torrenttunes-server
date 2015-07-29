@@ -41,9 +41,9 @@ soundManager.onready(function() {
   console.log(player.actions);
   // player.actions.play();
   // setupPlayQueue();
-     player.playlistController.refresh();
-    player.actions.next();
-    player.actions.stop();
+  player.playlistController.refresh();
+  player.actions.next();
+  player.actions.stop();
 });
 
 $(document).ready(function() {
@@ -99,6 +99,8 @@ function setupTabs() {
     } else if (tabId == "#artistcatalog_album") {
       setupArtistCatalogAlbumTab();
 
+    } else if (tabId == "#artistcatalog_compilation") {
+      setupArtistCatalogCompilationTab();
     } else if (tabId == "#artistcatalog_song") {
       setupArtistCatalogSongTab();
 
@@ -299,6 +301,15 @@ function setupArtistCatalogAlbumTab() {
     console.log(allArtistAlbums);
 
     fillMustacheWithJson(allArtistAlbums, topArtistAlbumsTemplate, '#all_artist_albums_div');
+  });
+}
+
+function setupArtistCatalogCompilationTab() {
+  getJson('get_all_compilations/' + artistCatalogMBID, null, true).done(function(e) {
+    var allArtistAlbums = JSON.parse(e);
+    console.log(allArtistAlbums);
+
+    fillMustacheWithJson(allArtistAlbums, topArtistAlbumsTemplate, '#all_artist_compilations_div');
   });
 }
 
@@ -666,11 +677,11 @@ function buildLiFromTrackObject(trackObj) {
 
 
   var li = '<li><a href="' + encodedAudioFilePath + '"><b>' +
-  '<span class="artist_playing_clickable" name="' + trackObj['artist_mbid'] + '">' +
-    htmlDecode(htmlDecode(trackObj['artist'])) + '</span></b> - ' + 
-    htmlDecode(htmlDecode(trackObj['title']))+ '</a></li>';
+    '<span class="artist_playing_clickable" name="' + trackObj['artist_mbid'] + '">' +
+    htmlDecode(htmlDecode(trackObj['artist'])) + '</span></b> - ' +
+    htmlDecode(htmlDecode(trackObj['title'])) + '</a></li>';
 
-    console.log(trackObj['artist']);
+  console.log(trackObj['artist']);
 
   // var li = '<li><a href="file://' + trackObj['file_path'] + '"><b>' +
   //   trackObj['artist'] + '</b> - ' + trackObj['title'] + '</a></li>';
