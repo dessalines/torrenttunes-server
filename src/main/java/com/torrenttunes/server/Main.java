@@ -50,8 +50,8 @@ public class Main {
 		InitializeTables.initializeTables();
 		com.torrenttunes.client.db.InitializeTables.initializeTables();
 
-		// First find all the torrent files stored on your tracker
-		saveTorrentFiles();	
+		// First find all the torrent files stored on your tracker(not necessary, they are uploaded)
+//		saveTorrentFiles();	
 
 
 		// Startup the web service
