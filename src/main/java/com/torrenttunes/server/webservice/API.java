@@ -352,7 +352,7 @@ public class API {
 
 				String json = null;
 
-				json = ALBUM_VIEW.find("artist_mbid = ? AND is_primary_album = ?", artistMbid).
+				json = ALBUM_VIEW.find("artist_mbid = ? AND is_primary_album = ?", artistMbid, true).
 						orderBy("plays desc").limit(4).toJson(false);
 
 				return json;
@@ -587,7 +587,7 @@ public class API {
 
 
 				String json = null;
-				json = ALBUM_VIEW.findAll().orderBy("plays desc").limit(4).toJson(false);
+				json = ALBUM_VIEW.find("is_primary_album = ?", true).orderBy("plays desc").limit(4).toJson(false);
 
 				return json;
 
