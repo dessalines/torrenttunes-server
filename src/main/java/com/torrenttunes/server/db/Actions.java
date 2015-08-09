@@ -275,8 +275,8 @@ public class Actions {
 			}
 		}
 
-		Artist artist = ARTIST.findFirst("mbid = ?", artistMBID);
-		artist.delete(true);
+		
+		ARTIST.delete("mbid = ?", artistMBID);
 		
 //		com.torrenttunes.client.db.Actions.removeArtist(artistMBID);
 
