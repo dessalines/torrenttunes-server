@@ -268,11 +268,17 @@ public class Actions {
 
 		for (SongView sv : svs) {
 			String infoHash = sv.getString("info_hash");
-			lt.getSession().removeTorrent(lt.getInfoHashToTorrentMap().get(infoHash));
+			try {
+				lt.getSession().removeTorrent(lt.getInfoHashToTorrentMap().get(infoHash));
+			} catch(NullPointerException e) {
+				log.error("Torrent infohash " + infoHash + " was not in Libtorrent Session");
+			}
 		}
 
 		Artist artist = ARTIST.findFirst("mbid = ?", artistMBID);
 		artist.delete(true);
+		
+//		com.torrenttunes.client.db.Actions.removeArtist(artistMBID);
 
 	}
 
