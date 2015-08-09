@@ -16,7 +16,7 @@ import org.junit.Before;
 import com.google.common.base.Charsets;
 import com.google.common.hash.Hashing;
 import com.torrenttunes.server.DataSources;
-import com.torrenttunes.server.Tools;
+import com.torrenttunes.server.tools.Tools;
 import com.torrenttunes.server.webservice.API;
 
 public class TorrentTest extends TestCase {

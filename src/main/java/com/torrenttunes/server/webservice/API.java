@@ -43,9 +43,9 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.hash.Hashing;
 import com.torrenttunes.server.DataSources;
-import com.torrenttunes.server.Tools;
 import com.torrenttunes.server.db.Actions;
 import com.torrenttunes.server.db.Tables.SongView;
+import com.torrenttunes.server.tools.Tools;
 
 
 public class API {
@@ -148,6 +148,29 @@ public class API {
 				Tools.dbClose();
 			}
 		});
+		
+		get("/remove_artist/:artistMBID", (req, res) -> {
+
+			try {
+				Tools.allowAllHeaders(req, res);
+				String artistMBID = req.params(":artistMBID");
+
+				Tools.dbInit();
+				Actions.removeArtist(artistMBID);
+
+
+
+				return "Removed Artist MBID: " + artistMBID;
+			} catch (Exception e) {
+				res.status(666);
+				e.printStackTrace();
+				return e.getMessage();
+			} finally {
+				Tools.dbClose();
+			}
+		});
+		
+		
 
 		get("/seeder_upload/:infoHash/:seeders", (req, res) -> {
 

@@ -1,6 +1,6 @@
 package com.torrenttunes.server.db;
 
-import com.torrenttunes.server.Tools;
+import com.torrenttunes.server.tools.Tools;
 
 // java -cp target/torrenttunes-server.jar com.torrenttunes.server.db.ReFetchAlbumArt
 

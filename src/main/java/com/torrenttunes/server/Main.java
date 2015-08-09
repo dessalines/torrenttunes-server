@@ -14,6 +14,7 @@ import ch.qos.logback.classic.Logger;
 
 import com.torrenttunes.client.LibtorrentEngine;
 import com.torrenttunes.server.db.InitializeTables;
+import com.torrenttunes.server.tools.Tools;
 import com.torrenttunes.server.webservice.WebService;
 
 public class Main {

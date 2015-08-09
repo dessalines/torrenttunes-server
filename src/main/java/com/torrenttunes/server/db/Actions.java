@@ -3,8 +3,10 @@ package com.torrenttunes.server.db;
 import static com.torrenttunes.server.db.Tables.*;
 
 import java.io.File;
+import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Set;
 
 import org.codehaus.jackson.JsonNode;
 import org.javalite.activejdbc.DBException;
@@ -13,16 +15,17 @@ import org.slf4j.LoggerFactory;
 
 import com.musicbrainz.mp3.tagger.Tools.CoverArt;
 import com.musicbrainz.mp3.tagger.Tools.Song.MusicBrainzRecordingQuery;
-import com.torrenttunes.server.Tools;
+import com.torrenttunes.client.LibtorrentEngine;
 import com.torrenttunes.server.db.Tables.ReleaseGroup;
 import com.torrenttunes.server.db.Tables.Song;
+import com.torrenttunes.server.tools.Tools;
 
 public class Actions {
 
 	static final Logger log = LoggerFactory.getLogger(Actions.class);
 
 
-	
+
 	public static void saveTorrentToDB(File torrentFile, String infoHash) {
 
 		try {
@@ -115,8 +118,8 @@ public class Actions {
 			Integer trackNo = cReleaseGroupInfo.get("trackNo").asInt();
 			String primaryType = cReleaseGroupInfo.get("primaryType").asText();
 			JsonNode secondaryTypesJson = cReleaseGroupInfo.get("secondaryTypes");
-			
-			
+
+
 			String secondaryTypes = null;
 			if (secondaryTypesJson.isArray()) {
 				secondaryTypes = "";
@@ -126,9 +129,9 @@ public class Actions {
 				}
 			}
 			log.info("secondary types = " + secondaryTypes);
-			
-			
-			
+
+
+
 
 
 			ReleaseGroup releaseRow = RELEASE_GROUP.findFirst("mbid = ?" , albumMbid);
@@ -240,6 +243,36 @@ public class Actions {
 		Song song = SONG.findFirst("info_hash = ?", infoHash);
 		song.set("seeders", seeders);
 		song.saveIt();
+
+	}
+
+	public static void removeArtist(String artistMBID) {
+
+		// First delete/remove it from the libtorrent session
+
+
+		// First find everything that needs to be deleted, in the DB
+		//		Set<String> songMbids = new HashSet<String>();
+		//		List<SongView> svs = SONG_VIEW.find("artist_mbid = ?", artistMBID);
+		//		
+		//		for (SongView sv : svs) {
+		//			songMbids.add(sv.getString("song_mbid"));
+		//		}
+		//		SONG_VIEW.dele
+
+		LibtorrentEngine lt = LibtorrentEngine.INSTANCE;
+
+
+		// Get the infohashes to be able to remove the torrents from the session
+		List<SongView> svs = SONG_VIEW.find("artist_mbid = ?", artistMBID);
+
+		for (SongView sv : svs) {
+			String infoHash = sv.getString("info_hash");
+			lt.getSession().removeTorrent(lt.getInfoHashToTorrentMap().get(infoHash));
+		}
+
+		Artist artist = ARTIST.findFirst("mbid = ?", artistMBID);
+		artist.delete(true);
 
 	}
 

@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.torrenttunes.server.DataSources;
-import com.torrenttunes.server.Tools;
+import com.torrenttunes.server.tools.Tools;
 
 public class InitializeTables {
 
