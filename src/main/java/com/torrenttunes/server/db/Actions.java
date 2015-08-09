@@ -3,6 +3,7 @@ package com.torrenttunes.server.db;
 import static com.torrenttunes.server.db.Tables.*;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -277,6 +278,25 @@ public class Actions {
 
 		
 		ARTIST.delete("mbid = ?", artistMBID);
+		
+		// get release groups
+		List<ReleaseGroup> rgs = RELEASE_GROUP.find("artist_mbid = ?", artistMBID);
+		RELEASE_GROUP.delete("artist_mbid = ?", artistMBID);
+		
+		// Get song release groups
+		Set<SongReleaseGroup> srgs = new HashSet<>();
+		for (ReleaseGroup rg : rgs) {
+			List<SongReleaseGroup> srg = SONG_RELEASE_GROUP.find("release_group_mbid = ?", 
+					rg.getString("mbid"));
+			srgs.addAll(srg);
+			SONG_RELEASE_GROUP.delete("release_group_mbid = ?", 
+					rg.getString("mbid"));
+		}
+		
+		for (SongReleaseGroup srg : srgs) {
+			SONG.delete("mbid = ?", srg.getString("song_mbid"));
+		}
+		
 		
 //		com.torrenttunes.client.db.Actions.removeArtist(artistMBID);
 
