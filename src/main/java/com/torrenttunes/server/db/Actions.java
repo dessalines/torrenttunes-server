@@ -276,29 +276,36 @@ public class Actions {
 			}
 		}
 
-		
-		ARTIST.delete("mbid = ?", artistMBID);
-		
+
+
+
 		// get release groups
 		List<ReleaseGroup> rgs = RELEASE_GROUP.find("artist_mbid = ?", artistMBID);
-		RELEASE_GROUP.delete("artist_mbid = ?", artistMBID);
-		
+
+
 		// Get song release groups
 		Set<SongReleaseGroup> srgs = new HashSet<>();
 		for (ReleaseGroup rg : rgs) {
 			List<SongReleaseGroup> srg = SONG_RELEASE_GROUP.find("release_group_mbid = ?", 
 					rg.getString("mbid"));
 			srgs.addAll(srg);
-			SONG_RELEASE_GROUP.delete("release_group_mbid = ?", 
-					rg.getString("mbid"));
 		}
 		
+		// Delete from songs to artist
+
 		for (SongReleaseGroup srg : srgs) {
 			SONG.delete("mbid = ?", srg.getString("song_mbid"));
 		}
-		
-		
-//		com.torrenttunes.client.db.Actions.removeArtist(artistMBID);
+
+		for (ReleaseGroup rg : rgs) {
+			SONG_RELEASE_GROUP.delete("release_group_mbid = ?", 
+					rg.getString("mbid"));
+		}
+
+		RELEASE_GROUP.delete("artist_mbid = ?", artistMBID);
+		ARTIST.delete("mbid = ?", artistMBID);
+
+		//		com.torrenttunes.client.db.Actions.removeArtist(artistMBID);
 
 	}
 
