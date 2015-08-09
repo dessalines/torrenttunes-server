@@ -1,2 +1,4 @@
+git pull
 mvn clean install -DskipTests
-java -Xmx512m -Xms256m -jar target/torrenttunes-server.jar $@
+nohup ./run.sh -loglevel debug &>log.out &
+tail -f log.out
