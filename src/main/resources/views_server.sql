@@ -70,7 +70,8 @@ album_coverart_thumbnail_small,
 primary_type,
 secondary_types,
 count(song_release_group.id) as number_of_songs,
-sum(plays) as plays
+sum(plays) as plays,
+primary_type = 'Album' AND secondary_types is NULL as is_primary_album
 from release_group
 inner join song_release_group
 on release_group.mbid = song_release_group.release_group_mbid

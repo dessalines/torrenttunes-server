@@ -30,6 +30,9 @@ var library, playQueue = [];
 // the Upload polling var
 var uploadInterval;
 
+// The download status infohash map
+var downloadStatusMap = {};
+
 // This verifies that soundmanager has started
 var player;
 soundManager.onready(function() {
@@ -527,10 +530,74 @@ function setupPlaylistPlaySelect(playlistSongs) {
   });
 }
 
+function updateDownloadStatusBar(infoHash) {
+  // var tables = $('table');
+  // console.log('tables = ' + tables);
+
+  // var tableRows = tables[0].rows;
+  // console.log(tableRows);
+
+
+  getJson('get_torrent_progress/' + infoHash, true).done(function(percentageFloat) {
+
+    var percentage = parseInt(percentageFloat * 100) + '%';
+    console.log('percentage = ' + percentage);
+
+    var rows = $("tr[data-info_hash='" + infoHash + "']");
+    console.log(rows);
+
+    var numberOfTables = rows['length'];
+
+    for (var i = 0; i < numberOfTables; i++) {
+      var tr = rows[i];
+
+      $(tr).css({
+        // 'background-image': 'url(../image/lblue.png)',
+        'background-color': 'rgba(255,0,0,1)',
+        'background-size': '1% 100%',
+        // 'opacity': '0.6',
+        /*your percentage is the first one (width), second one (100%) is for height*/
+        'background-repeat': 'no-repeat',
+        'transition': '0.5s',
+        'left': '0'
+      });
+
+
+      $(tr).css({
+        'background-size': percentage + ' 100%'
+      });
+
+
+      if (percentage == '100%') {
+        console.log('Download finished');
+        clearInterval(downloadStatusMap[infoHash]);
+
+        $(tr).css({
+          'background-image': 'none',
+          'background-color': 'rgba(42,159,214,0.1)'
+        });
+
+      }
+
+
+    }
+
+
+  }).error(function(err) {
+    // Stop going for it
+    clearInterval(downloadStatusMap[infoHash]);
+  });
+
+}
 
 function downloadOrFetchTrackObj(infoHash, option) {
   // now fetch or download the song
   var playButtonName = 'play-button_' + infoHash;
+
+  // Updating the download status bar for that song
+  downloadStatusMap[infoHash] = setInterval(function() {
+    updateDownloadStatusBar(infoHash);
+  }, 2000);
 
   getJson('fetch_or_download_song/' + infoHash, null, true, playButtonName).done(function(e1) {
     var trackObj = JSON.parse(e1);

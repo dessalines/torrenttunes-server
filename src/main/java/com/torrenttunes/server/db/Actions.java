@@ -261,23 +261,6 @@ public class Actions {
 		//		}
 		//		SONG_VIEW.dele
 
-		LibtorrentEngine lt = LibtorrentEngine.INSTANCE;
-
-
-		// Get the infohashes to be able to remove the torrents from the session
-		List<SongView> svs = SONG_VIEW.find("artist_mbid = ?", artistMBID);
-
-		for (SongView sv : svs) {
-			String infoHash = sv.getString("info_hash");
-			try {
-				lt.getSession().removeTorrent(lt.getInfoHashToTorrentMap().get(infoHash));
-			} catch(NullPointerException e) {
-				log.error("Torrent infohash " + infoHash + " was not in Libtorrent Session");
-			}
-		}
-
-
-
 
 		// get release groups
 		List<ReleaseGroup> rgs = RELEASE_GROUP.find("artist_mbid = ?", artistMBID);
@@ -294,7 +277,14 @@ public class Actions {
 		// Delete from songs to artist
 
 		for (SongReleaseGroup srg : srgs) {
+			Song song = SONG.findFirst("mbid = ?", srg.getString("song_mbid"));
+			
+			// Delete the torrent file from the server:
+			new File(song.getString("torrent_path")).delete();
+			
 			SONG.delete("mbid = ?", srg.getString("song_mbid"));
+			
+			
 		}
 
 		for (ReleaseGroup rg : rgs) {
@@ -304,8 +294,8 @@ public class Actions {
 
 		RELEASE_GROUP.delete("artist_mbid = ?", artistMBID);
 		ARTIST.delete("mbid = ?", artistMBID);
-
-		//		com.torrenttunes.client.db.Actions.removeArtist(artistMBID);
+		
+		com.torrenttunes.client.db.Actions.removeArtist(artistMBID);
 
 	}
 
