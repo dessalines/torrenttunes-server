@@ -40,9 +40,11 @@ public class Main {
 
 		log.setLevel(Level.toLevel(loglevel));
 		log.getLoggerContext().getLogger("org.eclipse.jetty").setLevel(Level.OFF);
+		log.getLoggerContext().getLogger("spark.webserver").setLevel(Level.OFF);
+
 				
-		Logger jettyLogger = (Logger) LoggerFactory.getLogger("org.eclipse.jetty");
-		jettyLogger.setLevel(Level.OFF);
+//		Logger jettyLogger = (Logger) LoggerFactory.getLogger("org.eclipse.jetty");
+//		jettyLogger.setLevel(Level.OFF);
 
 		// Initialize
 		com.torrenttunes.client.tools.DataSources.APP_NAME = DataSources.APP_NAME;
