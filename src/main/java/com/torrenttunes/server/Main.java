@@ -20,6 +20,7 @@ import com.torrenttunes.server.webservice.WebService;
 public class Main {
 
 	static Logger log = (Logger)LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
+	
 
 	@Option(name="-uninstall",usage="Uninstall torrenttunes-client.(WARNING, this deletes your library)")
 	private boolean uninstall;
@@ -38,6 +39,10 @@ public class Main {
 
 
 		log.setLevel(Level.toLevel(loglevel));
+		log.getLoggerContext().getLogger("org.eclipse.jetty").setLevel(Level.OFF);
+				
+		Logger jettyLogger = (Logger) LoggerFactory.getLogger("org.eclipse.jetty");
+		jettyLogger.setLevel(Level.OFF);
 
 		// Initialize
 		com.torrenttunes.client.tools.DataSources.APP_NAME = DataSources.APP_NAME;
@@ -58,7 +63,7 @@ public class Main {
 		// Startup the web service
 		WebService.start();
 
-		LibtorrentEngine.INSTANCE.startSeedingLibrary();
+		LibtorrentEngine.INSTANCE.startSeedingLibraryVersion2();
 
 
 
