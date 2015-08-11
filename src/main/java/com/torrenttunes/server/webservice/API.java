@@ -278,7 +278,7 @@ public class API {
 		get("/song_search/:query", (req, res) -> {
 
 			try {
-				Tools.logRequestInfo(req);
+				
 				Tools.allowAllHeaders(req, res);
 				Tools.dbInit();
 
@@ -309,7 +309,7 @@ public class API {
 		get("/artist_search/:query", (req, res) -> {
 
 			try {
-				Tools.logRequestInfo(req);
+				
 				Tools.allowAllHeaders(req, res);
 				Tools.dbInit();
 
@@ -338,7 +338,7 @@ public class API {
 		get("/album_search/:query", (req, res) -> {
 
 			try {
-				Tools.logRequestInfo(req);
+				
 				Tools.allowAllHeaders(req, res);
 				Tools.dbInit();
 
@@ -367,7 +367,7 @@ public class API {
 		get("/get_top_albums/:artistMbid", (req, res) -> {
 
 			try {
-				Tools.logRequestInfo(req);
+				
 				Tools.allowAllHeaders(req, res);
 				Tools.dbInit();
 
@@ -394,7 +394,7 @@ public class API {
 		get("/get_top_songs/:artistMbid", (req, res) -> {
 
 			try {
-				Tools.logRequestInfo(req);
+				
 				Tools.allowAllHeaders(req, res);
 				Tools.dbInit();
 
@@ -421,7 +421,7 @@ public class API {
 		get("/get_all_albums/:artistMbid", (req, res) -> {
 
 			try {
-				Tools.logRequestInfo(req);
+				
 				Tools.allowAllHeaders(req, res);
 				Tools.dbInit();
 
@@ -449,7 +449,7 @@ public class API {
 		get("/get_all_compilations/:artistMbid", (req, res) -> {
 
 			try {
-				Tools.logRequestInfo(req);
+				
 				Tools.allowAllHeaders(req, res);
 				Tools.dbInit();
 
@@ -477,7 +477,7 @@ public class API {
 		get("/get_all_songs/:artistMbid", (req, res) -> {
 
 			try {
-				Tools.logRequestInfo(req);
+				
 				Tools.allowAllHeaders(req, res);
 				Tools.dbInit();
 
@@ -504,7 +504,7 @@ public class API {
 		get("/get_artist/:artistMbid", (req, res) -> {
 
 			try {
-				Tools.logRequestInfo(req);
+				
 				Tools.allowAllHeaders(req, res);
 				Tools.dbInit();
 
@@ -529,7 +529,7 @@ public class API {
 		get("/get_album/:albumMbid", (req, res) -> {
 
 			try {
-				Tools.logRequestInfo(req);
+				
 				Tools.allowAllHeaders(req, res);
 				Tools.dbInit();
 
@@ -554,7 +554,7 @@ public class API {
 		get("/get_album_songs/:albumMbid", (req, res) -> {
 
 			try {
-				Tools.logRequestInfo(req);
+				
 				Tools.allowAllHeaders(req, res);
 				Tools.dbInit();
 
@@ -580,7 +580,7 @@ public class API {
 		get("/get_artists", (req, res) -> {
 
 			try {
-				Tools.logRequestInfo(req);
+				
 				Tools.allowAllHeaders(req, res);
 				Tools.dbInit();
 
@@ -604,7 +604,7 @@ public class API {
 		get("/get_trending_albums", (req, res) -> {
 
 			try {
-				Tools.logRequestInfo(req);
+				
 				Tools.allowAllHeaders(req, res);
 				Tools.dbInit();
 
@@ -629,7 +629,7 @@ public class API {
 		get("/get_trending_songs", (req, res) -> {
 
 			try {
-				Tools.logRequestInfo(req);
+				
 				Tools.allowAllHeaders(req, res);
 				Tools.dbInit();
 
