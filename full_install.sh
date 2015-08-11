@@ -1,4 +1,4 @@
-killit torrenttunes
+ps aux | grep -ie torrenttunes | awk '{print $2}' | xargs kill -9
 cd ../torrenttunes-client
 git pull
 mvn clean install -DskipTests
