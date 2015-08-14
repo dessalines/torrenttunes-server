@@ -594,9 +594,7 @@ function updateDownloadStatusBar(infoHash) {
   }).error(function(err) {
     // Stop going for it
     clearInterval(downloadStatusMap[infoHash]);
-  },
-  timeout: 3000
-  );
+  });
 
 }
 
