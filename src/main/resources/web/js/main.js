@@ -603,9 +603,10 @@ function downloadOrFetchTrackObj(infoHash, option) {
   var playButtonName = 'play-button_' + infoHash;
 
   // Updating the download status bar for that song
+  updateDownloadStatusBar(infoHash);
   downloadStatusMap[infoHash] = setInterval(function() {
     updateDownloadStatusBar(infoHash);
-  }, 2000);
+  }, 5000);
 
   getJson('fetch_or_download_song/' + infoHash, null, true, playButtonName).done(function(e1) {
     var trackObj = JSON.parse(e1);
