@@ -561,8 +561,8 @@ function updateDownloadStatusBar(infoHash) {
       $(tr).css({
         // 'display': 'inline-table',
         // 'float': 'left',
-        'display': 'block',
-        'position': 'relative',
+        'display': 'table-cell',
+        // 'position': 'relative',
         'background-image': 'url(../image/lblue.png)',
         // 'background-image': 'none',
         // 'background-color': 'rgba(0,0,255,0)',
