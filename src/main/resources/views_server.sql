@@ -31,24 +31,21 @@ group by song_mbid;
 
 CREATE VIEW song_search_view AS
 select song.mbid as song_mbid,
-release_group.mbid as album_mbid,
+album_view.mbid as album_mbid,
 info_hash,
 seeders,
-artist.name || ' - ' || release_group.title || ' - ' ||  song.title as search_song
+artist_name || ' - ' || album_view.title || ' - ' ||  song.title as search_song
 from song
 inner join song_release_group
 on song.mbid = song_release_group.song_mbid 
-inner join release_group
-on release_group.mbid = song_release_group.release_group_mbid
-inner join artist 
-on release_group.artist_mbid = artist.mbid;
+inner join album_view
+on album_view.mbid = song_release_group.release_group_mbid
 
 CREATE VIEW album_search_view AS
-select release_group.mbid as album_mbid,
-artist.name || ' - ' || release_group.title as search_album
-from release_group
-inner join artist 
-on release_group.artist_mbid = artist.mbid;
+select album_view.mbid as album_mbid,
+artist_name || ' - ' || title as search_album
+from album_view
+
 
 CREATE VIEW artist_search_view AS 
 select mbid as artist_mbid,

@@ -289,7 +289,8 @@ public class API {
 				String queryStr = constructQueryString(query, "search_song");
 				log.info(queryStr);
 
-				json = SONG_SEARCH_VIEW.find(queryStr.toString()).limit(5).toJson(false);
+				json = SONG_SEARCH_VIEW.find(queryStr.toString()).limit(5).
+						orderBy("is_primary_album desc, plays desc").toJson(false);
 
 				log.info(json);
 
@@ -349,7 +350,8 @@ public class API {
 				String queryStr = constructQueryString(query, "search_album");
 				log.info(queryStr);
 
-				json = ALBUM_SEARCH_VIEW.find(queryStr.toString()).limit(5).toJson(false);
+				json = ALBUM_SEARCH_VIEW.find(queryStr.toString()).limit(5).
+						orderBy("is_primary_album desc, plays desc").toJson(false);
 
 				return json;
 
