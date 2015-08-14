@@ -562,6 +562,8 @@ function updateDownloadStatusBar(infoHash) {
         // 'display': 'inline-table',
         // 'float': 'left',
         'height': '34px',
+        'line-height': '34px',
+        'white-space': 'nowrap',
         'display': 'inline-table',
         // 'position': 'relative',
         'background-image': 'url(../image/lblue.png)',
