@@ -595,7 +595,8 @@ function updateDownloadStatusBar(infoHash) {
     // Stop going for it
     clearInterval(downloadStatusMap[infoHash]);
   },
-  timeout: 3000);
+  timeout: 3000
+  );
 
 }
 
