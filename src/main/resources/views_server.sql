@@ -34,17 +34,21 @@ select song.mbid as song_mbid,
 album_view.mbid as album_mbid,
 info_hash,
 seeders,
+is_primary_album,
+plays,
 artist_name || ' - ' || album_view.title || ' - ' ||  song.title as search_song
 from song
 inner join song_release_group
 on song.mbid = song_release_group.song_mbid 
 inner join album_view
-on album_view.mbid = song_release_group.release_group_mbid
+on album_view.mbid = song_release_group.release_group_mbid;
 
 CREATE VIEW album_search_view AS
 select album_view.mbid as album_mbid,
+is_primary_album,
+plays,
 artist_name || ' - ' || title as search_album
-from album_view
+from album_view;
 
 
 CREATE VIEW artist_search_view AS 
