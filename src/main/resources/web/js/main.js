@@ -561,6 +561,7 @@ function updateDownloadStatusBar(infoHash) {
       $(tr).css({
         // 'display': 'inline-table',
         'float': 'left',
+        'clear': 'both',
         'height': '34px',
         'line-height': '34px',
         'white-space': 'nowrap',
