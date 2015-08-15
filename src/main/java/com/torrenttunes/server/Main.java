@@ -61,6 +61,10 @@ public class Main {
 
 		// Startup the web service
 		WebService.start();
+		
+		com.torrenttunes.client.tools.Tools.dbInit();
+		com.torrenttunes.client.db.Actions.clearCache();
+		com.torrenttunes.client.tools.Tools.dbClose();
 
 		LibtorrentEngine.INSTANCE.startSeedingLibraryVersion2();
 
