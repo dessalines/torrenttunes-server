@@ -423,11 +423,15 @@ public class Tools {
 			String interalServiceLine = "var localSparkService = '" + 
 					DataSources.WEB_SERVICE_URL + "';";
 
+			String torrentTunesServiceLine = "var torrentTunesSparkService ='" + 
+					DataSources.TORRENTTUNES_URL + "';";
+			
 			String externalServiceLine = "var externalSparkService ='" + 
-					DataSources.TRACKER_URL + "';";
+					DataSources.EXTERNAL_URL + "';";
 
 			lines.set(0, interalServiceLine);
-			lines.set(1, externalServiceLine);
+			lines.set(1, torrentTunesServiceLine);
+			lines.set(2, externalServiceLine);
 
 			java.nio.file.Files.write(Paths.get(DataSources.TOOLS_JS()), lines);
 			Files.touch(new File(DataSources.TOOLS_JS()));
