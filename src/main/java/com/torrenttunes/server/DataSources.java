@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.torrenttunes.client.tools.Tools;
+
 public class DataSources {
 
 	public static String APP_NAME = "torrenttunes-server";
@@ -12,9 +14,15 @@ public class DataSources {
 	
 	public static final String WEB_SERVICE_URL = "http://localhost:" + SPARK_WEB_PORT + "/";
 	
-	public static final String TRACKER_IP = "torrenttunes.ml";
+	public static String EXTERNAL_IP = Tools.httpGetString("http://api.ipify.org/").trim();
 	
-	public static final String TRACKER_URL = "http://" + TRACKER_IP + ":" + SPARK_WEB_PORT + "/";
+	public static String EXTERNAL_URL = "http://" + EXTERNAL_IP + ":" + SPARK_WEB_PORT + "/";
+	
+	public static final String TORRENTTUNES_IP = "torrenttunes.ml";
+	
+	public static final String TORRENTTUNES_PORT = "80";// Main is 80, dev is 4567
+	
+	public static final String TORRENTTUNES_URL = "http://" + TORRENTTUNES_IP + ":" + TORRENTTUNES_PORT + "/";
 	
 	
 	// The path to the ytm dir

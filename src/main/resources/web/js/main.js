@@ -220,7 +220,7 @@ function setupSettingsTab() {
 
 
 function setupBrowseTab() {
-  getJson('get_artists', null, true).done(function(e) {
+  getJson('get_artists', null, torrentTunesSparkService).done(function(e) {
     var artists = JSON.parse(e);
     console.log(artists);
 
@@ -229,7 +229,7 @@ function setupBrowseTab() {
 }
 
 function setupHomeTab() {
-  getJson('get_trending_albums', null, true).done(function(e) {
+  getJson('get_trending_albums', null, torrentTunesSparkService).done(function(e) {
     var albums = JSON.parse(e);
     console.log(albums);
 
@@ -237,7 +237,7 @@ function setupHomeTab() {
 
   });
 
-  getJson('get_trending_songs', null, true).done(function(e) {
+  getJson('get_trending_songs', null, torrentTunesSparkService).done(function(e) {
     var songs = JSON.parse(e);
     console.log(songs);
 
@@ -261,7 +261,7 @@ function setupAlbumCatalogTab() {
   $('#home_page_loading_div').removeClass('hide');
 
 
-  getJson('get_album/' + albumCatalogMBID, null, true).done(function(e) {
+  getJson('get_album/' + albumCatalogMBID, null, torrentTunesSparkService).done(function(e) {
     var album = JSON.parse(e);
     console.log(album);
     artistCatalogMBID = album['artist_mbid'];
@@ -270,7 +270,7 @@ function setupAlbumCatalogTab() {
     fillMustacheWithJson(album, albumCatalogTemplate, '#album_catalog_div');
 
 
-    getJson('get_album_songs/' + albumCatalogMBID, null, true).done(function(e) {
+    getJson('get_album_songs/' + albumCatalogMBID, null, torrentTunesSparkService).done(function(e) {
       var albumSongs = JSON.parse(e);
       console.log(albumSongs);
 
@@ -296,7 +296,7 @@ function setupArtistCatalogSongTab() {
   $('#artistcatalogTab').addClass('hide');
   $('#home_page_loading_div').removeClass('hide');
 
-  getJson('get_all_songs/' + artistCatalogMBID, null, true).done(function(e) {
+  getJson('get_all_songs/' + artistCatalogMBID, null, torrentTunesSparkService).done(function(e) {
     var allArtistSongs = JSON.parse(e);
     console.log(allArtistSongs);
 
@@ -314,7 +314,7 @@ function setupArtistCatalogAlbumTab() {
   $('#artistcatalogTab').addClass('hide');
   $('#home_page_loading_div').removeClass('hide');
 
-  getJson('get_all_albums/' + artistCatalogMBID, null, true).done(function(e) {
+  getJson('get_all_albums/' + artistCatalogMBID, null, torrentTunesSparkService).done(function(e) {
     var allArtistAlbums = JSON.parse(e);
     console.log(allArtistAlbums);
 
@@ -330,7 +330,7 @@ function setupArtistCatalogCompilationTab() {
   $('#artistcatalogTab').addClass('hide');
   $('#home_page_loading_div').removeClass('hide');
 
-  getJson('get_all_compilations/' + artistCatalogMBID, null, true).done(function(e) {
+  getJson('get_all_compilations/' + artistCatalogMBID, null, torrentTunesSparkService).done(function(e) {
     var allArtistAlbums = JSON.parse(e);
     console.log(allArtistAlbums);
 
@@ -349,7 +349,7 @@ function setupArtistCatalogTab() {
   $('#artistcatalogTab').addClass('hide');
   $('#home_page_loading_div').removeClass('hide');
 
-  getJson('get_artist/' + artistCatalogMBID, null, true).done(function(e) {
+  getJson('get_artist/' + artistCatalogMBID, null, torrentTunesSparkService).done(function(e) {
     var artistCatalog = JSON.parse(e);
     console.log(artistCatalog);
 
@@ -366,7 +366,7 @@ function setupArtistCatalogTab() {
 
   });
 
-  getJson('get_top_albums/' + artistCatalogMBID, null, true).done(function(e) {
+  getJson('get_top_albums/' + artistCatalogMBID, null, torrentTunesSparkService).done(function(e) {
     var topArtistAlbums = JSON.parse(e);
     console.log(topArtistAlbums);
 
@@ -375,7 +375,7 @@ function setupArtistCatalogTab() {
     $('#artistcatalogTab').removeClass('hide');
   });
 
-  getJson('get_top_songs/' + artistCatalogMBID, null, true).done(function(e) {
+  getJson('get_top_songs/' + artistCatalogMBID, null, torrentTunesSparkService).done(function(e) {
     var topArtistSongs = JSON.parse(e);
     console.log(topArtistSongs);
 
@@ -414,6 +414,7 @@ function setupUploadForm() {
         clearInterval(uploadInterval);
 
         // reload the library page
+
         setupUploadTable();
         setupLibrary();
         setupPlayQueue();
@@ -565,7 +566,7 @@ function updateDownloadStatusBar(infoHash) {
   // console.log(tableRows);
 
 
-  getJson('get_torrent_progress/' + infoHash, true, true).done(function(percentageFloat) {
+  getJson('get_torrent_progress/' + infoHash, true, externalSparkService).done(function(percentageFloat) {
 
 
     var percentage = parseInt(percentageFloat * 100) + '%';
@@ -645,7 +646,7 @@ function downloadOrFetchTrackObj(infoHash, option) {
     updateDownloadStatusBar(infoHash);
   }, 5000);
 
-  getJson('fetch_or_download_song/' + infoHash, null, true, playButtonName).done(function(e1) {
+  getJson('fetch_or_download_song/' + infoHash, null, externalSparkService, playButtonName).done(function(e1) {
     var trackObj = JSON.parse(e1);
 
     // var id = parseInt(full[1]) - 1;
@@ -680,7 +681,7 @@ function downloadOrFetchTrackObj(infoHash, option) {
 
     simplePost('add_play_count/' + infoHash, null, null, function() {
       // console.log('play queue saved');
-    }, true, true, null);
+    }, true, torrentTunesSparkService, null);
 
 
   });
