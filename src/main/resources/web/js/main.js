@@ -414,6 +414,7 @@ function setupUploadForm() {
         clearInterval(uploadInterval);
 
         // reload the library page
+
         setupUploadTable();
         setupLibrary();
         setupPlayQueue();

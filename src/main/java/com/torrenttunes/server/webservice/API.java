@@ -578,6 +578,31 @@ public class API {
 
 
 		});
+		
+		get("/get_song/:songMBID", (req, res) -> {
+
+			try {
+				
+				Tools.allowAllHeaders(req, res);
+				Tools.dbInit();
+
+				String songMbid = req.params(":songMBID");
+
+				String json = null;
+				json = SONG_VIEW.findFirst("song_mbid = ?", songMbid).toJson(false);
+
+				return json;
+
+			} catch (Exception e) {
+				res.status(666);
+				e.printStackTrace();
+				return e.getMessage();
+			} finally {
+				Tools.dbClose();
+			}
+
+
+		});
 
 		get("/get_artists", (req, res) -> {
 
