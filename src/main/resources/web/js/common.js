@@ -223,6 +223,8 @@ function setSearchType(data) {
 
 function showArtistPage() {
 
+  replaceParams('artist', artistCatalogMBID);
+
   $('#left_tab li.active').removeClass('active');
   $('#artistcatalogTab').removeClass('active');
 
@@ -238,6 +240,10 @@ function showArtistPageV2(artistMBID) {
 }
 
 function showAlbumPage(releaseMBID) {
+
+  replaceParams('album', releaseMBID);
+
+  
   albumCatalogMBID = releaseMBID;
   $('#albumcatalogTab').addClass('hide');
   $('a[href="#albumcatalogTab"]').tab('show');
