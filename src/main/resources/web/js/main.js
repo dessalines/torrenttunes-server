@@ -809,11 +809,8 @@ function playNow(trackObj) {
     player.playlistController.playItemByOffset(index);
   } else {
     console.log("play previous itemz");
-
     player.actions.prev();
-    player.actions.pause();
-
-    player.actions.resume(); 
+    // player.actions.play(); 
   }
   // player.actions.play();
   setupClickableArtistPlaying();
