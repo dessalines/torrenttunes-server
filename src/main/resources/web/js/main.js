@@ -808,7 +808,7 @@ function playNow(trackObj) {
     console.log("play item by offset");
     player.playlistController.playItemByOffset(index);
   } else {
-    console.log("play previous item");
+    console.log("play previous itemz");
     player.actions.prev();
     // player.actions.play(); 
   }
