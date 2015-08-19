@@ -812,8 +812,8 @@ function playNow(trackObj) {
 
     player.actions.prev();
     player.actions.pause();
-    
-    player.actions.play(); 
+
+    player.actions.resume(); 
   }
   // player.actions.play();
   setupClickableArtistPlaying();
