@@ -701,8 +701,18 @@ public class API {
 
 				String range = req.headers("Range");
 
-				Boolean nonStreamingBrowser = req.headers("User-Agent").toLowerCase().contains("firefox");
-			
+				
+				// Check if its a non-streaming browser, for example, firefox can't stream
+				Boolean nonStreamingBrowser = false;
+				String userAgent = req.headers("User-Agent").toLowerCase();
+				for (String browser : DataSources.NON_STREAMING_BROWSERS) {
+					if (userAgent.contains(browser)) {
+						nonStreamingBrowser = true;
+						log.info("Its a non-streaming browser.");
+						break;
+					}
+				}
+				
 
 				//				res.status(206);
 
