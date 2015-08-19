@@ -690,7 +690,7 @@ public class API {
 				
 				log.info(req.params(":encodedPath"));
 				
-				String correctedEncoded = req.params(":encodedPath").replaceAll("}[", "%2F");
+				String correctedEncoded = req.params(":encodedPath").replaceAll("}{", "%2F");
 				
 				log.info("corrected encoded = " + correctedEncoded);
 
