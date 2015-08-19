@@ -808,6 +808,7 @@ function playNow(trackObj) {
     console.log("index = " + index);
     player.playlistController.playItemByOffset(index);
   } else {
+    console.log("index = " + index);
     player.actions.prev();
     // player.actions.play(); 
   }
