@@ -820,7 +820,7 @@ public class API {
 		log.info(range);
 		log.info("ranges[] = " + Arrays.toString(ranges));
 
-		Integer chunkSize = 100000;
+		Integer chunkSize = 512000;
 		Integer from = Integer.parseInt(ranges[0]);
 		Integer to = chunkSize + from;
 		if (to >= mp3.length()) {
@@ -850,7 +850,7 @@ public class API {
 
 	public static void writeAudioToOS(Integer length, RandomAccessFile raf, OutputStream os) throws IOException {
 
-		byte[] buf = new byte[32*1024];
+		byte[] buf = new byte[1000*1024];
 		while(length != 0) {
 			int read = raf.read(buf, 0, buf.length > length ? length : buf.length);
 			os.write(buf, 0, read);
