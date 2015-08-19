@@ -805,10 +805,10 @@ function playNow(trackObj) {
   $('.sm2-playlist-bd li').removeClass('selected');
 
   if (index != 0) {
-    console.log("index = " + index);
+    console.log("play item by offset");
     player.playlistController.playItemByOffset(index);
   } else {
-    console.log("index = " + index);
+    console.log("play previous item");
     player.actions.prev();
     // player.actions.play(); 
   }
