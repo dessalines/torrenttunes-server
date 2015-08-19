@@ -810,8 +810,8 @@ function playNow(trackObj) {
   } else {
     console.log("play previous itemz");
     player.actions.stop();
-    player.actions.prev();
-    // player.actions.play(); 
+    // player.actions.prev();
+    player.actions.play(); 
   }
   // player.actions.play();
   setupClickableArtistPlaying();
