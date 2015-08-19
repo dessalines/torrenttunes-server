@@ -687,8 +687,10 @@ public class API {
 
 			try {
 				Tools.allowAllHeaders(req, res);
+				
+				String correctedEncoded = req.params(":encodedPath").replaceAll("%7D", "%2F");
 
-				String path = URLDecoder.decode(req.params(":encodedPath"), "UTF-8");
+				String path = URLDecoder.decode(correctedEncoded, "UTF-8");
 
 
 				File mp3 = new File(path);				
