@@ -688,6 +688,8 @@ public class API {
 			try {
 				Tools.allowAllHeaders(req, res);
 				
+				log.info(req.params(":encodedPath"));
+				
 				String correctedEncoded = req.params(":encodedPath").replaceAll("%7D", "%2F");
 				
 				log.info("corrected encoded = " + correctedEncoded);
