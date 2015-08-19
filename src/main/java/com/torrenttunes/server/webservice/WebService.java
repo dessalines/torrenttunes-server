@@ -29,7 +29,7 @@ public class WebService {
 		// Add external web service url to beginning of javascript tools
 		//		Tools.addExternalWebServiceVarToTools();
 
-		port(DataSources.SPARK_WEB_PORT) ;
+		port(DataSources.SPARK_WEB_PORT);
 		
 
 		externalStaticFileLocation(DataSources.WEB_HOME());
