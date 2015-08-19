@@ -689,6 +689,8 @@ public class API {
 				Tools.allowAllHeaders(req, res);
 				
 				String correctedEncoded = req.params(":encodedPath").replaceAll("%7D", "%2F");
+				
+				log.info("corrected encoded = " + correctedEncoded);
 
 				String path = URLDecoder.decode(correctedEncoded, "UTF-8");
 
