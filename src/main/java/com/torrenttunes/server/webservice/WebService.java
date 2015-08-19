@@ -2,7 +2,7 @@ package com.torrenttunes.server.webservice;
 
 import static spark.Spark.get;
 import static spark.SparkBase.externalStaticFileLocation;
-import static spark.SparkBase.setPort;
+import static spark.Spark.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +29,8 @@ public class WebService {
 		// Add external web service url to beginning of javascript tools
 		//		Tools.addExternalWebServiceVarToTools();
 
-		setPort(DataSources.SPARK_WEB_PORT) ;
+		port(DataSources.SPARK_WEB_PORT) ;
+		
 
 		externalStaticFileLocation(DataSources.WEB_HOME());
 //		externalStaticFileLocation(com.torrenttunes.client.tools.DataSources.MUSIC_STORAGE_PATH);
