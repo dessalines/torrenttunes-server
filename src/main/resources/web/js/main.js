@@ -821,7 +821,7 @@ function buildLiFromTrackObject(trackObj) {
   var encodedAudioFilePath = externalSparkService + 'get_audio_file/' +
     encodeURIComponent(trackObj['file_path']);
 
-    encodedAudioFilePath.replace(/%2F/g, '%7D');
+    encodedAudioFilePath.replace(/\%2F/g, '%7D');
 
 
 
