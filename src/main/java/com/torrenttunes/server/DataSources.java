@@ -77,5 +77,5 @@ public class DataSources {
 	
 	
 	public static final Set<String> NON_STREAMING_BROWSERS = new HashSet<String>(Arrays.asList(
-			"Firefox", "Android"));
+			"Firefox"));
 }
