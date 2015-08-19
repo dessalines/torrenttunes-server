@@ -706,7 +706,7 @@ public class API {
 				Boolean nonStreamingBrowser = false;
 				String userAgent = req.headers("User-Agent").toLowerCase();
 				for (String browser : DataSources.NON_STREAMING_BROWSERS) {
-					if (userAgent.contains(browser)) {
+					if (userAgent.contains(browser.toLowerCase())) {
 						nonStreamingBrowser = true;
 						log.info("Its a non-streaming browser.");
 						break;
