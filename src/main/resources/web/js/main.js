@@ -827,7 +827,7 @@ function playNow(trackObj) {
     player.actions.pause();
     
 
-  }, 2000);
+  }, 6000);
 
     // player.actions.play(); 
   }
