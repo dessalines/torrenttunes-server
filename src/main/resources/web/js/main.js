@@ -45,7 +45,7 @@ soundManager.onready(function() {
   // player.actions.play();
   // setupPlayQueue();
   player.playlistController.refresh();
-  // player.actions.next();
+  player.actions.next();
   // player.actions.stop();
   setupPaths();
 });
@@ -94,6 +94,7 @@ function setupPaths() {
         downloadOrFetchTrackObj(infoHash, 'play-now');
         var albumMBID = track['release_group_mbid'];
         showAlbumPage(albumMBID);
+        player.actions.resume();
       });
 
   }
