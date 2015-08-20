@@ -85,7 +85,7 @@ function setupPaths() {
   } else if (albumMBID != null) {
     showAlbumPage(albumMBID);
   } else if (songMBID != null) {
-    soundManager.onready(function() {
+
 
       getJson('get_song/' + songMBID, null, torrentTunesSparkService).done(function(e) {
         var track = JSON.parse(e);
@@ -95,7 +95,7 @@ function setupPaths() {
         var albumMBID = track['release_group_mbid'];
         showAlbumPage(albumMBID);
       });
-    });
+
   }
 
 }
