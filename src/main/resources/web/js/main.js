@@ -818,7 +818,11 @@ function playNow(trackObj) {
 
     // Mobile play can only be started by touch(mobile rules of iOS and android)
     if (isMobile()) {
-      player.actions.pause();
+
+      delay(function() {
+        player.actions.pause();
+      }, 1000);
+
     }
 
     // delay(function() {
