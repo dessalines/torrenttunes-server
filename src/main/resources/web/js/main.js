@@ -47,6 +47,7 @@ soundManager.onready(function() {
   player.playlistController.refresh();
   player.actions.next();
   player.actions.stop();
+  setupPaths();
 });
 
 $(document).ready(function() {
@@ -64,7 +65,7 @@ $(document).ready(function() {
 
   // errorTest();
 
-  setupPaths();
+  // setupPaths();
 
 
 });
