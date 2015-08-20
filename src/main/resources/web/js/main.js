@@ -820,7 +820,7 @@ function playNow(trackObj) {
           
     // player.actions.stop();
     // player.actions.play();
-    var playBtn = $('.sm2-inline-button');
+    var playBtn = $('.sm2-inline-button.play-pause');
     console.log(playBtn);
     $(playBtn).click();
     console.log('play clicked');
