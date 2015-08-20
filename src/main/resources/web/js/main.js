@@ -815,10 +815,14 @@ function playNow(trackObj) {
   } else {
     console.log("play previous itemz");
     player.actions.prev();
+    
     delay(function() {
           
-    player.actions.stop();
-    player.actions.play();
+    // player.actions.stop();
+    // player.actions.play();
+
+    $('#play').click();
+    console.log('play clicked');
     
 
   }, 2000);
