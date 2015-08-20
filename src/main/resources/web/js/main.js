@@ -87,15 +87,15 @@ function setupPaths() {
   } else if (songMBID != null) {
 
 
-      getJson('get_song/' + songMBID, null, torrentTunesSparkService).done(function(e) {
-        var track = JSON.parse(e);
-        var infoHash = track['info_hash'];
+    getJson('get_song/' + songMBID, null, torrentTunesSparkService).done(function(e) {
+      var track = JSON.parse(e);
+      var infoHash = track['info_hash'];
 
-        downloadOrFetchTrackObj(infoHash, 'play-now');
-        var albumMBID = track['release_group_mbid'];
-        showAlbumPage(albumMBID);
+      downloadOrFetchTrackObj(infoHash, 'play-now');
+      var albumMBID = track['release_group_mbid'];
+      showAlbumPage(albumMBID);
 
-      });
+    });
 
   }
 
@@ -815,20 +815,22 @@ function playNow(trackObj) {
   } else {
     console.log("play previous itemz");
     player.actions.prev();
-    
+
     delay(function() {
-    console.log('play clicked');
-    player.actions.pause();
-    
+      console.log('play clicked');
+      player.actions.pause();
+      delay(function() {
+        player.actions.play();
+      }, 1000);
 
-  }, 6000);
+    }, 6000);
 
-        delay(function() {
-    console.log('play clicked');
-    player.actions.play();
-    
+    //       delay(function() {
+    //   console.log('play clicked');
+    //   player.actions.play();
 
-  }, 7000);
+
+    // }, 7000);
 
     // player.actions.play(); 
   }
@@ -841,8 +843,8 @@ function buildLiFromTrackObject(trackObj) {
   var encodedAudioFilePath = externalSparkService + 'get_audio_file/' +
     encodeURIComponent(trackObj['file_path']);
 
-    encodedAudioFilePath = encodedAudioFilePath.replace(/\%2F/g, 'qzvkn');
-    console.log(encodedAudioFilePath);
+  encodedAudioFilePath = encodedAudioFilePath.replace(/\%2F/g, 'qzvkn');
+  console.log(encodedAudioFilePath);
 
 
 
