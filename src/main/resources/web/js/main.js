@@ -818,6 +818,10 @@ function playNow(trackObj) {
 
     delay(function() {
       console.log('play clicked');
+      var item = player.playlistController.getItem(0);
+      console.log(item);
+      player.playListController.select(item);
+      
       player.actions.next();
       delay(function() {
         player.actions.prev();
