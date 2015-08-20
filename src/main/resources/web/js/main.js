@@ -94,7 +94,7 @@ function setupPaths() {
         downloadOrFetchTrackObj(infoHash, 'play-now');
         var albumMBID = track['release_group_mbid'];
         showAlbumPage(albumMBID);
-       
+
       });
 
   }
@@ -808,12 +808,14 @@ function playNow(trackObj) {
   // player.actions.stop();
   $('.sm2-playlist-bd li').removeClass('selected');
 
+  console.log('index = ' + index);
   if (index != 0) {
     console.log("play item by offset");
     player.playlistController.playItemByOffset(index);
   } else {
     console.log("play previous itemz");
-    player.actions.prev();
+    player.playlistController.playItemByOffset(index);
+    // player.actions.prev();
     // player.actions.play(); 
   }
   // player.actions.play();
