@@ -815,8 +815,8 @@ function playNow(trackObj) {
   } else {
     console.log("play previous itemz");
     delay(function() {
-    //       player.actions.prev();
-    // player.actions.stop();
+          player.actions.prev();
+    player.actions.stop();
     // player.actions.play();
         player.playlistController.playItemByOffset(index);
 
