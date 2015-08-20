@@ -815,7 +815,8 @@ function playNow(trackObj) {
   } else {
     console.log("play previous itemz");
     player.actions.prev();
-    player.actions.resume();
+    player.actions.stop();
+    player.actions.play();
     // player.actions.play(); 
   }
   // player.actions.play();
