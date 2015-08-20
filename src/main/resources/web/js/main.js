@@ -45,8 +45,8 @@ soundManager.onready(function() {
   // player.actions.play();
   // setupPlayQueue();
   player.playlistController.refresh();
-  player.actions.next();
-  player.actions.stop();
+  // player.actions.next();
+  // player.actions.stop();
   setupPaths();
 });
 
