@@ -35,7 +35,7 @@ album_view.mbid as album_mbid,
 info_hash,
 seeders,
 is_primary_album,
-plays,
+song.plays,
 artist_name || ' - ' || album_view.title || ' - ' ||  song.title as search_song
 from song
 inner join song_release_group
