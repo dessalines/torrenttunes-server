@@ -816,26 +816,24 @@ function playNow(trackObj) {
     console.log("play previous itemz");
     player.actions.prev();
 
-    delay(function() {
-      console.log('play clicked');
-  
-      var item = player.playlistController.getItem(0);
-      console.log(item);
-      player.playlistController.select(item);
+    // Mobile play can only be started by touch(mobile rules of iOS and android)
+    if (isMobile()) {
+      player.actions.pause();
+    }
 
-      player.actions.next();
-      delay(function() {
-        player.actions.prev();
-      }, 1000);
-
-    }, 6000);
-
-    //       delay(function() {
+    // delay(function() {
     //   console.log('play clicked');
-    //   player.actions.play();
 
+    //   var item = player.playlistController.getItem(0);
+    //   console.log(item);
+    //   player.playlistController.select(item);
 
-    // }, 7000);
+    //   player.actions.next();
+    //   delay(function() {
+    //     player.actions.prev();
+    //   }, 1000);
+
+    // }, 6000);
 
     // player.actions.play(); 
   }
