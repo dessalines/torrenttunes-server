@@ -821,7 +821,7 @@ function playNow(trackObj) {
     // player.actions.stop();
     // player.actions.play();
 
-    $('#play').click();
+    $('a .sm2-inline-button').click();
     console.log('play clicked');
     
 
