@@ -820,9 +820,11 @@ function playNow(trackObj) {
           
     // player.actions.stop();
     // player.actions.play();
-
-    $('a .sm2-inline-button').click();
+    var playBtn = $('.sm2-inline-button');
+    console.log(playBtn);
+    $(playBtn).click();
     console.log('play clicked');
+
     
 
   }, 2000);
