@@ -817,17 +817,18 @@ function playNow(trackObj) {
     player.actions.prev();
     
     delay(function() {
-          
-    // player.actions.stop();
-    // player.actions.play();
-    var playBtn = $('.sm2-inline-button.play-pause')[0];
-    console.log(playBtn);
-    // $(playBtn).click();
     console.log('play clicked');
     player.actions.pause();
     
 
   }, 6000);
+
+        delay(function() {
+    console.log('play clicked');
+    player.actions.play();
+    
+
+  }, 7000);
 
     // player.actions.play(); 
   }
