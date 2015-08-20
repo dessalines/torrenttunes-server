@@ -12,6 +12,7 @@ import static spark.Spark.get;
 import static spark.Spark.post;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.File;
@@ -722,12 +723,14 @@ public class API {
 
 				//				res.status(206);
 
-				OutputStream stream = raw.getOutputStream();
+				OutputStream os = raw.getOutputStream();
+				
+				BufferedOutputStream bos = new BufferedOutputStream(os);
 			
 				
 				if (range == null || nonStreamingBrowser) {
 					res.header("Content-Length", String.valueOf(mp3.length())); 
-					Files.copy(mp3.toPath(), stream);
+					Files.copy(mp3.toPath(), os);
 
 					return res.raw();
 
@@ -775,12 +778,12 @@ public class API {
 				log.info("writing random access file instead");
 				final RandomAccessFile raf = new RandomAccessFile(mp3, "r");
 				raf.seek(fromTo[0]);
-				writeAudioToOS(length, raf, stream);
+				writeAudioToOS(length, raf, bos);
 			
 				raf.close();
 
-				stream.flush();
-				stream.close();
+				bos.flush();
+				bos.close();
 
 				return res.raw();
 
