@@ -94,7 +94,7 @@ function setupPaths() {
         downloadOrFetchTrackObj(infoHash, 'play-now');
         var albumMBID = track['release_group_mbid'];
         showAlbumPage(albumMBID);
-        player.actions.resume();
+       
       });
 
   }
