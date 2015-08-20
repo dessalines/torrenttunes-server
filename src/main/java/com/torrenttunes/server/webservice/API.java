@@ -869,7 +869,7 @@ public class API {
 
 	public static void writeAudioToOS(Integer length, RandomAccessFile raf, OutputStream os) throws IOException {
 
-		byte[] buf = new byte[1000*1024];
+		byte[] buf = new byte[256];
 		while(length != 0) {
 			int read = raf.read(buf, 0, buf.length > length ? length : buf.length);
 			os.write(buf, 0, read);
