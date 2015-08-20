@@ -821,7 +821,7 @@ function playNow(trackObj) {
 
       delay(function() {
         player.actions.pause();
-      }, 5000);
+      }, 3000);
 
     }
 
