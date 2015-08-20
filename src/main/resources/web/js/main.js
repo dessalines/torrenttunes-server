@@ -799,7 +799,7 @@ function playNow(trackObj) {
   // var item = player.playlistController.getItem(0);
   // console.log(item);
   // player.playlistController.select(item);
-  // player.playlistController.refresh();
+  player.playlistController.refresh();
   // player.actions.stop();
 
   // add it to the queue
@@ -818,10 +818,11 @@ function playNow(trackObj) {
 
     delay(function() {
       console.log('play clicked');
+  
       var item = player.playlistController.getItem(0);
       console.log(item);
-      player.playListController.select(item);
-      
+      player.playlistController.select(item);
+
       player.actions.next();
       delay(function() {
         player.actions.prev();
