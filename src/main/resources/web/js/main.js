@@ -564,16 +564,15 @@ function setupAlbumPlaySelect(albumSongs) {
     // All the others, download them, but add them to the queue at the last
     var z = 1;
     for (;;) {
-
+      var trackInfo = albumSongs[z];
+      console.log(z);
+      console.log(trackInfo);
+      var infoHash = trackInfo['info_hash'];
       if (z == albumSongs.length) {
         break;
       }
       downloadOrFetchTrackObj(infoHash, 'play-last').done(function(e) {
-        var trackInfo = albumSongs[z++];
-        console.log(trackInfo);
-        var infoHash = trackInfo['info_hash'];
-
-
+        z++;
       });
     }
 
