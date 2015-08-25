@@ -562,11 +562,18 @@ function setupAlbumPlaySelect(albumSongs) {
     downloadOrFetchTrackObj(infoHashFirst, 'play-now');
 
     // All the others, download them, but add them to the queue at the last
-    for (var z = 1; z < albumSongs.length; z++) {
-      var trackInfo = albumSongs[z];
-      var infoHash = trackInfo['info_hash'];
+    var z = 1;
+    for (;;) {
 
-      downloadOrFetchTrackObj(infoHash, 'play-last');
+      downloadOrFetchTrackObj(infoHash, 'play-last').done(function(e) {
+        var trackInfo = albumSongs[z++];
+        console.log(trackInfo);
+        var infoHash = trackInfo['info_hash'];
+
+        if (z < albumSongs.length) {
+          break;
+        }
+      });
     }
 
   });
@@ -681,7 +688,7 @@ function downloadOrFetchTrackObj(infoHash, option) {
     updateDownloadStatusBar(infoHash);
   }, 5000);
 
-  getJson('fetch_or_download_song/' + infoHash, null, externalSparkService, playButtonName).done(function(e1) {
+  return getJson('fetch_or_download_song/' + infoHash, null, externalSparkService, playButtonName).done(function(e1) {
     var trackObj = JSON.parse(e1);
 
     replaceParams('song', trackObj['mbid']);
