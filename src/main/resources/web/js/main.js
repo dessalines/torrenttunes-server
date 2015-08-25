@@ -565,14 +565,15 @@ function setupAlbumPlaySelect(albumSongs) {
     var z = 1;
     for (;;) {
 
+      if (z < albumSongs.length) {
+        break;
+      }
       downloadOrFetchTrackObj(infoHash, 'play-last').done(function(e) {
         var trackInfo = albumSongs[z++];
         console.log(trackInfo);
         var infoHash = trackInfo['info_hash'];
 
-        if (z < albumSongs.length) {
-          break;
-        }
+
       });
     }
 
