@@ -406,7 +406,7 @@ public class API {
 				String json = null;
 
 				json = SONG_VIEW_GROUPED.find("artist_mbid = ?", artistMbid).
-						orderBy("plays desc").limit(25).toJson(false);
+						orderBy("plays desc").limit(15).toJson(false);
 
 				return json;
 
@@ -663,7 +663,7 @@ public class API {
 
 
 				String json = null;
-				json = SONG_VIEW_GROUPED.findAll().orderBy("plays desc").limit(40).toJson(false);
+				json = SONG_VIEW_GROUPED.findAll().orderBy("plays desc").limit(15).toJson(false);
 
 				return json;
 
