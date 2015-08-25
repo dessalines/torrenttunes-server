@@ -689,7 +689,7 @@ function downloadOrFetchTrackObj(infoHash, option) {
     // var id = parseInt(full[1]) - 1;
     var id = parseInt(trackObj['id']);
 
-
+    toastr.success('Added ' + trackObj['artist'] + ' - ' + trackObj['title']);
     if (option == 'play-now') {
       playNow(trackObj);
     } else if (option == 'play-button') {
@@ -861,7 +861,7 @@ function buildLiFromTrackObject(trackObj) {
     htmlDecode(htmlDecode(trackObj['artist'])) + '</span></b> - ' +
     htmlDecode(htmlDecode(trackObj['title'])) + '</a></li>';
 
-  console.log(trackObj['artist']);
+  // console.log(trackObj['artist']);
 
   // var li = '<li><a href="file://' + trackObj['file_path'] + '"><b>' +
   //   trackObj['artist'] + '</b> - ' + trackObj['title'] + '</a></li>';
