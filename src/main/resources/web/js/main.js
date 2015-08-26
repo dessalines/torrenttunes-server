@@ -559,14 +559,14 @@ function setupAlbumPlaySelect(albumSongs) {
     var trackInfoFirst = albumSongs[0];
     var infoHashFirst = trackInfoFirst['info_hash'];
 
-    downloadOrFetchTrackObj(infoHashFirst, 'play-now', true);
+    downloadOrFetchTrackObj(infoHashFirst, 'play-now', false);
 
     // All the others, download them, but add them to the queue at the last
     for (var z = 1; z < albumSongs.length; z++) {
       var trackInfo = albumSongs[z];
       var infoHash = trackInfo['info_hash'];
 
-      downloadOrFetchTrackObj(infoHash, 'play-last', true);
+      downloadOrFetchTrackObj(infoHash, 'play-last', false);
     }
 
   });
@@ -674,7 +674,7 @@ function updateDownloadStatusBar(infoHash) {
 
 function downloadOrFetchTrackObj(infoHash, option, async) {
 
-  async = (typeof async === "undefined") ? false : async;
+  async = (typeof async === "undefined") ? true : async;
 
   // now fetch or download the song
   var playButtonName = 'play-button_' + infoHash;
