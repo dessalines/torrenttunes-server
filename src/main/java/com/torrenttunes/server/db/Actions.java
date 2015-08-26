@@ -88,8 +88,12 @@ public class Actions {
 
 			String imageURL = null;
 			if (mbInfo.getWikipedia() != null) {
-				imageURL = Tools.getImageFromWikipedia(mbInfo.getWikipedia());
-				log.info("found wikipedia image");
+				try {
+					imageURL = Tools.getImageFromWikipedia(mbInfo.getWikipedia());
+					log.info("found wikipedia image");
+				} catch(NullPointerException e) {
+					e.printStackTrace();
+				}
 			}
 
 
@@ -273,18 +277,18 @@ public class Actions {
 					rg.getString("mbid"));
 			srgs.addAll(srg);
 		}
-		
+
 		// Delete from songs to artist
 
 		for (SongReleaseGroup srg : srgs) {
 			Song song = SONG.findFirst("mbid = ?", srg.getString("song_mbid"));
-			
+
 			// Delete the torrent file from the server:
 			new File(song.getString("torrent_path")).delete();
-			
+
 			SONG.delete("mbid = ?", srg.getString("song_mbid"));
-			
-			
+
+
 		}
 
 		for (ReleaseGroup rg : rgs) {
@@ -294,7 +298,7 @@ public class Actions {
 
 		RELEASE_GROUP.delete("artist_mbid = ?", artistMBID);
 		ARTIST.delete("mbid = ?", artistMBID);
-		
+
 		com.torrenttunes.client.db.Actions.removeArtist(artistMBID);
 
 	}

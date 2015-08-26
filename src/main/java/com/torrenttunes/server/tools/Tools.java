@@ -453,6 +453,8 @@ public class Tools {
 
 		String wikiQuery = "https://en.wikipedia.org/w/api.php?action=query&titles=" + title + 
 				"&prop=pageimages&pithumbsize=300&format=json&piprop=original";
+		
+		log.info("image query = " + wikiQuery);
 
 		String wikiJson = httpGetString(wikiQuery);
 
