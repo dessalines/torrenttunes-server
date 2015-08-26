@@ -12,6 +12,7 @@ import static spark.Spark.get;
 import static spark.Spark.post;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.File;
@@ -405,7 +406,7 @@ public class API {
 				String json = null;
 
 				json = SONG_VIEW_GROUPED.find("artist_mbid = ?", artistMbid).
-						orderBy("plays desc").limit(25).toJson(false);
+						orderBy("plays desc").limit(15).toJson(false);
 
 				return json;
 
@@ -613,8 +614,9 @@ public class API {
 
 
 				String json = null;
-				json = ARTIST.findAll().orderBy("name asc").toJson(false);
-
+				//json = ARTIST.findAll().orderBy("name asc").toJson(false);
+				json = ARTIST.findAll().orderBy("case when lower(substr(name,1,3))='the' then substr(name,5,length(name)-3) else name end;").toJson(false);
+                
 				return json;
 
 			} catch (Exception e) {
@@ -662,7 +664,7 @@ public class API {
 
 
 				String json = null;
-				json = SONG_VIEW_GROUPED.findAll().orderBy("plays desc").limit(40).toJson(false);
+				json = SONG_VIEW_GROUPED.findAll().orderBy("plays desc").limit(15).toJson(false);
 
 				return json;
 
@@ -687,8 +689,14 @@ public class API {
 
 			try {
 				Tools.allowAllHeaders(req, res);
+				
+				log.info(req.params(":encodedPath"));
+				
+				String correctedEncoded = req.params(":encodedPath").replaceAll("qzvkn", "%2F");
+				
+				log.info("corrected encoded = " + correctedEncoded);
 
-				String path = URLDecoder.decode(req.params(":encodedPath"), "UTF-8");
+				String path = URLDecoder.decode(correctedEncoded, "UTF-8");
 
 
 				File mp3 = new File(path);				
@@ -701,17 +709,29 @@ public class API {
 
 				String range = req.headers("Range");
 
-				Boolean nonStreamingBrowser = req.headers("User-Agent").toLowerCase().contains("firefox");
-			
+				
+				// Check if its a non-streaming browser, for example, firefox can't stream
+				Boolean nonStreamingBrowser = false;
+				String userAgent = req.headers("User-Agent").toLowerCase();
+				for (String browser : DataSources.NON_STREAMING_BROWSERS) {
+					if (userAgent.contains(browser.toLowerCase())) {
+						nonStreamingBrowser = true;
+						log.info("Its a non-streaming browser.");
+						break;
+					}
+				}
+				
 
 				//				res.status(206);
 
-				OutputStream stream = raw.getOutputStream();
+				OutputStream os = raw.getOutputStream();
+				
+				BufferedOutputStream bos = new BufferedOutputStream(os);
 			
 				
 				if (range == null || nonStreamingBrowser) {
 					res.header("Content-Length", String.valueOf(mp3.length())); 
-					Files.copy(mp3.toPath(), stream);
+					Files.copy(mp3.toPath(), os);
 
 					return res.raw();
 
@@ -732,25 +752,25 @@ public class API {
 				res.header("Content-Range", contentRangeByteString(fromTo));
 				res.header("Content-Length", String.valueOf(length)); 
 //				res.header("Content-Length", String.valueOf(mp3.length())); 
-				//					res.header("Content-Disposition", "attachment; filename=\"" + mp3.getName() + "\"");
+									res.header("Content-Disposition", "attachment; filename=\"" + mp3.getName() + "\"");
 				res.header("Date", new java.util.Date(mp3.lastModified()).toString());
 				res.header("Last-Modified", new java.util.Date(mp3.lastModified()).toString());
 //				res.header("Server", "Apache");
-				//									res.header("X-Content-Duration", "30");
-				//									res.header("Content-Duration", "30");
+													res.header("X-Content-Duration", "30");
+													res.header("Content-Duration", "30");
 				res.header("Connection", "Keep-Alive");
 				//					String etag = com.google.common.io.Files.hash(mp3, Hashing.md5()).toString();
 				//					res.header("Etag", etag);
-				//					res.header("Cache-Control", "no-cache, private");
-				//					res.header("X-Pad","avoid browser bug");
-				//					res.header("Expires", "0");
-				//					res.header("Pragma", "no-cache");
+									res.header("Cache-Control", "no-cache, private");
+									res.header("X-Pad","avoid browser bug");
+									res.header("Expires", "0");
+									res.header("Pragma", "no-cache");
 				res.header("Content-Transfer-Encoding", "binary");
 				res.header("Transfer-Encoding", "chunked");
 				res.header("Keep-Alive", "timeout=15, max=100");
-				//					res.header("If-None-Match", "webkit-no-cache");
+									res.header("If-None-Match", "webkit-no-cache");
 				//					res.header("X-Sendfile", path);
-				//					res.header("X-Stream", true);
+									res.header("X-Stream", "true");
 
 				// This one works, but doesn't stream
 
@@ -759,12 +779,12 @@ public class API {
 				log.info("writing random access file instead");
 				final RandomAccessFile raf = new RandomAccessFile(mp3, "r");
 				raf.seek(fromTo[0]);
-				writeAudioToOS(length, raf, stream);
+				writeAudioToOS(length, raf, bos);
 			
 				raf.close();
 
-				stream.flush();
-				stream.close();
+				bos.flush();
+				bos.close();
 
 				return res.raw();
 
@@ -820,7 +840,7 @@ public class API {
 		log.info(range);
 		log.info("ranges[] = " + Arrays.toString(ranges));
 
-		Integer chunkSize = 512000;
+		Integer chunkSize = 512;
 		Integer from = Integer.parseInt(ranges[0]);
 		Integer to = chunkSize + from;
 		if (to >= mp3.length()) {
@@ -848,14 +868,15 @@ public class API {
 
 	}
 
-	public static void writeAudioToOS(Integer length, RandomAccessFile raf, OutputStream os) throws IOException {
+	public static void writeAudioToOS(Integer length, RandomAccessFile raf, BufferedOutputStream os) throws IOException {
 
-		byte[] buf = new byte[32*1024];
+		byte[] buf = new byte[256];
 		while(length != 0) {
 			int read = raf.read(buf, 0, buf.length > length ? length : buf.length);
 			os.write(buf, 0, read);
 			length -= read;
 		}
+
 		log.info("before closing");
 //		
 		

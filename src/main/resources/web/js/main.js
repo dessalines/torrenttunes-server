@@ -46,7 +46,8 @@ soundManager.onready(function() {
   // setupPlayQueue();
   player.playlistController.refresh();
   player.actions.next();
-  player.actions.stop();
+  // player.actions.stop();
+  setupPaths();
 });
 
 $(document).ready(function() {
@@ -59,12 +60,13 @@ $(document).ready(function() {
   // setupSettingsTab();
   // setupPlaylistForm();
   setupDonate();
+  setupBrowseTab();
 
   setupTabs();
 
   // errorTest();
 
-  setupPaths();
+  // setupPaths();
 
 
 });
@@ -84,17 +86,18 @@ function setupPaths() {
   } else if (albumMBID != null) {
     showAlbumPage(albumMBID);
   } else if (songMBID != null) {
-    soundManager.onready(function() {
 
-      getJson('get_song/' + songMBID, null, torrentTunesSparkService).done(function(e) {
-        var track = JSON.parse(e);
-        var infoHash = track['info_hash'];
 
-        downloadOrFetchTrackObj(infoHash, 'play-now');
-        var albumMBID = track['release_group_mbid'];
-        showAlbumPage(albumMBID);
-      });
+    getJson('get_song/' + songMBID, null, torrentTunesSparkService).done(function(e) {
+      var track = JSON.parse(e);
+      var infoHash = track['info_hash'];
+
+      downloadOrFetchTrackObj(infoHash, 'play-now');
+      var albumMBID = track['release_group_mbid'];
+      showAlbumPage(albumMBID);
+
     });
+
   }
 
 }
@@ -141,7 +144,7 @@ function setupTabs() {
       setupAlbumCatalogTab();
 
     } else if (tabId == "#browseTab") {
-      setupBrowseTab();
+      // setupBrowseTab();
     } else if (tabId == "#homeTab") {
       setupHomeTab();
     } else if (tabId == "#libraryTab") {
@@ -250,11 +253,13 @@ function setupSettingsTab() {
 
 
 function setupBrowseTab() {
+  $('#home_page_loading_div').removeClass('hide');
   getJson('get_artists', null, torrentTunesSparkService).done(function(e) {
     var artists = JSON.parse(e);
     console.log(artists);
 
     fillMustacheWithJson(artists, browseTemplate, '#browse_div');
+    $('#home_page_loading_div').addClass('hide');
   });
 }
 
@@ -676,7 +681,7 @@ function downloadOrFetchTrackObj(infoHash, option) {
     updateDownloadStatusBar(infoHash);
   }, 5000);
 
-  getJson('fetch_or_download_song/' + infoHash, null, externalSparkService, playButtonName).done(function(e1) {
+  return getJson('fetch_or_download_song/' + infoHash, null, externalSparkService, playButtonName).done(function(e1) {
     var trackObj = JSON.parse(e1);
 
     replaceParams('song', trackObj['mbid']);
@@ -684,7 +689,7 @@ function downloadOrFetchTrackObj(infoHash, option) {
     // var id = parseInt(full[1]) - 1;
     var id = parseInt(trackObj['id']);
 
-
+    toastr.success('Added ' + trackObj['artist'] + ' - ' + trackObj['title']);
     if (option == 'play-now') {
       playNow(trackObj);
     } else if (option == 'play-button') {
@@ -795,7 +800,7 @@ function playNow(trackObj) {
   // var item = player.playlistController.getItem(0);
   // console.log(item);
   // player.playlistController.select(item);
-  // player.playlistController.refresh();
+  player.playlistController.refresh();
   // player.actions.stop();
 
   // add it to the queue
@@ -804,11 +809,37 @@ function playNow(trackObj) {
   // player.actions.stop();
   $('.sm2-playlist-bd li').removeClass('selected');
 
+  console.log('index = ' + index);
   if (index != 0) {
-    console.log("index = " + index);
+    console.log("play item by offset");
     player.playlistController.playItemByOffset(index);
   } else {
+    console.log("play previous itemz");
     player.actions.prev();
+
+    // Mobile play can only be started by touch(mobile rules of iOS and android)
+    if (isMobile()) {
+
+      delay(function() {
+        player.actions.pause();
+      }, 3000);
+
+    }
+
+    // delay(function() {
+    //   console.log('play clicked');
+
+    //   var item = player.playlistController.getItem(0);
+    //   console.log(item);
+    //   player.playlistController.select(item);
+
+    //   player.actions.next();
+    //   delay(function() {
+    //     player.actions.prev();
+    //   }, 1000);
+
+    // }, 6000);
+
     // player.actions.play(); 
   }
   // player.actions.play();
@@ -820,6 +851,9 @@ function buildLiFromTrackObject(trackObj) {
   var encodedAudioFilePath = externalSparkService + 'get_audio_file/' +
     encodeURIComponent(trackObj['file_path']);
 
+  encodedAudioFilePath = encodedAudioFilePath.replace(/\%2F/g, 'qzvkn');
+  console.log(encodedAudioFilePath);
+
 
 
   var li = '<li><a href="' + encodedAudioFilePath + '"><b>' +
@@ -827,7 +861,7 @@ function buildLiFromTrackObject(trackObj) {
     htmlDecode(htmlDecode(trackObj['artist'])) + '</span></b> - ' +
     htmlDecode(htmlDecode(trackObj['title'])) + '</a></li>';
 
-  console.log(trackObj['artist']);
+  // console.log(trackObj['artist']);
 
   // var li = '<li><a href="file://' + trackObj['file_path'] + '"><b>' +
   //   trackObj['artist'] + '</b> - ' + trackObj['title'] + '</a></li>';
