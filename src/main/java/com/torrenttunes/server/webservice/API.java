@@ -614,8 +614,9 @@ public class API {
 
 
 				String json = null;
-				json = ARTIST.findAll().orderBy("name asc").toJson(false);
-
+				//json = ARTIST.findAll().orderBy("name asc").toJson(false);
+				json = ARTIST.findAll().orderBy("case when lower(substr(name,1,3))='the' then substr(name,5,length(name)-3) else name end;").toJson(false);
+                
 				return json;
 
 			} catch (Exception e) {
