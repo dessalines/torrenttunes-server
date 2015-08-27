@@ -29,6 +29,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -697,6 +698,10 @@ public class API {
 				log.info("corrected encoded = " + correctedEncoded);
 
 				String path = URLDecoder.decode(correctedEncoded, "UTF-8");
+				
+				if (!path.endsWith(".mp3")) {
+					throw new NoSuchElementException("Not an audio file");
+				}
 
 
 				File mp3 = new File(path);				
