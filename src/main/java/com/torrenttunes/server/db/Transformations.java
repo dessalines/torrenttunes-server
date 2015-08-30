@@ -7,6 +7,7 @@ import java.util.List;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.node.ArrayNode;
 import org.codehaus.jackson.node.ObjectNode;
+import org.javalite.activejdbc.Model;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,7 +31,7 @@ public class Transformations {
 		List<ArtistTagView> tags = ARTIST_TAG_VIEW.find("mbid = ?", artistMbid);
 		
 		
-		List<Artist> relatedArtists = ARTIST.findBySQL(RELATED_ARTIST_VIEW_SQL(artistMbid));
+		List<Model> relatedArtists = ARTIST.findBySQL(RELATED_ARTIST_VIEW_SQL, artistMbid, artistMbid);
 //		RELATED_ARTIST_VIEW.find
 //		log.info(RELATED_ARTIST_VIEW.find(
 //				"mbid like ? and `mbid:1` not like ?", 
@@ -49,7 +50,7 @@ public class Transformations {
 		ArrayNode an = a.putArray("related_artists");
 
 		
-		for (Artist relatedArtist : relatedArtists) {
+		for (Model relatedArtist : relatedArtists) {
 			an.add(Tools.jsonToNode(relatedArtist.toJson(false)));
 		}
 		
