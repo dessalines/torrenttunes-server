@@ -82,4 +82,48 @@ inner join artist
 on release_group.artist_mbid = artist.mbid
 group by release_group.mbid;
 
+CREATE VIEW related_artist_view AS 
+select artist1.mbid, 
+artist1.name, 
+artist2.mbid, 
+artist2.name, 
+tag_info1.count, 
+tag_info2.count, 
+tag.name, 
+tag.id,
+(tag_info1.tag_id*100/732) as score
+from artist as artist1
+left join tag_info as tag_info1
+on artist1.mbid = tag_info1.artist_mbid
+left join tag 
+on tag_info1.tag_id = tag.id
+left join tag_info as tag_info2
+on tag_info2.tag_id = tag.id
+left join artist as artist2
+on tag_info2.artist_mbid = artist2.mbid
+-- where artist1.name like '%Deftones%'
+-- and artist2.name not like '%Deftones%'
+group by artist2.mbid
+order by 
+-- This one sorts by tag.id desc, meaning the weirdest categories
+tag_info1.tag_id desc,
+-- This one makes it more pertinent(NIN has the most votes for industrial)
+tag_info1.count desc, 
+-- This one does the second groups votes
+tag_info2.count desc
+limit 10;
+
+CREATE VIEW artist_tag_view AS 
+select artist.mbid, artist.name, tag_info.count, tag.name, tag.id
+from artist
+left join tag_info
+on artist.mbid = tag_info.artist_mbid
+left join tag 
+on tag_info.tag_id = tag.id
+-- where artist.name like '%Deftones%'
+order by artist.mbid, tag_info.count desc, tag.id desc
+;
+
+
+
 

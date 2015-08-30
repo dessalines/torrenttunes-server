@@ -47,6 +47,7 @@ import com.google.common.hash.Hashing;
 import com.torrenttunes.server.DataSources;
 import com.torrenttunes.server.db.Actions;
 import com.torrenttunes.server.db.Tables.SongView;
+import com.torrenttunes.server.db.Transformations;
 import com.torrenttunes.server.tools.Tools;
 
 
@@ -516,8 +517,8 @@ public class API {
 
 				String artistMbid = req.params(":artistMbid");
 
-				String json = null;
-				json = ARTIST.findFirst("mbid = ?", artistMbid).toJson(false);
+
+				String json = Tools.nodeToJson(Transformations.artistViewJson(artistMbid));
 
 				return json;
 

@@ -35,7 +35,6 @@ public class Tables {
 	public static class AlbumView extends Model {}
 	public static final AlbumView ALBUM_VIEW = new AlbumView();
 	
-	
 	@Table("song_search_view")
 	public static class SongSearchView extends Model {}
 	public static final SongSearchView SONG_SEARCH_VIEW = new SongSearchView();
@@ -55,6 +54,14 @@ public class Tables {
 	@Table("tag")
 	public static class Tag extends Model {}
 	public static final Tag TAG = new Tag();
+	
+	@Table("related_artist_view")
+	public static class RelatedArtistView extends Model {}
+	public static final RelatedArtistView RELATED_ARTIST_VIEW = new RelatedArtistView();
+	
+	@Table("artist_tag_view")
+	public static class ArtistTagView extends Model {}
+	public static final ArtistTagView ARTIST_TAG_VIEW = new ArtistTagView();
 	
 	
 }
