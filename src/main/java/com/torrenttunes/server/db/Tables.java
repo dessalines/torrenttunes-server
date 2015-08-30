@@ -55,9 +55,9 @@ public class Tables {
 	public static class Tag extends Model {}
 	public static final Tag TAG = new Tag();
 	
-//	@Table("related_artist_view")
-//	public static class RelatedArtistView extends Model {}
-//	public static final RelatedArtistView RELATED_ARTIST_VIEW = new RelatedArtistView();
+	@Table("related_artist_view")
+	public static class RelatedArtistView extends Model {}
+	public static final RelatedArtistView RELATED_ARTIST_VIEW = new RelatedArtistView();
 	
 	public static final String RELATED_ARTIST_VIEW_SQL =
 			"select artist1.mbid, \n"+
