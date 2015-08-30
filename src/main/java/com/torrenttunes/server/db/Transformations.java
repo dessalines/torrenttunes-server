@@ -23,7 +23,7 @@ public class Transformations {
 		
 		Artist artist = ARTIST.findFirst("mbid = ?", artistMbid);
 		
-		List<ArtistTagView> tags = ARTIST_TAG_VIEW.find("artist.mbid = ?", artistMbid);
+		List<ArtistTagView> tags = ARTIST_TAG_VIEW.find("mbid = ?", artistMbid);
 		
 		List<RelatedArtistView> relatedArtists = RELATED_ARTIST_VIEW.find(
 				"mbid = ? and `mbid:1` != ?", 
