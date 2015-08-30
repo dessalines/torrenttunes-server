@@ -60,13 +60,13 @@ public class Tables {
 	public static final RelatedArtistView RELATED_ARTIST_VIEW = new RelatedArtistView();
 	
 	public static final String RELATED_ARTIST_VIEW_SQL =
-			"select artist1.mbid, \n"+
-				"artist1.name, \n"+
-				"artist2.mbid, \n"+
-				"artist2.name, \n"+
+			"select artist1.mbid as artist1_mbid, \n"+
+				"artist1.name as artist1_name, \n"+
+				"artist2.mbid as artist2_mbid, \n"+
+				"artist2.name as artist2_name, \n"+
 				"tag_info1.count, \n"+
 				"tag_info2.count, \n"+
-				"tag.name, \n"+
+				"tag.name as tag_name, \n"+
 				"tag.id,\n"+
 				"(tag_info1.tag_id*100/732) as score\n"+
 				"from artist as artist1\n"+
