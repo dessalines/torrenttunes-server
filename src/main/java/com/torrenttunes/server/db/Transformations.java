@@ -30,7 +30,7 @@ public class Transformations {
 		List<ArtistTagView> tags = ARTIST_TAG_VIEW.find("mbid = ?", artistMbid);
 		
 		List<RelatedArtistView> relatedArtists = RELATED_ARTIST_VIEW.find(
-				"mbid like '?' and `mbid:1` not like '?'", 
+				"mbid like ? and `mbid:1` not like ?", 
 				artistMbid,artistMbid);
 		log.info(RELATED_ARTIST_VIEW.find(
 				"mbid like ? and `mbid:1` not like ?", 
