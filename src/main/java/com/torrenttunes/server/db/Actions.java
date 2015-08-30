@@ -11,9 +11,11 @@ import java.util.Set;
 
 import org.codehaus.jackson.JsonNode;
 import org.javalite.activejdbc.DBException;
+import org.javalite.activejdbc.Model;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.musicbrainz.mp3.tagger.Tools.Artist.Tag;
 import com.musicbrainz.mp3.tagger.Tools.CoverArt;
 import com.musicbrainz.mp3.tagger.Tools.Song.MusicBrainzRecordingQuery;
 import com.torrenttunes.client.LibtorrentEngine;
@@ -71,47 +73,21 @@ public class Actions {
 		// Find it by the MBID
 		Song song = SONG.findFirst("mbid = ?", songMbid);
 
-
 		song.set("title", title,
 				"duration_ms", durationMS).saveIt();
 		log.info("New song: " + title + " updated");
 
 
+		createArtist(artist, artistMbid);
 
-		// First, check to see if the album or artist need to be created:
-		Artist artistRow = ARTIST.findFirst("mbid = ?", artistMbid);
-		if (artistRow == null) {
-			log.info("new artist");
-			// Fetch some links and images from musicbrainz
-			com.musicbrainz.mp3.tagger.Tools.Artist mbInfo = 
-					com.musicbrainz.mp3.tagger.Tools.Artist.fetchArtist(artistMbid);
-
-			String imageURL = null;
-			if (mbInfo.getWikipedia() != null) {
-				try {
-					imageURL = Tools.getImageFromWikipedia(mbInfo.getWikipedia());
-					log.info("found wikipedia image");
-				} catch(NullPointerException e) {
-					e.printStackTrace();
-				}
-			}
+		createSongReleaseGroups(json, songMbid, artistMbid);
 
 
+	}
 
-			artistRow = ARTIST.createIt("mbid", artistMbid,
-					"name", artist,
-					"image_url", imageURL,
-					"wikipedia_link", mbInfo.getWikipedia(),
-					"allmusic_link", mbInfo.getAllMusic(),
-					"official_homepage", mbInfo.getOfficialHomepage(),
-					"imdb", mbInfo.getIMDB(),
-					"lyrics", mbInfo.getLyrics(),
-					"youtube", mbInfo.getYoutube(),
-					"soundcloud", mbInfo.getSoundCloud(),
-					"lastfm", mbInfo.getLastFM());
-			log.info("New artist: " + artist + " created");
-		}
 
+	private static void createSongReleaseGroups(JsonNode json, String songMbid,
+			String artistMbid) {
 		// Loop over every album found, necessary for release_groups and tracks
 		int i = 0;
 		JsonNode releaseGroupInfos = json.get("releaseGroupInfos");
@@ -136,43 +112,8 @@ public class Actions {
 			log.info("secondary types = " + secondaryTypes);
 
 
-
-
-
-			ReleaseGroup releaseRow = RELEASE_GROUP.findFirst("mbid = ?" , albumMbid);
-			// If the album doesn't exist, create the row
-			if (releaseRow == null) {
-				log.info("new album");
-				// Fetch some links and images from musicbrainz
-				com.musicbrainz.mp3.tagger.Tools.ReleaseGroup mbInfo = 
-						com.musicbrainz.mp3.tagger.Tools.ReleaseGroup.fetchReleaseGroup(albumMbid);
-
-				// Fetch the coverart
-				String coverArtURL = null, coverArtLargeThumbnail = null, coverArtSmallThumbnail = null;
-				try {
-					CoverArt coverArt = CoverArt.fetchCoverArt(albumMbid);
-					coverArtURL = coverArt.getImageURL();
-					coverArtLargeThumbnail = coverArt.getLargeThumbnailURL();
-					coverArtSmallThumbnail = coverArt.getSmallThumbnailURL();
-				} catch(NoSuchElementException e) {
-					e.printStackTrace();
-				}
-
-				releaseRow = RELEASE_GROUP.createIt("mbid", albumMbid,
-						"title", mbInfo.getTitle(),
-						"artist_mbid", artistMbid,
-						"year", mbInfo.getYear(),
-						"wikipedia_link", mbInfo.getWikipedia(),
-						"allmusic_link", mbInfo.getAllMusic(),
-						"official_homepage", mbInfo.getOfficialHomepage(),
-						"lyrics", mbInfo.getLyrics(),
-						"album_coverart_url", coverArtURL,
-						"album_coverart_thumbnail_large", coverArtLargeThumbnail,
-						"album_coverart_thumbnail_small", coverArtSmallThumbnail,
-						"primary_type", primaryType,
-						"secondary_types", secondaryTypes);
-				log.info("New album: " + mbInfo.getTitle() + " created");
-			}
+			createReleaseGroups(artistMbid, albumMbid, primaryType,
+					secondaryTypes);
 
 			// Now that both the song and release_group are made, add the song_release_group
 			// row that links them together
@@ -188,8 +129,134 @@ public class Actions {
 			}
 
 		}
+	}
 
 
+	private static void createReleaseGroups(String artistMbid,
+			String albumMbid, String primaryType, String secondaryTypes) {
+		ReleaseGroup releaseRow = RELEASE_GROUP.findFirst("mbid = ?" , albumMbid);
+		// If the album doesn't exist, create the row
+		if (releaseRow == null) {
+			log.info("new album");
+			// Fetch some links and images from musicbrainz
+			com.musicbrainz.mp3.tagger.Tools.ReleaseGroup mbInfo = 
+					com.musicbrainz.mp3.tagger.Tools.ReleaseGroup.fetchReleaseGroup(albumMbid);
+
+			// Fetch the coverart
+			String coverArtURL = null, coverArtLargeThumbnail = null, coverArtSmallThumbnail = null;
+			try {
+				CoverArt coverArt = CoverArt.fetchCoverArt(albumMbid);
+				coverArtURL = coverArt.getImageURL();
+				coverArtLargeThumbnail = coverArt.getLargeThumbnailURL();
+				coverArtSmallThumbnail = coverArt.getSmallThumbnailURL();
+			} catch(NoSuchElementException e) {
+				e.printStackTrace();
+			}
+
+			releaseRow = RELEASE_GROUP.createIt("mbid", albumMbid,
+					"title", mbInfo.getTitle(),
+					"artist_mbid", artistMbid,
+					"year", mbInfo.getYear(),
+					"wikipedia_link", mbInfo.getWikipedia(),
+					"allmusic_link", mbInfo.getAllMusic(),
+					"official_homepage", mbInfo.getOfficialHomepage(),
+					"lyrics", mbInfo.getLyrics(),
+					"album_coverart_url", coverArtURL,
+					"album_coverart_thumbnail_large", coverArtLargeThumbnail,
+					"album_coverart_thumbnail_small", coverArtSmallThumbnail,
+					"primary_type", primaryType,
+					"secondary_types", secondaryTypes);
+			log.info("New album: " + mbInfo.getTitle() + " created");
+		}
+	}
+
+
+	private static void createArtist(String artist, String artistMbid) {
+		// First, check to see if the album or artist need to be created:
+		Artist artistRow = ARTIST.findFirst("mbid = ?", artistMbid);
+		if (artistRow == null) {
+			log.info("new artist");
+			// Fetch some links and images from musicbrainz
+			com.musicbrainz.mp3.tagger.Tools.Artist mbInfo = 
+					com.musicbrainz.mp3.tagger.Tools.Artist.fetchArtist(artistMbid);
+
+
+			// Fetch the images
+			String imageURL = null;
+			if (mbInfo.getWikipedia() != null) {
+				try {
+					imageURL = Tools.getImageFromWikipedia(mbInfo.getWikipedia());
+					log.info("found wikipedia image");
+				} catch(NullPointerException e) {
+					e.printStackTrace();
+				}
+			}
+
+			// Fetch and create the tags
+			// Check to see if there are any tagInfos for that artist in the db, or any from musicBrainz
+			createTags(artistMbid, mbInfo);
+
+
+			artistRow = ARTIST.createIt("mbid", artistMbid,
+					"name", artist,
+					"image_url", imageURL,
+					"wikipedia_link", mbInfo.getWikipedia(),
+					"allmusic_link", mbInfo.getAllMusic(),
+					"official_homepage", mbInfo.getOfficialHomepage(),
+					"imdb", mbInfo.getIMDB(),
+					"lyrics", mbInfo.getLyrics(),
+					"youtube", mbInfo.getYoutube(),
+					"soundcloud", mbInfo.getSoundCloud(),
+					"lastfm", mbInfo.getLastFM());
+			log.info("New artist: " + artist + " created");
+		}
+	}
+
+
+	private static void createTags(String artistMbid,
+			com.musicbrainz.mp3.tagger.Tools.Artist mbInfo) {
+		TagInfo ti = TAG_INFO.findFirst("artist_mbid = ?", artistMbid);
+
+		// Delete all of that artists tag infos if they do exist
+		if (ti != null) {
+			TAG_INFO.delete("artist_mbid = ?", artistMbid);
+		}
+
+		if (mbInfo.getTags() != null) {
+			for (Tag mbInfoTag : mbInfo.getTags()) {
+				com.torrenttunes.server.db.Tables.Tag tagRow = TAG.findFirst("name = ?", mbInfoTag.getName());
+
+				// if that tag doesn't exist, create it
+				if (tagRow == null) {
+					tagRow = TAG.createIt("name", mbInfoTag.getName());
+				}
+
+				// create the tag_info
+				ti = TAG_INFO.createIt("artist_mbid", artistMbid,
+						"count", mbInfoTag.getCount(),
+						"tag_id", tagRow.getInteger("id"));
+				
+				log.info("Added tag " + mbInfoTag.getName() + " for artist " + artistMbid);
+
+
+			}
+		}
+	}
+
+	public static void refetchTags() {
+		List<Artist> artists = ARTIST.findAll();
+
+
+		for (Artist cArtist : artists) {
+			String artistMbid = cArtist.getString("mbid");
+
+			// Fetch some links and images from musicbrainz
+			com.musicbrainz.mp3.tagger.Tools.Artist mbInfo = 
+					com.musicbrainz.mp3.tagger.Tools.Artist.fetchArtist(artistMbid);
+
+			createTags(artistMbid, mbInfo);
+
+		}
 	}
 
 	public static void refetchAlbumArt() {

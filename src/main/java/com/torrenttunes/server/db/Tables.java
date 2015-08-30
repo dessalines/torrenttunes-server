@@ -48,4 +48,13 @@ public class Tables {
 	public static class ArtistSearchView extends Model {}
 	public static final ArtistSearchView ARTIST_SEARCH_VIEW = new ArtistSearchView();
 	
+	@Table("tag_info")
+	public static class TagInfo extends Model {}
+	public static final TagInfo TAG_INFO = new TagInfo();
+	
+	@Table("tag")
+	public static class Tag extends Model {}
+	public static final Tag TAG = new Tag();
+	
+	
 }
