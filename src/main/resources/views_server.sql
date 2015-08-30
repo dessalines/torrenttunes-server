@@ -83,10 +83,10 @@ on release_group.artist_mbid = artist.mbid
 group by release_group.mbid;
 
 CREATE VIEW related_artist_view AS 
-select artist1.mbid, 
-artist1.name, 
-artist2.mbid, 
-artist2.name, 
+select artist1.mbid as artist1_mbid, 
+artist1.name as artist1_name, 
+artist2.mbid as artist2_mbid, 
+artist2.name as artist2_name, 
 tag_info1.count, 
 tag_info2.count, 
 tag.name, 
@@ -101,6 +101,8 @@ left join tag_info as tag_info2
 on tag_info2.tag_id = tag.id
 left join artist as artist2
 on tag_info2.artist_mbid = artist2.mbid
+where artist1.mbid = 'c296e10c-110a-4103-9e77-47bfebb7fb2e'
+and artist2.mbid != 'c296e10c-110a-4103-9e77-47bfebb7fb2e'
 group by artist2.mbid
 order by 
 -- This one sorts by tag.id desc, meaning the weirdest categories
@@ -112,7 +114,7 @@ tag_info2.count desc
 limit 10;
 
 -- where artist1.name like '%Bob Marley%'
--- where artist1.mbid = 'c296e10c-110a-4103-9e77-47bfebb7fb2e'
+
 -- and artist2.name not like '%Deftones%'
 --where artist1.mbid like 'b7ffd2af-418f-4be2-bdd1-22f8b48613da' 
 --and artist2.mbid not like 'b7ffd2af-418f-4be2-bdd1-22f8b48613da' 
