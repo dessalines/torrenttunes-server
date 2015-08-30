@@ -114,7 +114,7 @@ tag_info2.count desc
 limit 10;
 
 CREATE VIEW artist_tag_view AS 
-select artist.mbid, artist.name, tag_info.count, tag.name, tag.id
+select artist.mbid, tag_info.count, tag.name, tag.id
 from artist
 left join tag_info
 on artist.mbid = tag_info.artist_mbid
