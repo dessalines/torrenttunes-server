@@ -78,8 +78,8 @@ public class Tables {
 				"on tag_info2.tag_id = tag.id\n"+
 				"left join artist as artist2\n"+
 				"on tag_info2.artist_mbid = artist2.mbid\n"+
-				"where artist1.mbid = \'?\'\n"+
-				"and artist2.mbid != \'?\'\n"+
+				"where artist1.mbid = ? \n"+
+				"and artist2.mbid != ? \n"+
 				"group by artist2.mbid\n"+
 				"order by \n"+
 				"-- This one sorts by tag.id desc, meaning the weirdest categories\n"+
