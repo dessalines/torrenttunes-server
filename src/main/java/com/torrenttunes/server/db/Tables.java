@@ -55,9 +55,41 @@ public class Tables {
 	public static class Tag extends Model {}
 	public static final Tag TAG = new Tag();
 	
-	@Table("related_artist_view")
-	public static class RelatedArtistView extends Model {}
-	public static final RelatedArtistView RELATED_ARTIST_VIEW = new RelatedArtistView();
+//	@Table("related_artist_view")
+//	public static class RelatedArtistView extends Model {}
+//	public static final RelatedArtistView RELATED_ARTIST_VIEW = new RelatedArtistView();
+	
+	public static final String RELATED_ARTIST_VIEW_SQL(String artistMbid) {
+		return "select artist1.mbid, \n"+
+				"artist1.name, \n"+
+				"artist2.mbid, \n"+
+				"artist2.name, \n"+
+				"tag_info1.count, \n"+
+				"tag_info2.count, \n"+
+				"tag.name, \n"+
+				"tag.id,\n"+
+				"(tag_info1.tag_id*100/732) as score\n"+
+				"from artist as artist1\n"+
+				"left join tag_info as tag_info1\n"+
+				"on artist1.mbid = tag_info1.artist_mbid\n"+
+				"left join tag \n"+
+				"on tag_info1.tag_id = tag.id\n"+
+				"left join tag_info as tag_info2\n"+
+				"on tag_info2.tag_id = tag.id\n"+
+				"left join artist as artist2\n"+
+				"on tag_info2.artist_mbid = artist2.mbid\n"+
+				"where artist1.mbid = \'" + artistMbid + "\'\n"+
+				"and artist2.mbid != \'" + artistMbid + "\'\n"+
+				"group by artist2.mbid\n"+
+				"order by \n"+
+				"-- This one sorts by tag.id desc, meaning the weirdest categories\n"+
+				"tag_info1.tag_id desc,\n"+
+				"-- This one makes it more pertinent(NIN has the most votes for industrial)\n"+
+				"tag_info1.count desc, \n"+
+				"-- This one does the second groups votes\n"+
+				"tag_info2.count desc\n"+
+				"limit 10;";
+	}
 	
 	@Table("artist_tag_view")
 	public static class ArtistTagView extends Model {}

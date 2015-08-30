@@ -101,8 +101,6 @@ left join tag_info as tag_info2
 on tag_info2.tag_id = tag.id
 left join artist as artist2
 on tag_info2.artist_mbid = artist2.mbid
--- where artist1.name like '%Deftones%'
--- and artist2.name not like '%Deftones%'
 group by artist2.mbid
 order by 
 -- This one sorts by tag.id desc, meaning the weirdest categories
@@ -112,6 +110,14 @@ tag_info1.count desc,
 -- This one does the second groups votes
 tag_info2.count desc
 limit 10;
+
+-- where artist1.name like '%Bob Marley%'
+-- where artist1.mbid = 'c296e10c-110a-4103-9e77-47bfebb7fb2e'
+-- and artist2.name not like '%Deftones%'
+--where artist1.mbid like 'b7ffd2af-418f-4be2-bdd1-22f8b48613da' 
+--and artist2.mbid not like 'b7ffd2af-418f-4be2-bdd1-22f8b48613da' 
+
+select * from related_artist_view where `mbid` like 'b7ffd2af-418f-4be2-bdd1-22f8b48613da';
 
 CREATE VIEW artist_tag_view AS 
 select artist.mbid, tag_info.count, tag.name, tag.id

@@ -29,12 +29,12 @@ public class Transformations {
 		
 		List<ArtistTagView> tags = ARTIST_TAG_VIEW.find("mbid = ?", artistMbid);
 		
-		List<RelatedArtistView> relatedArtists = RELATED_ARTIST_VIEW.find(
-				"mbid like ? and `mbid:1` not like ?", 
-				artistMbid,artistMbid);
-		log.info(RELATED_ARTIST_VIEW.find(
-				"mbid like ? and `mbid:1` not like ?", 
-				artistMbid,artistMbid).toSql());
+		
+		List<Artist> relatedArtists = ARTIST.findBySQL(RELATED_ARTIST_VIEW_SQL(artistMbid));
+//		RELATED_ARTIST_VIEW.find
+//		log.info(RELATED_ARTIST_VIEW.find(
+//				"mbid like ? and `mbid:1` not like ?", 
+//				artistMbid,artistMbid).toSql());
 		
 		
 		
@@ -49,7 +49,7 @@ public class Transformations {
 		ArrayNode an = a.putArray("related_artists");
 
 		
-		for (RelatedArtistView relatedArtist : relatedArtists) {
+		for (Artist relatedArtist : relatedArtists) {
 			an.add(Tools.jsonToNode(relatedArtist.toJson(false)));
 		}
 		
