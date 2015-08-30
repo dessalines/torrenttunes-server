@@ -7,6 +7,8 @@ import java.util.List;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.node.ArrayNode;
 import org.codehaus.jackson.node.ObjectNode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.torrenttunes.server.db.Tables.Artist;
 import com.torrenttunes.server.db.Tables.ArtistTagView;
@@ -15,6 +17,8 @@ import com.torrenttunes.server.tools.Tools;
 
 public class Transformations {
 	
+	static final Logger log = LoggerFactory.getLogger(Transformations.class);
+
 	
 	public static ObjectNode artistViewJson(String artistMbid) {
 		
@@ -28,6 +32,9 @@ public class Transformations {
 		List<RelatedArtistView> relatedArtists = RELATED_ARTIST_VIEW.find(
 				"mbid like ? and `mbid:1` not like ?", 
 				artistMbid,artistMbid);
+		log.info(RELATED_ARTIST_VIEW.find(
+				"mbid like ? and `mbid:1` not like ?", 
+				artistMbid,artistMbid).toSql());
 		
 		
 		
