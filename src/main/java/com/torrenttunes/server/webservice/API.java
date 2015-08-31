@@ -4,10 +4,13 @@ import static com.torrenttunes.server.db.Tables.ALBUM_SEARCH_VIEW;
 import static com.torrenttunes.server.db.Tables.ALBUM_VIEW;
 import static com.torrenttunes.server.db.Tables.ARTIST;
 import static com.torrenttunes.server.db.Tables.ARTIST_SEARCH_VIEW;
+import static com.torrenttunes.server.db.Tables.RELATED_ARTIST_VIEW;
+import static com.torrenttunes.server.db.Tables.RELATED_ARTIST_VIEW_SQL;
 import static com.torrenttunes.server.db.Tables.SONG;
 import static com.torrenttunes.server.db.Tables.SONG_SEARCH_VIEW;
 import static com.torrenttunes.server.db.Tables.SONG_VIEW;
 import static com.torrenttunes.server.db.Tables.SONG_VIEW_GROUPED;
+import static com.torrenttunes.server.db.Tables.*;
 import static spark.Spark.get;
 import static spark.Spark.post;
 
@@ -40,6 +43,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.input.BoundedInputStream;
 import org.codehaus.jackson.JsonNode;
+import org.javalite.activejdbc.Model;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -519,6 +523,34 @@ public class API {
 
 
 				String json = Tools.nodeToJson(Transformations.artistViewJson(artistMbid));
+
+				return json;
+
+			} catch (Exception e) {
+				res.status(666);
+				e.printStackTrace();
+				return e.getMessage();
+			} finally {
+				Tools.dbClose();
+			}
+
+
+		});
+		
+		get("/get_related_songs/:artistMbid", (req, res) -> {
+
+			try {
+				
+				Tools.allowAllHeaders(req, res);
+				Tools.dbInit();
+
+				String artistMbid = req.params(":artistMbid");
+
+				
+
+				String json = RELATED_SONG_VIEW.findBySQL(
+						RELATED_SONG_VIEW_SQL, 
+						artistMbid, artistMbid).toJson(false);
 
 				return json;
 
