@@ -5,6 +5,7 @@ var browseTemplate = $('#browse_template').html();
 
 // The artist catalog pages
 var artistCatalogTemplate = $('#artist_catalog_template').html();
+var artistCatalogTemplate2 = $('#artist_catalog_template_2').html();
 var topArtistAlbumsTemplate = $('#top_artist_albums_template').html();
 var topArtistSongsTemplate = $('#top_artist_songs_template').html();
 var allArtistAlbumsTemplate = $('#all_artist_albums_template').html();
@@ -23,9 +24,14 @@ var playlistLeftTabTemplate = $('#playlist_left_tab_template').html();
 var playlistPageTemplate = $('#playlist_page_template').html();
 var addToPlaylistTemplate = $('#add_to_playlist_template').html();
 
+var hrefToTrackObjMap = {};
+
 
 // the play queue
 var library, playQueue = [];
+
+// The radio station
+var radioMode = {};
 
 // the Upload polling var
 var uploadInterval;
@@ -70,6 +76,23 @@ $(document).ready(function() {
 
 
 });
+
+function setupUploadDownloadTotals() {
+  setUploadDownloadTotals();
+  // fetch every minute
+  setInterval(function() {
+    setUploadDownloadTotals();
+  }, 60000);
+
+}
+
+function setUploadDownloadTotals() {
+  console.log('Fetching upload/download totals');
+  getJson('get_upload_download_totals').done(function(e) {
+    $("#upload_download_totals").data('bs.tooltip').options.title = e;
+  });
+}
+
 
 // test path : file:///home/tyler/git/torrenttunes-client/src/main/resources/web/html/main.html?artist=95e1ead9-4d31-4808-a7ac-32c3614c116b
 // file:///home/tyler/git/torrenttunes-client/src/main/resources/web/html/main.html?album=e8c09b4e-33ae-368b-8f70-24b4e14fb9ad
@@ -119,9 +142,6 @@ function setupClickableArtistPlaying() {
 
   });
 }
-
-
-
 
 function setupTabs() {
 
@@ -389,6 +409,8 @@ function setupArtistCatalogTab() {
     console.log(artistCatalog);
 
     fillMustacheWithJson(artistCatalog, artistCatalogTemplate, '#artist_catalog_div');
+    fillMustacheWithJson(artistCatalog, artistCatalogTemplate2, '#artist_catalog_div_2');
+
     $('[data-toggle="tooltip"]').tooltip({
       container: 'body'
     });
@@ -613,7 +635,7 @@ function updateDownloadStatusBar(infoHash) {
     console.log('percentage = ' + percentage);
 
     var rows = $("tr[data-info_hash='" + infoHash + "']");
-    console.log(rows);
+    // console.log(rows);
 
     var numberOfTables = rows['length'];
 
@@ -653,6 +675,7 @@ function updateDownloadStatusBar(infoHash) {
       if (percentage == '100%') {
         console.log('Download finished');
         clearInterval(downloadStatusMap[infoHash]);
+        setUploadDownloadTotals();
 
         $(tr).css({
           'background-image': 'none',
@@ -681,7 +704,7 @@ function downloadOrFetchTrackObj(infoHash, option) {
     updateDownloadStatusBar(infoHash);
   }, 5000);
 
-  return getJson('fetch_or_download_song/' + infoHash, null, externalSparkService, playButtonName).done(function(e1) {
+  getJson('fetch_or_download_song/' + infoHash, null, externalSparkService, playButtonName).done(function(e1) {
     var trackObj = JSON.parse(e1);
 
     replaceParams('song', trackObj['mbid']);
@@ -701,6 +724,8 @@ function downloadOrFetchTrackObj(infoHash, option) {
     } else if (option == 'play-last') {
       // add it to the playqueue
       addToQueueLast(trackObj);
+    } else if (option == 'play-radio') {
+      createRadioStation(trackObj);
     }
 
     $('.sm2-bar-ui').removeClass('hide');
@@ -719,6 +744,10 @@ function downloadOrFetchTrackObj(infoHash, option) {
     simplePost('add_play_count/' + infoHash, null, null, function() {
       // console.log('play queue saved');
     }, true, torrentTunesSparkService, null);
+
+    if (successFunctions != null) {
+      successFunctions(trackObj);
+    }
 
 
   });
@@ -826,24 +855,148 @@ function playNow(trackObj) {
 
     }
 
-    // delay(function() {
-    //   console.log('play clicked');
-
-    //   var item = player.playlistController.getItem(0);
-    //   console.log(item);
-    //   player.playlistController.select(item);
-
-    //   player.actions.next();
-    //   delay(function() {
-    //     player.actions.prev();
-    //   }, 1000);
-
-    // }, 6000);
-
-    // player.actions.play(); 
   }
   // player.actions.play();
   setupClickableArtistPlaying();
+
+}
+
+function createRadioStation(trackObj) {
+
+  radioMode.running = true;
+  radioMode.queue = [];
+  radioMode.fullQueue = null;
+
+
+  // first play the first track
+  downloadOrFetchTrackObj(trackObj['info_hash'], 'play-now');
+
+  radioMode.queue.push(trackObj);
+
+  console.log(radioMode);
+
+  var artistMbid = trackObj['artist_mbid'];
+
+
+  // radioMode.watch('queue', function(id, oldval, newval) {
+
+  //   console.log('currently track:');
+  //   console.log(currentTrack);
+
+  //   console.log('radioMode.queue:');
+  //   console.log(newval);
+
+  //   if (newval.length > 3) {
+  //     var song = newval.shift();
+  //     console.log('song popped');
+
+
+  //   }
+  //   return newval;
+  // });
+
+  // Create an event listener for the # of songs in the radio queue
+  radioMode.watch('fullQueue', function(id, oldval, newval) {
+
+    console.log('radioMode.fullQueue:');
+    console.log(newval);
+
+
+    // Only do this if the radio is running
+    if (radioMode.running == true) {
+
+      var currentTrack = getCurrentTrackObj();
+
+
+
+      // the first fetch, or if the length gets less than 3, download a new set
+      if (newval == null || newval.length < 3) {
+        // Fetch 10 related song groupings
+        getJson('get_related_songs/' + artistMbid, null, torrentTunesSparkService).done(function(e) {
+          var tenSongArray = JSON.parse(e);
+
+
+          console.log(tenSongArray);
+
+          console.log('returning 10 song array');
+          radioMode.derpQueue = tenSongArray;
+
+          // Array.prototype.push.apply(radioMode.derpQueue, tenSongArray); // appends an array to an array
+
+
+
+        });
+
+      } else {
+
+
+        return newval;
+      }
+
+
+
+    }
+    // return newval;
+
+  });
+
+
+  // Create an event listenener for when the current track changes
+  hrefToTrackObjMap.watch('current', function(id, oldval, newval) {
+    var currentTrack = newval;
+    console.log(newval);
+    console.log(radioMode.fullQueue[0]);
+
+    // If the the current track playing is the one up on the radio, then pop it off the queue
+    if (currentTrack['info_hash'] == radioMode.queue[0]['info_hash']) {
+      console.log('popped off ' + currentTrack['title']);
+      radioMode.queue.shift();
+
+
+    }
+
+    if (radioMode.queue.length < 2) {
+      // push 1 tracks to the playing queue
+      for (var i = 0; i < 3; i++) {
+
+        var song = radioMode.fullQueue[i];
+        // var song = newval[i];
+        console.log(song);
+        radioMode.fullQueue.shift();
+
+        // radioMode.queue.push(song); this won't trigger a change for some reason
+        // temp.push(song);
+        downloadOrFetchTrackObj(song['info_hash'], 'play-last', function() {
+
+          radioMode.queue.push(song);
+        });
+
+      }
+    }
+
+
+
+    return newval;
+  });
+
+
+  // A stupid necessity of JSON async fetches
+  radioMode.watch('derpQueue', function(id, oldval, newval) {
+    radioMode.fullQueue = newval;
+    return newval;
+  });
+
+  radioMode.fullQueue = []; // triggers the watch function
+
+
+
+
+
+
+  // Then fetch 3 more tracks, and download them, and play-next
+
+
+
 
 }
 
@@ -907,7 +1060,7 @@ function setupDonate() {
   var label = encodeURIComponent('TorrentTunes Donation');
   var amount = '0.02'
   var btcText = "bitcoin:" + address + '?label=' + label + '&amount=' + amount;
-  $('.qrcode_a').attr('href',btcText);
+  $('.qrcode_a').attr('href', btcText);
   $('#qrcode').html('');
   $('#qrcode').qrcode({
     "render": "canvas",
