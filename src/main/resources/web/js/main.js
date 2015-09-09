@@ -88,7 +88,7 @@ function setupUploadDownloadTotals() {
 
 function setUploadDownloadTotals() {
   console.log('Fetching upload/download totals');
-  getJson('get_upload_download_totals').done(function(e) {
+  getJson('get_upload_download_totals', null, torrentTunesSparkService).done(function(e) {
     $("#upload_download_totals").data('bs.tooltip').options.title = e;
   });
 }
