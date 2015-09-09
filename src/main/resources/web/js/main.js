@@ -72,7 +72,7 @@ $(document).ready(function() {
 
   // errorTest();
 
-  // setupPaths();
+  setupUploadDownloadTotals();
 
 
 });
