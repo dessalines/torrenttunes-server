@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- SQL XML created by WWW SQL Designer, https://github.com/ondras/wwwsqldesigner/ -->
-<!-- Active URL: http://ondras.zarovi.cz/sql/demo/ -->
+<!-- Active URL: http://ondras.zarovi.cz/sql/demo/?keyword=torrenttunes-server -->
 <sql>
 <datatypes db="sqlite">
         <group label="Affinity">
@@ -47,6 +47,10 @@
 <key type="UNIQUE" name="">
 <part>mbid</part>
 </key>
+<key type="INDEX" name="play_index">
+<part>plays</part>
+<part>mbid</part>
+</key>
 </table>
 <table x="214" y="98" name="release_group">
 <row name="mbid" null="0" autoincrement="0">
@@ -84,14 +88,11 @@
 <row name="album_coverart_thumbnail_small" null="1" autoincrement="0">
 <datatype>TEXT</datatype>
 <default>NULL</default></row>
-<row name="primary_type" null="1" autoincrement="0">
-<datatype>TEXT</datatype>
-<default>NULL</default></row>
-<row name="secondary_types" null="1" autoincrement="0">
-<datatype>TEXT</datatype>
-<default>NULL</default></row>
 <key type="PRIMARY" name="">
 <part>mbid</part>
+</key>
+<key type="INDEX" name="artist_mbid_index">
+<part>artist_mbid</part>
 </key>
 </table>
 <table x="34" y="100" name="artist">
@@ -155,6 +156,40 @@
 <key type="UNIQUE" name="">
 <part>release_group_mbid</part>
 <part>song_mbid</part>
+</key>
+</table>
+<table x="42" y="450" name="tag_info">
+<row name="id" null="1" autoincrement="1">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="artist_mbid" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+<default>NULL</default><relation table="artist" row="mbid" />
+</row>
+<row name="count" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="tag_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="tag" row="id" />
+</row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+<key type="UNIQUE" name="">
+<part>artist_mbid</part>
+<part>tag_id</part>
+</key>
+</table>
+<table x="228" y="449" name="tag">
+<row name="id" null="1" autoincrement="1">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="name" null="0" autoincrement="0">
+<datatype>TEXT</datatype>
+<default>'NULL'</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
 </key>
 </table>
 </sql>

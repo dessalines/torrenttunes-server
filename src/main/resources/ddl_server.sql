@@ -23,9 +23,7 @@ CREATE TABLE 'release_group' (
 'lyrics' TEXT DEFAULT NULL,
 'album_coverart_url' TEXT DEFAULT NULL,
 'album_coverart_thumbnail_large' TEXT DEFAULT NULL,
-'album_coverart_thumbnail_small' TEXT DEFAULT NULL,
-'primary_type' TEXT DEFAULT NULL,
-'secondary_types' TEXT DEFAULT NULL
+'album_coverart_thumbnail_small' TEXT DEFAULT NULL
 );
 
 CREATE TABLE 'artist' (
@@ -51,3 +49,18 @@ CREATE TABLE 'song_release_group' (
 UNIQUE (release_group_mbid, song_mbid)
 );
 
+CREATE TABLE 'tag_info' (
+'id' INTEGER DEFAULT NULL PRIMARY KEY AUTOINCREMENT,
+'artist_mbid' TEXT DEFAULT NULL REFERENCES 'artist' ('mbid'),
+'count' INTEGER NOT NULL  DEFAULT NULL,
+'tag_id' INTEGER NOT NULL  DEFAULT NULL REFERENCES 'tag' ('id'),
+UNIQUE (artist_mbid, tag_id)
+);
+
+CREATE TABLE 'tag' (
+'id' INTEGER DEFAULT NULL PRIMARY KEY AUTOINCREMENT,
+'name' TEXT NOT NULL  DEFAULT 'NULL'
+);
+
+CREATE INDEX 'play_index' ON 'song' ('plays', 'mbid');
+CREATE INDEX 'artist_mbid_index' ON 'release_group' ('artist_mbid');

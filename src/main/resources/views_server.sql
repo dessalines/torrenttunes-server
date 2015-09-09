@@ -82,4 +82,132 @@ inner join artist
 on release_group.artist_mbid = artist.mbid
 group by release_group.mbid;
 
+CREATE VIEW related_artist_view AS 
+select artist1.mbid as artist1_mbid, 
+artist1.name as artist1_name, 
+artist2.mbid as artist2_mbid, 
+artist2.name as artist2_name, 
+tag_info1.count, 
+tag_info2.count, 
+tag.name, 
+tag.id,
+(tag_info1.tag_id*100/732) as score
+from artist as artist1
+left join tag_info as tag_info1
+on artist1.mbid = tag_info1.artist_mbid
+left join tag 
+on tag_info1.tag_id = tag.id
+left join tag_info as tag_info2
+on tag_info2.tag_id = tag.id
+left join artist as artist2
+on tag_info2.artist_mbid = artist2.mbid
+where artist1.mbid = 'c296e10c-110a-4103-9e77-47bfebb7fb2e'
+and artist2.mbid != 'c296e10c-110a-4103-9e77-47bfebb7fb2e'
+group by artist2.mbid
+order by 
+-- This one sorts by tag.id desc, meaning the weirdest categories
+tag_info1.tag_id desc,
+-- This one makes it more pertinent(NIN has the most votes for industrial)
+tag_info1.count desc, 
+-- This one does the second groups votes
+tag_info2.count desc
+limit 10;
+
+-- where artist1.name like '%Bob Marley%'
+
+-- and artist2.name not like '%Deftones%'
+--where artist1.mbid like 'b7ffd2af-418f-4be2-bdd1-22f8b48613da' 
+--and artist2.mbid not like 'b7ffd2af-418f-4be2-bdd1-22f8b48613da' 
+
+select * from related_artist_view where `mbid` like 'b7ffd2af-418f-4be2-bdd1-22f8b48613da';
+
+CREATE VIEW artist_tag_view AS 
+select artist.mbid, artist.name as artist_name, tag_info.count, tag.name, tag.id
+from artist
+left join tag_info
+on artist.mbid = tag_info.artist_mbid
+left join tag 
+on tag_info.tag_id = tag.id
+where artist.name like '%Bob Marley%'
+order by artist.mbid, tag_info.count desc, tag.id desc
+;
+
+CREATE VIEW related_song_view AS 
+select artist1.mbid as artist1_mbid, 
+artist1.name as artist1_name, 
+artist2.mbid as artist2_mbid, 
+artist2.name as artist2_name, 
+-- rg.mbid,
+-- rg.title,
+song.mbid,
+song.title,
+song.info_hash,
+tag_info1.count, 
+tag_info2.count, 
+tag.name, 
+tag.id,
+(tag_info1.tag_id*100/732) as score,
+(
+	select mbid from release_group
+	where artist2.mbid = release_group.artist_mbid
+	order by random()
+	limit 1
+) as rg_mbid,
+(
+	select song_mbid from song_release_group
+	where song_release_group.release_group_mbid = 
+	(
+		select mbid from release_group
+		where artist2.mbid = release_group.artist_mbid
+		order by random()
+		limit 1
+	)
+	order by random()
+	limit 1
+) as srg_song_mbid,
+(
+	select id from song
+	where song.mbid = 
+	(
+		select song_mbid from song_release_group
+		where song_release_group.release_group_mbid = 
+		(
+			select mbid from release_group
+			where artist2.mbid = release_group.artist_mbid
+			order by random()
+			limit 1
+		)
+		order by random()
+		limit 1
+	)
+	order by id, random()
+) as song_id
+from artist as artist1
+left join tag_info as tag_info1
+on artist1.mbid = tag_info1.artist_mbid
+left join tag 
+on tag_info1.tag_id = tag.id
+left join tag_info as tag_info2
+on tag_info2.tag_id = tag.id
+left join artist as artist2
+on tag_info2.artist_mbid = artist2.mbid
+left join song
+on song.id = song_id
+where artist1.mbid = '01d3c51b-9b98-418a-8d8e-37f6fab59d8c'
+and artist2.mbid != '01d3c51b-9b98-418a-8d8e-37f6fab59d8c'
+
+group by artist2.mbid
+order by 
+-- This one sorts by tag.id desc, meaning the weirdest categories
+tag_info1.tag_id desc,
+-- This one makes it more pertinent(NIN has the most votes for industrial)
+tag_info1.count desc, 
+-- This one does the second groups votes
+tag_info2.count desc
+
+limit 10;
+
+
+
+
 

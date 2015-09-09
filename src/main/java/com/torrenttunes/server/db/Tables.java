@@ -35,7 +35,6 @@ public class Tables {
 	public static class AlbumView extends Model {}
 	public static final AlbumView ALBUM_VIEW = new AlbumView();
 	
-	
 	@Table("song_search_view")
 	public static class SongSearchView extends Model {}
 	public static final SongSearchView SONG_SEARCH_VIEW = new SongSearchView();
@@ -56,5 +55,116 @@ public class Tables {
 	public static class Tag extends Model {}
 	public static final Tag TAG = new Tag();
 	
+	@Table("related_artist_view")
+	public static class RelatedArtistView extends Model {}
+	public static final RelatedArtistView RELATED_ARTIST_VIEW = new RelatedArtistView();
+	
+	public static final String RELATED_ARTIST_VIEW_SQL =
+			"select artist1.mbid as artist1_mbid, \n"+
+				"artist1.name as artist1_name, \n"+
+				"artist2.mbid as artist2_mbid, \n"+
+				"artist2.name as artist2_name, \n"+
+				"tag_info1.count, \n"+
+				"tag_info2.count, \n"+
+				"tag.name as tag_name, \n"+
+				"tag.id,\n"+
+				"(tag_info1.tag_id*100/732) as score\n"+
+				"from artist as artist1\n"+
+				"left join tag_info as tag_info1\n"+
+				"on artist1.mbid = tag_info1.artist_mbid\n"+
+				"left join tag \n"+
+				"on tag_info1.tag_id = tag.id\n"+
+				"left join tag_info as tag_info2\n"+
+				"on tag_info2.tag_id = tag.id\n"+
+				"left join artist as artist2\n"+
+				"on tag_info2.artist_mbid = artist2.mbid\n"+
+				"where artist1.mbid = ? \n"+
+				"and artist2.mbid != ? \n"+
+				"group by artist2.mbid\n"+
+				"order by \n"+
+				"-- This one sorts by tag.id desc, meaning the weirdest categories\n"+
+				"tag_info1.tag_id desc,\n"+
+				"-- This one makes it more pertinent(NIN has the most votes for industrial)\n"+
+				"tag_info1.count desc, \n"+
+				"-- This one does the second groups votes\n"+
+				"tag_info2.count desc\n"+
+				"limit 10;";
+	
+	
+	@Table("artist_tag_view")
+	public static class ArtistTagView extends Model {}
+	public static final ArtistTagView ARTIST_TAG_VIEW = new ArtistTagView();
+	
+	@Table("related_song_view")
+	public static class RelatedSongView extends Model {}
+	public static final RelatedSongView RELATED_SONG_VIEW = new RelatedSongView();
+	
+	public static final String RELATED_SONG_VIEW_SQL="select artist1.mbid as artist1_mbid, \n"+
+			"artist1.name as artist1_name, \n"+
+			"artist2.mbid as artist2_mbid, \n"+
+			"artist2.name as artist2_name, \n"+
+			"song.mbid,\n"+
+			"song.title,\n"+
+			"song.info_hash,\n"+
+			"tag_info1.count, \n"+
+			"tag_info2.count, \n"+
+			"tag.name, \n"+
+			"tag.id,\n"+
+			"(tag_info1.tag_id*100/732) as score,\n"+
+			"(\n"+
+			"\tselect mbid from release_group\n"+
+			"\twhere artist2.mbid = release_group.artist_mbid\n"+
+			"\torder by random()\n"+
+			"\tlimit 1\n"+
+			") as rg_mbid,\n"+
+			"(\n"+
+			"\tselect song_mbid from song_release_group\n"+
+			"\twhere song_release_group.release_group_mbid = \n"+
+			"\t(\n"+
+			"\t\tselect mbid from release_group\n"+
+			"\t\twhere artist2.mbid = release_group.artist_mbid\n"+
+			"\t\torder by random()\n"+
+			"\t\tlimit 1\n"+
+			"\t)\n"+
+			"\torder by random()\n"+
+			"\tlimit 1\n"+
+			") as srg_song_mbid,\n"+
+			"(\n"+
+			"\tselect id from song\n"+
+			"\twhere song.mbid = \n"+
+			"\t(\n"+
+			"\t\tselect song_mbid from song_release_group\n"+
+			"\t\twhere song_release_group.release_group_mbid = \n"+
+			"\t\t(\n"+
+			"\t\t\tselect mbid from release_group\n"+
+			"\t\t\twhere artist2.mbid = release_group.artist_mbid\n"+
+			"\t\t\torder by random()\n"+
+			"\t\t\tlimit 1\n"+
+			"\t\t)\n"+
+			"\t\torder by random()\n"+
+			"\t\tlimit 1\n"+
+			"\t)\n"+
+			"\torder by id, random()\n"+
+			") as song_id\n"+
+			"from artist as artist1\n"+
+			"left join tag_info as tag_info1\n"+
+			"on artist1.mbid = tag_info1.artist_mbid\n"+
+			"left join tag \n"+
+			"on tag_info1.tag_id = tag.id\n"+
+			"left join tag_info as tag_info2\n"+
+			"on tag_info2.tag_id = tag.id\n"+
+			"left join artist as artist2\n"+
+			"on tag_info2.artist_mbid = artist2.mbid\n"+
+			"left join song\n"+
+			"on song.id = song_id\n"+
+			"where artist1.mbid = ? \n"+
+			"and artist2.mbid != ? \n"+
+			"group by artist2.mbid\n"+
+			"order by \n"+
+			"tag_info1.tag_id desc,\n"+
+			"\n"+
+			"tag_info1.count desc, \n"+
+			"tag_info2.count desc\n"+
+			"limit 10;";
 	
 }
