@@ -132,7 +132,7 @@ where artist.name like '%Bob Marley%'
 order by artist.mbid, tag_info.count desc, tag.id desc
 ;
 
-CREATE VIEW releated_song_view AS 
+CREATE VIEW related_song_view AS 
 select artist1.mbid as artist1_mbid, 
 artist1.name as artist1_name, 
 artist2.mbid as artist2_mbid, 
@@ -141,6 +141,7 @@ artist2.name as artist2_name,
 -- rg.title,
 song.mbid,
 song.title,
+song.info_hash,
 tag_info1.count, 
 tag_info2.count, 
 tag.name, 
