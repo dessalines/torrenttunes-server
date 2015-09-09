@@ -222,14 +222,18 @@ function showArtistPage() {
 
   replaceParams('artist', artistCatalogMBID);
 
+
+  // $('a[href="#artistcatalogTab"]').hide();
   $('#left_tab li.active').removeClass('active');
   $('#artistcatalogTab').removeClass('active');
-
 
   $('#artistcatalogTab').addClass('hide');
   $('a[href="#artistcatalogTab"]').tab('show');
   $('a[href="#artistcatalog_main"]').tab('show');
+
+
 }
+
 
 function showArtistPageV2(artistMBID) {
   artistCatalogMBID = artistMBID;
@@ -328,8 +332,9 @@ function setupTrackDelete() {
     console.log(infoHash);
 
     simplePost('delete_song/' + infoHash, null, null, function() {
-      $('wrapper').tooltip('hide');
+
       $('[name=' + name).closest("tr").remove();
+      $('wrapper').tooltip('destroy');
     });
 
   });
@@ -355,7 +360,7 @@ function setupPlaylistTrackDelete() {
     var infoHash = $(this).closest('td').find('.track-select').attr('name').split('_')[1];
     simplePost('remove_from_playlist/' + playlistPageTabID + "/" + playlistId, null, null, function() {
       console.log('Track ' + infoHash + ' removed from playlist');
-      $('wrapper').tooltip('hide');
+      $('wrapper').tooltip('destroy');
       setupPlaylistPageTab();
     });
 
