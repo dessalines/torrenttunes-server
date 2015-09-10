@@ -321,7 +321,7 @@ public class Actions {
 	public static void addToPlayCount(String infoHash) {
 //		SONG.update("plays = plays + ?", "info_hash = ?", 1, infoHash);
 		Song s = SONG.findFirst("info_hash = ?", infoHash);
-		s.set("plays = plays + ?", 1);
+		s.set("plays", s.getInteger("plays") + 1);
 
 	}
 
