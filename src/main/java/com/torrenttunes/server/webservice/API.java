@@ -142,6 +142,7 @@ public class API {
 				
 				Tools.dbInit();
 				Actions.addToPlayCount(infoHash);
+				Tools.dbClose();
 
 				log.info("added to play count for infohash: " + infoHash);
 
@@ -151,7 +152,7 @@ public class API {
 				e.printStackTrace();
 				return e.getMessage();
 			} finally {
-				Tools.dbClose();
+				
 			}
 		});
 
