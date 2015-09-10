@@ -567,8 +567,7 @@ function setupLibrary() {
     // $('.tablesorter').trigger('update');
     // setup the add/play buttons
     addPlaylistDropdowns();
-    setupTrackSelect();
-    setupTrackDelete();
+
 
   });
 }

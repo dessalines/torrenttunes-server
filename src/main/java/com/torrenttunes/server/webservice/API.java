@@ -142,7 +142,7 @@ public class API {
 				String infoHash = req.params(":infoHash");
 
 				Tools.dbInit();
-				Actions.addToPlayCount(infoHash);
+//				Actions.addToPlayCount(infoHash);
 
 
 
