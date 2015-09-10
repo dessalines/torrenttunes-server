@@ -745,9 +745,7 @@ function downloadOrFetchTrackObj(infoHash, option) {
       // console.log('play queue saved');
     }, true, torrentTunesSparkService, null);
 
-    if (successFunctions != null) {
-      successFunctions(trackObj);
-    }
+
 
 
   });
