@@ -116,8 +116,8 @@ public class API {
 				log.info(req.params().toString());
 
 				String json = req.body();
-				
-				
+
+
 
 				JsonNode jsonNode = Tools.jsonToNode(json);
 
@@ -155,7 +155,7 @@ public class API {
 				Tools.dbClose();
 			}
 		});
-		
+
 		get("/remove_artist/:artistMBID", (req, res) -> {
 
 			try {
@@ -176,10 +176,10 @@ public class API {
 				Tools.dbClose();
 			}
 		});
-		
-		
-		
-		
+
+
+
+
 
 		get("/seeder_upload/:infoHash/:seeders", (req, res) -> {
 
@@ -287,7 +287,7 @@ public class API {
 		get("/song_search/:query", (req, res) -> {
 
 			try {
-				
+
 				Tools.allowAllHeaders(req, res);
 				Tools.dbInit();
 
@@ -319,7 +319,7 @@ public class API {
 		get("/artist_search/:query", (req, res) -> {
 
 			try {
-				
+
 				Tools.allowAllHeaders(req, res);
 				Tools.dbInit();
 
@@ -348,7 +348,7 @@ public class API {
 		get("/album_search/:query", (req, res) -> {
 
 			try {
-				
+
 				Tools.allowAllHeaders(req, res);
 				Tools.dbInit();
 
@@ -378,7 +378,7 @@ public class API {
 		get("/get_top_albums/:artistMbid", (req, res) -> {
 
 			try {
-				
+
 				Tools.allowAllHeaders(req, res);
 				Tools.dbInit();
 
@@ -405,7 +405,7 @@ public class API {
 		get("/get_top_songs/:artistMbid", (req, res) -> {
 
 			try {
-				
+
 				Tools.allowAllHeaders(req, res);
 				Tools.dbInit();
 
@@ -432,7 +432,7 @@ public class API {
 		get("/get_all_albums/:artistMbid", (req, res) -> {
 
 			try {
-				
+
 				Tools.allowAllHeaders(req, res);
 				Tools.dbInit();
 
@@ -456,11 +456,11 @@ public class API {
 
 
 		});
-		
+
 		get("/get_all_compilations/:artistMbid", (req, res) -> {
 
 			try {
-				
+
 				Tools.allowAllHeaders(req, res);
 				Tools.dbInit();
 
@@ -488,7 +488,7 @@ public class API {
 		get("/get_all_songs/:artistMbid", (req, res) -> {
 
 			try {
-				
+
 				Tools.allowAllHeaders(req, res);
 				Tools.dbInit();
 
@@ -515,7 +515,7 @@ public class API {
 		get("/get_artist/:artistMbid", (req, res) -> {
 
 			try {
-				
+
 				Tools.allowAllHeaders(req, res);
 				Tools.dbInit();
 
@@ -536,17 +536,17 @@ public class API {
 
 
 		});
-		
+
 		get("/get_related_songs/:artistMbid", (req, res) -> {
 
 			try {
-				
+
 				Tools.allowAllHeaders(req, res);
 				Tools.dbInit();
 
 				String artistMbid = req.params(":artistMbid");
 
-				
+
 
 				String json = RELATED_SONG_VIEW.findBySQL(
 						RELATED_SONG_VIEW_SQL, 
@@ -568,7 +568,7 @@ public class API {
 		get("/get_album/:albumMbid", (req, res) -> {
 
 			try {
-				
+
 				Tools.allowAllHeaders(req, res);
 				Tools.dbInit();
 
@@ -593,7 +593,7 @@ public class API {
 		get("/get_album_songs/:albumMbid", (req, res) -> {
 
 			try {
-				
+
 				Tools.allowAllHeaders(req, res);
 				Tools.dbInit();
 
@@ -615,11 +615,11 @@ public class API {
 
 
 		});
-		
+
 		get("/get_song/:songMBID", (req, res) -> {
 
 			try {
-				
+
 				Tools.allowAllHeaders(req, res);
 				Tools.dbInit();
 
@@ -644,7 +644,7 @@ public class API {
 		get("/get_artists", (req, res) -> {
 
 			try {
-				
+
 				Tools.allowAllHeaders(req, res);
 				Tools.dbInit();
 
@@ -652,7 +652,7 @@ public class API {
 				String json = null;
 				//json = ARTIST.findAll().orderBy("name asc").toJson(false);
 				json = ARTIST.findAll().orderBy("case when lower(substr(name,1,3))='the' then substr(name,5,length(name)-3) else name end;").toJson(false);
-                
+
 				return json;
 
 			} catch (Exception e) {
@@ -669,7 +669,7 @@ public class API {
 		get("/get_trending_albums", (req, res) -> {
 
 			try {
-				
+
 				Tools.allowAllHeaders(req, res);
 				Tools.dbInit();
 
@@ -694,7 +694,7 @@ public class API {
 		get("/get_trending_songs", (req, res) -> {
 
 			try {
-				
+
 				Tools.allowAllHeaders(req, res);
 				Tools.dbInit();
 
@@ -715,8 +715,8 @@ public class API {
 
 		});
 
-		
-		
+
+
 		get("/get_audio_file/:encodedPath", (req, res) -> {
 
 			//			res.header("Content-Disposition", "filename=\"music.mp3\"");
@@ -725,15 +725,15 @@ public class API {
 
 			try {
 				Tools.allowAllHeaders(req, res);
-				
+
 				log.info(req.params(":encodedPath"));
-				
+
 				String correctedEncoded = req.params(":encodedPath").replaceAll("qzvkn", "%2F");
-				
+
 				log.info("corrected encoded = " + correctedEncoded);
 
 				String path = URLDecoder.decode(correctedEncoded, "UTF-8");
-				
+
 				if (!path.endsWith(".mp3")) {
 					throw new NoSuchElementException("Not an audio file");
 				}
@@ -743,13 +743,13 @@ public class API {
 
 
 				// write out the request headers:
-								for (String h : req.headers()) {
-									log.info("Header:" + h + " = " + req.headers(h));
-								}
+				//								for (String h : req.headers()) {
+				//									log.info("Header:" + h + " = " + req.headers(h));
+				//								}
 
 				String range = req.headers("Range");
 
-				
+
 				// Check if its a non-streaming browser, for example, firefox can't stream
 				Boolean nonStreamingBrowser = false;
 				String userAgent = req.headers("User-Agent").toLowerCase();
@@ -760,15 +760,15 @@ public class API {
 						break;
 					}
 				}
-				
+
 
 				//				res.status(206);
 
 				OutputStream os = raw.getOutputStream();
-				
+
 				BufferedOutputStream bos = new BufferedOutputStream(os);
-			
-				
+
+
 				if (range == null || nonStreamingBrowser) {
 					res.header("Content-Length", String.valueOf(mp3.length())); 
 					Files.copy(mp3.toPath(), os);
@@ -791,26 +791,26 @@ public class API {
 				//					res.header("Content-Length", String.valueOf(mp3.length())); 
 				res.header("Content-Range", contentRangeByteString(fromTo));
 				res.header("Content-Length", String.valueOf(length)); 
-//				res.header("Content-Length", String.valueOf(mp3.length())); 
-									res.header("Content-Disposition", "attachment; filename=\"" + mp3.getName() + "\"");
+				//				res.header("Content-Length", String.valueOf(mp3.length())); 
+				res.header("Content-Disposition", "attachment; filename=\"" + mp3.getName() + "\"");
 				res.header("Date", new java.util.Date(mp3.lastModified()).toString());
 				res.header("Last-Modified", new java.util.Date(mp3.lastModified()).toString());
-//				res.header("Server", "Apache");
-													res.header("X-Content-Duration", "30");
-													res.header("Content-Duration", "30");
+				//				res.header("Server", "Apache");
+				res.header("X-Content-Duration", "30");
+				res.header("Content-Duration", "30");
 				res.header("Connection", "Keep-Alive");
 				//					String etag = com.google.common.io.Files.hash(mp3, Hashing.md5()).toString();
 				//					res.header("Etag", etag);
-									res.header("Cache-Control", "no-cache, private");
-									res.header("X-Pad","avoid browser bug");
-									res.header("Expires", "0");
-									res.header("Pragma", "no-cache");
+				res.header("Cache-Control", "no-cache, private");
+				res.header("X-Pad","avoid browser bug");
+				res.header("Expires", "0");
+				res.header("Pragma", "no-cache");
 				res.header("Content-Transfer-Encoding", "binary");
 				res.header("Transfer-Encoding", "chunked");
 				res.header("Keep-Alive", "timeout=15, max=100");
-									res.header("If-None-Match", "webkit-no-cache");
+				res.header("If-None-Match", "webkit-no-cache");
 				//					res.header("X-Sendfile", path);
-									res.header("X-Stream", "true");
+				res.header("X-Stream", "true");
 
 				// This one works, but doesn't stream
 
@@ -820,7 +820,7 @@ public class API {
 				final RandomAccessFile raf = new RandomAccessFile(mp3, "r");
 				raf.seek(fromTo[0]);
 				writeAudioToOS(length, raf, bos);
-			
+
 				raf.close();
 
 				bos.flush();
@@ -918,11 +918,11 @@ public class API {
 		}
 
 		log.info("before closing");
-//		
-		
+		//		
 
-		
-		
+
+
+
 
 	}
 
