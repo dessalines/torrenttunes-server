@@ -71,10 +71,11 @@ public class Actions {
 		log.info("Updating song info for song: " + title + " , mbid: " + songMbid);
 
 		// Find it by the MBID
+		Tools.dbInit();
 		Song song = SONG.findFirst("mbid = ?", songMbid);
-
 		song.set("title", title,
 				"duration_ms", durationMS).saveIt();
+		Tools.dbClose();
 		log.info("New song: " + title + " updated");
 
 
@@ -118,10 +119,12 @@ public class Actions {
 			// Now that both the song and release_group are made, add the song_release_group
 			// row that links them together
 			try {
+				Tools.dbInit();
 				SONG_RELEASE_GROUP.createIt("song_mbid", songMbid,
 						"release_group_mbid", albumMbid,
 						"disc_number", discNo,
 						"track_number", trackNo);
+				Tools.dbClose();
 				log.info("Song release group:" + songMbid, " created");
 			} catch(DBException e) {
 				e.printStackTrace();
@@ -173,7 +176,10 @@ public class Actions {
 
 	private static void createArtist(String artist, String artistMbid) {
 		// First, check to see if the album or artist need to be created:
+		Tools.dbInit();
 		Artist artistRow = ARTIST.findFirst("mbid = ?", artistMbid);
+		Tools.dbClose();
+		
 		if (artistRow == null) {
 			log.info("new artist");
 			// Fetch some links and images from musicbrainz
@@ -194,8 +200,8 @@ public class Actions {
 
 			// Fetch and create the tags
 			// Check to see if there are any tagInfos for that artist in the db, or any from musicBrainz
+			Tools.dbInit();
 			createTags(artistMbid, mbInfo);
-
 
 			artistRow = ARTIST.createIt("mbid", artistMbid,
 					"name", artist,
@@ -208,6 +214,8 @@ public class Actions {
 					"youtube", mbInfo.getYoutube(),
 					"soundcloud", mbInfo.getSoundCloud(),
 					"lastfm", mbInfo.getLastFM());
+			Tools.dbClose();
+			
 			log.info("New artist: " + artist + " created");
 		}
 	}
@@ -215,6 +223,7 @@ public class Actions {
 
 	private static void createTags(String artistMbid,
 			com.musicbrainz.mp3.tagger.Tools.Artist mbInfo) {
+		
 		TagInfo ti = TAG_INFO.findFirst("artist_mbid = ?", artistMbid);
 
 		// Delete all of that artists tag infos if they do exist

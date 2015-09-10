@@ -121,7 +121,7 @@ public class API {
 
 				JsonNode jsonNode = Tools.jsonToNode(json);
 
-				Tools.dbInit();
+		
 				Actions.updateSongInfo(jsonNode);
 
 
@@ -130,8 +130,6 @@ public class API {
 				res.status(666);
 				e.printStackTrace();
 				return e.getMessage();
-			} finally {
-				Tools.dbClose();
 			}
 		});
 
