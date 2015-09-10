@@ -322,6 +322,7 @@ public class Actions {
 //		SONG.update("plays = plays + ?", "info_hash = ?", 1, infoHash);
 		Song s = SONG.findFirst("info_hash = ?", infoHash);
 		s.set("plays", s.getInteger("plays") + 1);
+		s.saveIt();
 
 	}
 

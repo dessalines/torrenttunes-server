@@ -139,10 +139,11 @@ public class API {
 				Tools.allowAllHeaders(req, res);
 				String infoHash = req.params(":infoHash");
 
+				
 				Tools.dbInit();
 				Actions.addToPlayCount(infoHash);
 
-
+				log.info("added to play count for infohash: " + infoHash);
 
 				return "Added play count";
 			} catch (Exception e) {
