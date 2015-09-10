@@ -137,7 +137,10 @@ public class Actions {
 
 	private static void createReleaseGroups(String artistMbid,
 			String albumMbid, String primaryType, String secondaryTypes) {
+		Tools.dbInit();
 		ReleaseGroup releaseRow = RELEASE_GROUP.findFirst("mbid = ?" , albumMbid);
+		Tools.dbClose();
+		
 		// If the album doesn't exist, create the row
 		if (releaseRow == null) {
 			log.info("new album");
@@ -155,7 +158,7 @@ public class Actions {
 			} catch(NoSuchElementException e) {
 				e.printStackTrace();
 			}
-
+			Tools.dbInit();
 			releaseRow = RELEASE_GROUP.createIt("mbid", albumMbid,
 					"title", mbInfo.getTitle(),
 					"artist_mbid", artistMbid,
@@ -169,6 +172,7 @@ public class Actions {
 					"album_coverart_thumbnail_small", coverArtSmallThumbnail,
 					"primary_type", primaryType,
 					"secondary_types", secondaryTypes);
+			Tools.dbClose();
 			log.info("New album: " + mbInfo.getTitle() + " created");
 		}
 	}
