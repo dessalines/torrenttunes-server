@@ -726,11 +726,11 @@ public class API {
 			try {
 				Tools.allowAllHeaders(req, res);
 
-				log.info(req.params(":encodedPath"));
+				log.debug(req.params(":encodedPath"));
 
 				String correctedEncoded = req.params(":encodedPath").replaceAll("qzvkn", "%2F");
 
-				log.info("corrected encoded = " + correctedEncoded);
+				log.info("Streaming to corrected encoded = " + correctedEncoded);
 
 				String path = URLDecoder.decode(correctedEncoded, "UTF-8");
 
@@ -756,7 +756,7 @@ public class API {
 				for (String browser : DataSources.NON_STREAMING_BROWSERS) {
 					if (userAgent.contains(browser.toLowerCase())) {
 						nonStreamingBrowser = true;
-						log.info("Its a non-streaming browser.");
+						log.debug("Its a non-streaming browser.");
 						break;
 					}
 				}
@@ -816,7 +816,7 @@ public class API {
 
 
 
-				log.info("writing random access file instead");
+				log.debug("writing random access file instead");
 				final RandomAccessFile raf = new RandomAccessFile(mp3, "r");
 				raf.seek(fromTo[0]);
 				writeAudioToOS(length, raf, bos);
@@ -878,7 +878,7 @@ public class API {
 
 		String[] ranges = range.split("=")[1].split("-");
 		log.info(range);
-		log.info("ranges[] = " + Arrays.toString(ranges));
+		log.debug("ranges[] = " + Arrays.toString(ranges));
 
 		Integer chunkSize = 512;
 		Integer from = Integer.parseInt(ranges[0]);
@@ -903,7 +903,7 @@ public class API {
 
 		String responseRange = "bytes " + fromTo[0] + "-" + fromTo[1] + "/" + fromTo[2];
 
-		log.info("response range = " + responseRange);
+		log.debug("response range = " + responseRange);
 		return responseRange;
 
 	}
@@ -917,7 +917,7 @@ public class API {
 			length -= read;
 		}
 
-		log.info("before closing");
+		log.debug("before closing");
 		//		
 
 
