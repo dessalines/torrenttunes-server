@@ -68,8 +68,8 @@ $(document).ready(function() {
   setupPlaylistLeftTab();
   setupPlayQueueBtn();
   setupHomeTab();
-  setupUploadForm();
-  setupUploadTable();
+  // setupUploadForm();
+  // setupUploadTable();
   setupBrowseTab();
 
   // setupSettingsTab();
