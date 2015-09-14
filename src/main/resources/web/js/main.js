@@ -919,7 +919,7 @@ function downloadOrFetchTrackObj(infoHash, option) {
     updateDownloadStatusBar(infoHash);
   }, 5000);
 
-  getJson('fetch_or_download_song/' + infoHash, null, externalSparkService, playButtonName).done(function(e1) {
+  return getJson('fetch_or_download_song/' + infoHash, null, externalSparkService, playButtonName).done(function(e1) {
     var trackObj = JSON.parse(e1);
 
     replaceParams('song', trackObj['mbid']);
