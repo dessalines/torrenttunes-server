@@ -159,7 +159,7 @@ public class API {
 		get("/remove_artist/:artistMBID", (req, res) -> {
 
 			try {
-				Tools.allowAllHeaders(req, res);
+				Tools.allowOnlyLocalHeaders(req, res);
 				String artistMBID = req.params(":artistMBID");
 
 				Tools.dbInit();
