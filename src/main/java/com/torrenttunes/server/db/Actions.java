@@ -389,8 +389,9 @@ public class Actions {
 		RELEASE_GROUP.delete("artist_mbid = ?", artistMBID);
 		ARTIST.delete("mbid = ?", artistMBID);
 
+		com.torrenttunes.client.tools.Tools.dbInit();
 		com.torrenttunes.client.db.Actions.removeArtist(artistMBID);
-
+		com.torrenttunes.client.tools.Tools.dbClose();
 	}
 
 	public static void removeSong(String songMBID) {
