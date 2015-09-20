@@ -368,15 +368,16 @@ public class Actions {
 			log.info(srg.toString());
 			Song song = SONG.findFirst("mbid = ?", srg.getString("song_mbid"));
 
-			log.info(song.toString());
-			log.info("path name: " + song.getString("torrent_path"));
-			
-			// Delete the torrent file from the server:
-			File torrentFile = new File(song.getString("torrent_path"));
-			if (torrentFile.exists()) torrentFile.delete();
+			if (song != null) {
+				log.info(song.toString());
+				log.info("path name: " + song.getString("torrent_path"));
 
-			SONG.delete("mbid = ?", srg.getString("song_mbid"));
+				// Delete the torrent file from the server:
+				File torrentFile = new File(song.getString("torrent_path"));
+				if (torrentFile.exists()) torrentFile.delete();
 
+				SONG.delete("mbid = ?", srg.getString("song_mbid"));
+			}
 
 		}
 
