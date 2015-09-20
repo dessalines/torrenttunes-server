@@ -367,6 +367,9 @@ public class Actions {
 		for (SongReleaseGroup srg : srgs) {
 			Song song = SONG.findFirst("mbid = ?", srg.getString("song_mbid"));
 
+			log.info(song.toString());
+			log.info("path name: " + song.getString("torrent_path"));
+			
 			// Delete the torrent file from the server:
 			File torrentFile = new File(song.getString("torrent_path"));
 			if (torrentFile.exists()) torrentFile.delete();
