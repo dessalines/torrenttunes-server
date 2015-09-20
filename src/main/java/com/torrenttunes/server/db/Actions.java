@@ -1,5 +1,6 @@
 package com.torrenttunes.server.db;
 
+import static com.torrenttunes.client.db.Tables.SETTINGS;
 import static com.torrenttunes.server.db.Tables.*;
 
 import java.io.File;
@@ -140,7 +141,7 @@ public class Actions {
 		Tools.dbInit();
 		ReleaseGroup releaseRow = RELEASE_GROUP.findFirst("mbid = ?" , albumMbid);
 		Tools.dbClose();
-		
+
 		// If the album doesn't exist, create the row
 		if (releaseRow == null) {
 			log.info("new album");
@@ -183,7 +184,7 @@ public class Actions {
 		Tools.dbInit();
 		Artist artistRow = ARTIST.findFirst("mbid = ?", artistMbid);
 		Tools.dbClose();
-		
+
 		if (artistRow == null) {
 			log.info("new artist");
 			// Fetch some links and images from musicbrainz
@@ -219,7 +220,7 @@ public class Actions {
 					"soundcloud", mbInfo.getSoundCloud(),
 					"lastfm", mbInfo.getLastFM());
 			Tools.dbClose();
-			
+
 			log.info("New artist: " + artist + " created");
 		}
 	}
@@ -227,7 +228,7 @@ public class Actions {
 
 	private static void createTags(String artistMbid,
 			com.musicbrainz.mp3.tagger.Tools.Artist mbInfo) {
-		
+
 		TagInfo ti = TAG_INFO.findFirst("artist_mbid = ?", artistMbid);
 
 		// Delete all of that artists tag infos if they do exist
@@ -248,7 +249,7 @@ public class Actions {
 				ti = TAG_INFO.createIt("artist_mbid", artistMbid,
 						"count", mbInfoTag.getCount(),
 						"tag_id", tagRow.getInteger("id"));
-				
+
 				log.info("Added tag " + mbInfoTag.getName() + " for artist " + artistMbid);
 
 
@@ -319,7 +320,7 @@ public class Actions {
 
 
 	public static void addToPlayCount(String infoHash) {
-//		SONG.update("plays = plays + ?", "info_hash = ?", 1, infoHash);
+		//		SONG.update("plays = plays + ?", "info_hash = ?", 1, infoHash);
 		Song s = SONG.findFirst("info_hash = ?", infoHash);
 		s.set("plays", s.getInteger("plays") + 1);
 		s.saveIt();
@@ -382,7 +383,20 @@ public class Actions {
 		RELEASE_GROUP.delete("artist_mbid = ?", artistMBID);
 		ARTIST.delete("mbid = ?", artistMBID);
 
+		String cacheDir = SETTINGS.findFirst("id = ?", 1).getString("storage_path");
+
 		com.torrenttunes.client.db.Actions.removeArtist(artistMBID);
+
+	}
+
+	public static void removeSong(String songMBID) {
+
+		Song song = SONG.findFirst("mbid = ?");
+
+		// Delete the torrent file from the server:
+		new File(song.getString("torrent_path")).delete();
+
+		com.torrenttunes.client.db.Actions.removeSong(songMBID);
 
 	}
 

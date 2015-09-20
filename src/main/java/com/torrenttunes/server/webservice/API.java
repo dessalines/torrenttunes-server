@@ -156,7 +156,10 @@ public class API {
 			}
 		});
 
-		get("/remove_artist/:artistMBID", (req, res) -> {
+		// Example:
+		//curl localhost:80/remove_artist_server/c2b37a39-c66a-44b2-b190-a69485ae5d95
+		
+		get("/remove_artist_server/:artistMBID", (req, res) -> {
 
 			try {
 				Tools.allowOnlyLocalHeaders(req, res);
@@ -168,6 +171,27 @@ public class API {
 
 
 				return "Removed Artist MBID: " + artistMBID;
+			} catch (Exception e) {
+				res.status(666);
+				e.printStackTrace();
+				return e.getMessage();
+			} finally {
+				Tools.dbClose();
+			}
+		});
+		
+		get("/remove_song/:songMBID", (req, res) -> {
+
+			try {
+				Tools.allowOnlyLocalHeaders(req, res);
+				String songMBID = req.params(":songMBID");
+
+				Tools.dbInit();
+				Actions.removeSong(songMBID);
+
+
+
+				return "Removed song MBID: " + songMBID;
 			} catch (Exception e) {
 				res.status(666);
 				e.printStackTrace();
