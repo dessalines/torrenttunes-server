@@ -368,7 +368,8 @@ public class Actions {
 			Song song = SONG.findFirst("mbid = ?", srg.getString("song_mbid"));
 
 			// Delete the torrent file from the server:
-			new File(song.getString("torrent_path")).delete();
+			File torrentFile = new File(song.getString("torrent_path"));
+			if (torrentFile.exists()) torrentFile.delete();
 
 			SONG.delete("mbid = ?", srg.getString("song_mbid"));
 
@@ -382,8 +383,6 @@ public class Actions {
 
 		RELEASE_GROUP.delete("artist_mbid = ?", artistMBID);
 		ARTIST.delete("mbid = ?", artistMBID);
-
-		String cacheDir = SETTINGS.findFirst("id = ?", 1).getString("storage_path");
 
 		com.torrenttunes.client.db.Actions.removeArtist(artistMBID);
 

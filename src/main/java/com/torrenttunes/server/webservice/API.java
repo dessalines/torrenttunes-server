@@ -157,7 +157,7 @@ public class API {
 		});
 
 		// Example:
-		//curl localhost:80/remove_artist_server/c2b37a39-c66a-44b2-b190-a69485ae5d95
+		// curl localhost:80/remove_artist_server/c2b37a39-c66a-44b2-b190-a69485ae5d95
 		
 		get("/remove_artist_server/:artistMBID", (req, res) -> {
 
