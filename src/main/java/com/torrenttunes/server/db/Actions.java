@@ -365,6 +365,7 @@ public class Actions {
 		// Delete from songs to artist
 
 		for (SongReleaseGroup srg : srgs) {
+			log.info(srg.toString());
 			Song song = SONG.findFirst("mbid = ?", srg.getString("song_mbid"));
 
 			log.info(song.toString());
