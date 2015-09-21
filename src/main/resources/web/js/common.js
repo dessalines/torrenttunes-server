@@ -387,7 +387,7 @@ function setupTrackDelete() {
     simplePost('delete_song/' + infoHash, null, null, function() {
 
       $('[name=' + name).closest("tr").remove();
-      $('wrapper').tooltip('destroy');
+      $('.tooltip').tooltip('destroy');
     });
 
   });
