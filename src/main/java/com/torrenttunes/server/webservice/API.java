@@ -576,7 +576,7 @@ public class API {
 
 				String json = RELATED_SONG_VIEW.findBySQL(
 						RELATED_SONG_VIEW_SQL, 
-						artistMbid, artistMbid).toJson(false);
+						artistMbid).toJson(false);
 
 				return json;
 
