@@ -158,7 +158,7 @@ public class Tables {
 			"left join song\n"+
 			"on song.id = song_id\n"+
 			"where artist1.mbid = ? \n"+
-			"and artist2.mbid != ? \n"+
+			"and song.info_hash is not null\n" + 
 			"group by artist2.mbid\n"+
 			"order by \n"+
 			"tag_info1.tag_id desc,\n"+

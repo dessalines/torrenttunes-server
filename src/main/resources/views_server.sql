@@ -195,8 +195,7 @@ left join artist as artist2
 on tag_info2.artist_mbid = artist2.mbid
 left join song
 on song.id = song_id
-where artist1.mbid = '01d3c51b-9b98-418a-8d8e-37f6fab59d8c'
-and artist2.mbid != '01d3c51b-9b98-418a-8d8e-37f6fab59d8c'
+-- where artist1.mbid = 'db3c0a20-bf05-4b30-ac22-f294aea24172'
 
 group by artist2.mbid
 order by 
