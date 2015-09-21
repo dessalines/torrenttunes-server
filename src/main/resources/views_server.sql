@@ -15,7 +15,9 @@ year,
 album_coverart_url,
 album_coverart_thumbnail_large,
 album_coverart_thumbnail_small,
-seeders
+seeders,
+release_group.primary_type,
+release_group.secondary_types
 from song
 inner join song_release_group
 on song.mbid = song_release_group.song_mbid 

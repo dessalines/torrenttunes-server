@@ -264,7 +264,9 @@ public class API {
 			try {
 				String infoHash = req.params(":infoHash");
 				Tools.dbInit();
-				SongView sv = SONG_VIEW.findFirst("info_hash = ?", infoHash);
+				List<SongView> svs = SONG_VIEW.find("info_hash = ?", infoHash).
+						orderBy("secondary_types asc");
+				SongView sv = svs.get(0);
 				String json = sv.toJson(false);
 
 
