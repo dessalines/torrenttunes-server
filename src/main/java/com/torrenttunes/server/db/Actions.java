@@ -399,7 +399,8 @@ public class Actions {
 		Song song = SONG.findFirst("mbid = ?");
 
 		// Delete the torrent file from the server:
-		new File(song.getString("torrent_path")).delete();
+		File torrentFile = new File(song.getString("torrent_path"));
+		if (torrentFile.exists()) torrentFile.delete();
 		
 		SONG.delete("mbid = ?", songMBID);
 		
