@@ -396,7 +396,7 @@ public class Actions {
 
 	public static void removeSong(String songMBID) {
 
-		Song song = SONG.findFirst("mbid = ?");
+		Song song = SONG.findFirst("mbid = ?", songMBID);
 
 		// Delete the torrent file from the server:
 		File torrentFile = new File(song.getString("torrent_path"));
