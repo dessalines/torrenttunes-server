@@ -400,7 +400,9 @@ public class Actions {
 
 		// Delete the torrent file from the server:
 		new File(song.getString("torrent_path")).delete();
-
+		
+		SONG.delete("mbid = ?", songMBID);
+		
 		com.torrenttunes.client.db.Actions.removeSong(songMBID);
 
 	}

@@ -180,7 +180,8 @@ public class API {
 			}
 		});
 		
-		get("/remove_song/:songMBID", (req, res) -> {
+		
+		get("/remove_song_server/:songMBID", (req, res) -> {
 
 			try {
 				Tools.allowOnlyLocalHeaders(req, res);

@@ -1,7 +1,7 @@
 package com.torrenttunes.server.webservice;
 
 import static spark.Spark.get;
-import static spark.SparkBase.externalStaticFileLocation;
+import static spark.Spark.externalStaticFileLocation;
 import static spark.Spark.*;
 
 import org.slf4j.Logger;
