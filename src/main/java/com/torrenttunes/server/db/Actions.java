@@ -404,8 +404,9 @@ public class Actions {
 		
 		SONG.delete("mbid = ?", songMBID);
 		
+		com.torrenttunes.client.tools.Tools.dbInit();
 		com.torrenttunes.client.db.Actions.removeSong(songMBID);
-
+		com.torrenttunes.client.tools.Tools.dbClose();
 	}
 
 
