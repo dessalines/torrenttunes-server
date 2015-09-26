@@ -98,6 +98,11 @@ public class Tools {
 
 
 	}
+	
+	public static void set15MinuteCache(Request req, Response res) {
+		res.header("Cache-Control", "no-transform,public,max-age=300,s-maxage=900");
+		
+	}
 
 
 
@@ -490,5 +495,7 @@ public class Tools {
 		} catch(IOException e) {}
 		return res;
 	}
+
+
 
 }

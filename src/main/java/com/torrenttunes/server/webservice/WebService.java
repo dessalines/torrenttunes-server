@@ -55,6 +55,8 @@ public class WebService {
 			Tools.allowAllHeaders(req, res);
 			return Tools.readFile(DataSources.PAGES("main"));
 		});
+		
+		// TODO move away from external static file location, to serving up the web/ directory fully
 	
 	}
 }

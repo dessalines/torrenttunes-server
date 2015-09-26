@@ -294,6 +294,8 @@ public class API {
 
 			try {
 
+				Tools.allowAllHeaders(req, res);
+				Tools.set15MinuteCache(req, res);
 				Tools.dbInit();
 				String json = SONG.findAll().toJson(false);
 
@@ -316,6 +318,7 @@ public class API {
 			try {
 
 				Tools.allowAllHeaders(req, res);
+				Tools.set15MinuteCache(req, res);
 				Tools.dbInit();
 
 				String query = req.params(":query");
@@ -348,6 +351,7 @@ public class API {
 			try {
 
 				Tools.allowAllHeaders(req, res);
+				Tools.set15MinuteCache(req, res);
 				Tools.dbInit();
 
 				String query = req.params(":query");
@@ -377,6 +381,7 @@ public class API {
 			try {
 
 				Tools.allowAllHeaders(req, res);
+				Tools.set15MinuteCache(req, res);
 				Tools.dbInit();
 
 				String query = req.params(":query");
@@ -407,6 +412,7 @@ public class API {
 			try {
 
 				Tools.allowAllHeaders(req, res);
+				Tools.set15MinuteCache(req, res);
 				Tools.dbInit();
 
 				String artistMbid = req.params(":artistMbid");
@@ -434,6 +440,7 @@ public class API {
 			try {
 
 				Tools.allowAllHeaders(req, res);
+				Tools.set15MinuteCache(req, res);
 				Tools.dbInit();
 
 				String artistMbid = req.params(":artistMbid");
@@ -461,6 +468,7 @@ public class API {
 			try {
 
 				Tools.allowAllHeaders(req, res);
+				Tools.set15MinuteCache(req, res);
 				Tools.dbInit();
 
 				String artistMbid = req.params(":artistMbid");
@@ -489,6 +497,7 @@ public class API {
 			try {
 
 				Tools.allowAllHeaders(req, res);
+				Tools.set15MinuteCache(req, res);
 				Tools.dbInit();
 
 				String artistMbid = req.params(":artistMbid");
@@ -517,6 +526,7 @@ public class API {
 			try {
 
 				Tools.allowAllHeaders(req, res);
+				Tools.set15MinuteCache(req, res);
 				Tools.dbInit();
 
 				String artistMbid = req.params(":artistMbid");
@@ -544,6 +554,7 @@ public class API {
 			try {
 
 				Tools.allowAllHeaders(req, res);
+				Tools.set15MinuteCache(req, res);
 				Tools.dbInit();
 
 				String artistMbid = req.params(":artistMbid");
@@ -597,6 +608,7 @@ public class API {
 			try {
 
 				Tools.allowAllHeaders(req, res);
+				Tools.set15MinuteCache(req, res);
 				Tools.dbInit();
 
 				String albumMbid = req.params(":albumMbid");
@@ -622,6 +634,7 @@ public class API {
 			try {
 
 				Tools.allowAllHeaders(req, res);
+				Tools.set15MinuteCache(req, res);
 				Tools.dbInit();
 
 				String albumMbid = req.params(":albumMbid");
@@ -648,6 +661,7 @@ public class API {
 			try {
 
 				Tools.allowAllHeaders(req, res);
+				Tools.set15MinuteCache(req, res);
 				Tools.dbInit();
 
 				String songMbid = req.params(":songMBID");
@@ -673,6 +687,7 @@ public class API {
 			try {
 
 				Tools.allowAllHeaders(req, res);
+				Tools.set15MinuteCache(req, res);
 				Tools.dbInit();
 
 
@@ -698,6 +713,7 @@ public class API {
 			try {
 
 				Tools.allowAllHeaders(req, res);
+				Tools.set15MinuteCache(req, res);
 				Tools.dbInit();
 
 
@@ -723,6 +739,7 @@ public class API {
 			try {
 
 				Tools.allowAllHeaders(req, res);
+				Tools.set15MinuteCache(req, res);
 				Tools.dbInit();
 
 
