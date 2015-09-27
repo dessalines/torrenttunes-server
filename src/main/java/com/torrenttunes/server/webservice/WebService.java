@@ -2,6 +2,11 @@ package com.torrenttunes.server.webservice;
 
 import static spark.Spark.*;
 
+import java.io.IOException;
+import java.nio.file.Paths;
+
+import javax.servlet.ServletOutputStream;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,6 +45,8 @@ public class WebService {
 		
 		get("/", (req, res) -> {
 			Tools.allowAllHeaders(req, res);
+			Tools.set15MinuteCache(req, res);
+			
 			return Tools.readFile(DataSources.PAGES("main"));
 		});
 		
@@ -52,6 +59,19 @@ public class WebService {
 			String webHomePath = DataSources.WEB_HOME() + "/" + pageName;
 			
 			Tools.setContentTypeFromFileName(pageName, res);
+			
+			if (pageName.endsWith(".png")) {
+				try {
+					byte[] encoded = java.nio.file.Files.readAllBytes(Paths.get(webHomePath));
+					ServletOutputStream os = res.raw().getOutputStream();
+					os.write(encoded);
+					os.close();
+					return res.raw();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 			
 			return Tools.readFile(webHomePath);
 			
