@@ -22,6 +22,8 @@ import java.nio.file.StandardCopyOption;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -29,6 +31,9 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.http.client.methods.HttpGet;
@@ -67,6 +72,9 @@ public class Tools {
 	public static final Gson GSON2 = new GsonBuilder().setPrettyPrinting().create();
 
 	public static final ObjectMapper MAPPER = new ObjectMapper();
+	
+	public static final SimpleDateFormat RESPONSE_HEADER_DATE_FORMAT = 
+			new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz");
 
 
 	public static void allowOnlyLocalHeaders(Request req, Response res) {
@@ -101,8 +109,7 @@ public class Tools {
 	
 	public static void set15MinuteCache(Request req, Response res) {
 		res.header("Cache-Control", "public,max-age=300,s-maxage=900");
-		res.header("ETag", com.torrenttunes.client.tools.DataSources.VERSION);
-		
+		res.header("Last-Modified", RESPONSE_HEADER_DATE_FORMAT.format(DataSources.APP_START_DATE));
 	}
 
 
@@ -412,12 +419,30 @@ public class Tools {
 		byte[] encoded;
 		try {
 			encoded = java.nio.file.Files.readAllBytes(Paths.get(path));
-
+			
 			s = new String(encoded, Charset.defaultCharset());
 		} catch (IOException e) {
 			e.printStackTrace();
+			throw new NoSuchElementException("Couldn't write result");
 		}
 		return s;
+	}
+	
+	public static HttpServletResponse writeFileToResponse(String path, Response res) {
+
+		byte[] encoded;
+		try {
+			encoded = java.nio.file.Files.readAllBytes(Paths.get(path));
+
+			ServletOutputStream os = res.raw().getOutputStream();
+			os.write(encoded);
+			os.close();
+			return res.raw();
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new NoSuchElementException("Couldn't write result");
+		}
 	}
 
 	public static void addExternalWebServiceVarToTools() {
@@ -497,6 +522,19 @@ public class Tools {
 		return res;
 	}
 
+	public static void setContentTypeFromFileName(String pageName, Response res) {
+		
+		if (pageName.endsWith(".css")) {
+			res.type("text/css");
+		} else if (pageName.endsWith(".js")) {
+			res.type("application/javascript");
+		} else if (pageName.endsWith(".png")) {
+			res.type("image/png");
+			res.header("Content-Disposition", "attachment;");
+		} else if (pageName.endsWith(".svg")) {
+			res.type("image/svg+xml");
+		}
+	}
 
 
 }
