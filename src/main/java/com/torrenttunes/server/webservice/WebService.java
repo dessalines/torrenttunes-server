@@ -1,7 +1,5 @@
 package com.torrenttunes.server.webservice;
 
-import static spark.Spark.get;
-import static spark.Spark.externalStaticFileLocation;
 import static spark.Spark.*;
 
 import org.slf4j.Logger;
@@ -26,14 +24,8 @@ public class WebService {
 
 //				setupSSL();
 
-		// Add external web service url to beginning of javascript tools
-		//		Tools.addExternalWebServiceVarToTools();
 
 		port(DataSources.SPARK_WEB_PORT);
-		
-
-		externalStaticFileLocation(DataSources.WEB_HOME());
-//		externalStaticFileLocation(com.torrenttunes.client.tools.DataSources.MUSIC_STORAGE_PATH);
 		
 		com.torrenttunes.client.tools.DataSources.APP_NAME = DataSources.APP_NAME;
 		Platform.setup();
@@ -45,18 +37,26 @@ public class WebService {
 			return "hi from the torrenttunes-tracker web service";
 		});
 		
-		get("/:page", (req, res) -> {
-			Tools.allowAllHeaders(req, res);
-			String pageName = req.params(":page");
-			return Tools.readFile(DataSources.PAGES(pageName));
-		});
 		
 		get("/", (req, res) -> {
 			Tools.allowAllHeaders(req, res);
 			return Tools.readFile(DataSources.PAGES("main"));
 		});
 		
-		// TODO move away from external static file location, to serving up the web/ directory fully
-	
+		get("/*", (req, res) -> {
+			Tools.allowAllHeaders(req, res);
+			Tools.set15MinuteCache(req, res);
+			
+			String pageName = req.splat()[0];
+			
+			String webHomePath = DataSources.WEB_HOME() + "/" + pageName;
+			
+			Tools.setContentTypeFromFileName(pageName, res);
+			
+			return Tools.readFile(webHomePath);
+			
+		});
+
+		
 	}
 }

@@ -22,6 +22,8 @@ import java.nio.file.StandardCopyOption;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -67,6 +69,9 @@ public class Tools {
 	public static final Gson GSON2 = new GsonBuilder().setPrettyPrinting().create();
 
 	public static final ObjectMapper MAPPER = new ObjectMapper();
+	
+	public static final SimpleDateFormat RESPONSE_HEADER_DATE_FORMAT = 
+			new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz");
 
 
 	public static void allowOnlyLocalHeaders(Request req, Response res) {
@@ -101,8 +106,7 @@ public class Tools {
 	
 	public static void set15MinuteCache(Request req, Response res) {
 		res.header("Cache-Control", "public,max-age=300,s-maxage=900");
-		res.header("ETag", com.torrenttunes.client.tools.DataSources.VERSION);
-		
+		res.header("Last-Modified", RESPONSE_HEADER_DATE_FORMAT.format(DataSources.APP_START_DATE));
 	}
 
 
@@ -497,6 +501,19 @@ public class Tools {
 		return res;
 	}
 
+	public static void setContentTypeFromFileName(String pageName, Response res) {
+		
+		if (pageName.endsWith(".css")) {
+			res.type("text/css");
+		} else if (pageName.endsWith(".js")) {
+			res.type("application/javascript");
+		} else if (pageName.endsWith(".png")) {
+			res.type("image/png");
+			res.header("Content-Disposition", "attachment;");
+		} else if (pageName.endsWith(".svg")) {
+			res.type("image/svg+xml");
+		}
+	}
 
 
 }

@@ -1,6 +1,7 @@
 package com.torrenttunes.server;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -74,8 +75,8 @@ public class DataSources {
 		return WEB_HTML() + "/" + pageName + ".html";
 	}
 	
-	
-	
 	public static final Set<String> NON_STREAMING_BROWSERS = new HashSet<String>(Arrays.asList(
 			"Firefox", "Android"));
+	
+	public static final Date APP_START_DATE = new Date();
 }
