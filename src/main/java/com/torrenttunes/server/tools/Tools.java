@@ -32,6 +32,9 @@ import java.util.NoSuchElementException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.http.client.methods.HttpGet;
 import org.codehaus.jackson.JsonNode;
@@ -416,12 +419,30 @@ public class Tools {
 		byte[] encoded;
 		try {
 			encoded = java.nio.file.Files.readAllBytes(Paths.get(path));
-
+			
 			s = new String(encoded, Charset.defaultCharset());
 		} catch (IOException e) {
 			e.printStackTrace();
+			throw new NoSuchElementException("Couldn't write result");
 		}
 		return s;
+	}
+	
+	public static HttpServletResponse writeFileToResponse(String path, Response res) {
+
+		byte[] encoded;
+		try {
+			encoded = java.nio.file.Files.readAllBytes(Paths.get(path));
+
+			ServletOutputStream os = res.raw().getOutputStream();
+			os.write(encoded);
+			os.close();
+			return res.raw();
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new NoSuchElementException("Couldn't write result");
+		}
 	}
 
 	public static void addExternalWebServiceVarToTools() {

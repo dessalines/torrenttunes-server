@@ -60,20 +60,7 @@ public class WebService {
 			
 			Tools.setContentTypeFromFileName(pageName, res);
 			
-			if (pageName.endsWith(".png")) {
-				try {
-					byte[] encoded = java.nio.file.Files.readAllBytes(Paths.get(webHomePath));
-					ServletOutputStream os = res.raw().getOutputStream();
-					os.write(encoded);
-					os.close();
-					return res.raw();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			
-			return Tools.readFile(webHomePath);
+			return Tools.writeFileToResponse(webHomePath, res);
 			
 		});
 
