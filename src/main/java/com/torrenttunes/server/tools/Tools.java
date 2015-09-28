@@ -108,7 +108,7 @@ public class Tools {
 	}
 	
 	public static void set15MinuteCache(Request req, Response res) {
-		res.header("Cache-Control", "public,max-age=300,s-maxage=900");
+		res.header("Cache-Control", "private,max-age=300,s-maxage=900");
 		res.header("Last-Modified", RESPONSE_HEADER_DATE_FORMAT.format(DataSources.APP_START_DATE));
 	}
 
