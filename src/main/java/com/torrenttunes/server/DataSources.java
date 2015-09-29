@@ -15,6 +15,7 @@ public class DataSources {
 	
 	public static Integer EXTERNAL_SPARK_WEB_PORT = 80; // Main is port 80, dev is port 4567
 	
+	// iptables are used to route all requests to 80 to 8080.
 	public static Integer INTERNAL_SPARK_WEB_PORT = 8080;
 	
 	public static final String WEB_SERVICE_URL = "http://localhost:" + EXTERNAL_SPARK_WEB_PORT + "/";
