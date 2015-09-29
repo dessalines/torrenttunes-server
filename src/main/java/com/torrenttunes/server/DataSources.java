@@ -32,6 +32,8 @@ public class DataSources {
 	
 	public static final String TORRENTTUNES_URL = "http://" + TORRENTTUNES_IP + ":" + TORRENTTUNES_PORT + "/";
 	
+	public static final String TORRENTTUNES_INTERNAL_URL = "http://" + TORRENTTUNES_IP + ":" + INTERNAL_SPARK_WEB_PORT + "/";
+	
 	
 	// The path to the ytm dir
 	public static String HOME_DIR() {
@@ -48,9 +50,6 @@ public class DataSources {
 	public static final String SAMPLE_MUSIC_DIR = "/home/tyler/Downloads";
 	
 	public static final String SAMPLE_SONG = SAMPLE_MUSIC_DIR + "/04 One Evening.mp3";	
-	
-	public static final String DB_FILE() {return HOME_DIR() + "/db/db_server.sqlite";}
-	
 	
 	// This should not be used, other than for unzipping to the home dir
 	public static final String CODE_DIR = System.getProperty("user.dir");
@@ -88,6 +87,8 @@ public class DataSources {
 	public static final Date APP_START_DATE = new Date();
 	
 	public static final String DB_PROP_FILE  = System.getProperty("user.home") + "/tt_db.properties";
-	
+
+	public static final Properties DB_PROP = Tools.loadProperties(DB_PROP_FILE);
+
 	
 }

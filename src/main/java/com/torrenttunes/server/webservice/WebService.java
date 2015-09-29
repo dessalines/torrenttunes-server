@@ -1,11 +1,7 @@
 package com.torrenttunes.server.webservice;
 
-import static spark.Spark.*;
-
-import java.io.IOException;
-import java.nio.file.Paths;
-
-import javax.servlet.ServletOutputStream;
+import static spark.Spark.get;
+import static spark.Spark.port;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +19,8 @@ public class WebService {
 	
 	public static void start() {
 		
-
+		
+		
 		com.torrenttunes.client.tools.DataSources.MUSIC_STORAGE_PATH = 
 				DataSources.HOME_DIR() + "/music";
 
@@ -47,7 +44,7 @@ public class WebService {
 			Tools.allowAllHeaders(req, res);
 			Tools.set15MinuteCache(req, res);
 			
-			return Tools.readFile(DataSources.PAGES("main"));
+			return Tools.readFile(DataSources.BASE_ENDPOINT);
 		});
 		
 		get("/*", (req, res) -> {

@@ -6,7 +6,7 @@ import com.torrenttunes.server.tools.Tools;
 
 public class ReFetchTags {
 	public static void main(String[] args) {
-		Tools.dbInit();
+		Tools.dbInit();	
 		Actions.refetchTags();
 		Tools.dbClose();
 	}

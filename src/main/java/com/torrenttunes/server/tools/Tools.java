@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Properties;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -304,8 +305,14 @@ public class Tools {
 	}
 
 	public static final void dbInit() {
+		
+		Properties prop = DataSources.DB_PROP;
+		
 		try {
-			new DB("default").open("org.sqlite.JDBC", "jdbc:sqlite:" + DataSources.DB_FILE(), "root", "p@ssw0rd");
+			new DB("default").open("com.mysql.jdbc.Driver", 
+					prop.getProperty("dburl"), 
+					prop.getProperty("dbuser"), 
+					prop.getProperty("dbpassword"));
 		} catch (DBException e) {
 			e.printStackTrace();
 			dbClose();
@@ -338,26 +345,7 @@ public class Tools {
 		return name;
 	}
 
-	
-	public static void saveTorrentFileToDB(File f) {
-		try {
-//			infoHash = Torrent.load(f).getHexInfoHash().toLowerCase();
 
-			byte[] fileBytes = java.nio.file.Files.readAllBytes(Paths.get(f.getAbsolutePath()));
-			TorrentInfo ti = TorrentInfo.bdecode(fileBytes);
-			
-			String infoHash = ti.getInfoHash().toHex().toLowerCase();
-
-
-			Tools.dbInit();
-			Actions.saveTorrentToDB(f, infoHash);
-			Tools.dbClose();
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 
 	public static JsonNode jsonToNode(String json) {
 
@@ -440,8 +428,7 @@ public class Tools {
 			return res.raw();
 			
 		} catch (IOException e) {
-			e.printStackTrace();
-			throw new NoSuchElementException("Couldn't write result");
+			throw new NoSuchElementException("Couldn't write response from path" + path);
 		}
 	}
 
@@ -536,5 +523,20 @@ public class Tools {
 		}
 	}
 
+	public static Properties loadProperties(String propertiesFileLocation) {
+
+		Properties prop = new Properties();
+		InputStream input = null;
+		try {
+			input = new FileInputStream(propertiesFileLocation);
+
+			// load a properties file
+			prop.load(input);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return prop;
+
+	}
 
 }

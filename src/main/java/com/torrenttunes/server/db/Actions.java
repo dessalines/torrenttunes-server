@@ -4,6 +4,8 @@ import static com.torrenttunes.client.db.Tables.SETTINGS;
 import static com.torrenttunes.server.db.Tables.*;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -16,10 +18,12 @@ import org.javalite.activejdbc.Model;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.frostwire.jlibtorrent.TorrentInfo;
 import com.musicbrainz.mp3.tagger.Tools.Artist.Tag;
 import com.musicbrainz.mp3.tagger.Tools.CoverArt;
 import com.musicbrainz.mp3.tagger.Tools.Song.MusicBrainzRecordingQuery;
 import com.torrenttunes.client.LibtorrentEngine;
+import com.torrenttunes.server.DataSources;
 import com.torrenttunes.server.db.Tables.ReleaseGroup;
 import com.torrenttunes.server.db.Tables.Song;
 import com.torrenttunes.server.tools.Tools;
@@ -47,8 +51,8 @@ public class Actions {
 
 			Boolean success = song.saveIt();
 
-		} catch(DBException e) {		
-			if (e.getMessage().contains("[SQLITE_CONSTRAINT]")) {
+		} catch(DBException e) {	
+			if (e.getMessage().contains("MySQLIntegrityConstraintViolationException")) {
 				log.error("Not adding " + torrentFile.getName() + ", Song was already in the DB");
 			} else {
 				e.printStackTrace();
@@ -62,12 +66,14 @@ public class Actions {
 
 	public static void updateSongInfo(JsonNode json) {
 
+	
 		// Get the variables
 		String songMbid = json.get("recordingMBID").asText();
 		String title = json.get("recording").asText();
 		String artist = json.get("artist").asText();
 		String artistMbid = json.get("artistMBID").asText();
 		Long durationMS = json.get("duration").asLong();
+		String ipHash = json.get("uploader_ip_hash").asText();
 
 		log.info("Updating song info for song: " + title + " , mbid: " + songMbid);
 
@@ -75,10 +81,10 @@ public class Actions {
 		Tools.dbInit();
 		Song song = SONG.findFirst("mbid = ?", songMbid);
 		song.set("title", title,
-				"duration_ms", durationMS).saveIt();
+				"duration_ms", durationMS,
+				"uploader_ip_hash", ipHash).saveIt();
 		Tools.dbClose();
 		log.info("New song: " + title + " updated");
-
 
 		createArtist(artist, artistMbid);
 
@@ -206,7 +212,7 @@ public class Actions {
 			// Fetch and create the tags
 			// Check to see if there are any tagInfos for that artist in the db, or any from musicBrainz
 			Tools.dbInit();
-			createTags(artistMbid, mbInfo);
+			
 
 			artistRow = ARTIST.createIt("mbid", artistMbid,
 					"name", artist,
@@ -219,6 +225,9 @@ public class Actions {
 					"youtube", mbInfo.getYoutube(),
 					"soundcloud", mbInfo.getSoundCloud(),
 					"lastfm", mbInfo.getLastFM());
+			
+			createTags(artistMbid, mbInfo);
+			
 			Tools.dbClose();
 
 			log.info("New artist: " + artist + " created");
@@ -326,6 +335,14 @@ public class Actions {
 		s.saveIt();
 
 	}
+	
+	public static void addToTimeoutCount(String infoHash) {
+		//		SONG.update("plays = plays + ?", "info_hash = ?", 1, infoHash);
+		Song s = SONG.findFirst("info_hash = ?", infoHash);
+		s.set("timeouts", s.getInteger("timeouts") + 1);
+		s.saveIt();
+
+	}
 
 
 	public static void updateSeeders(String infoHash, String seeders) {
@@ -407,6 +424,26 @@ public class Actions {
 		com.torrenttunes.client.tools.Tools.dbInit();
 		com.torrenttunes.client.db.Actions.removeSong(songMBID);
 		com.torrenttunes.client.tools.Tools.dbClose();
+	}
+	
+	public static void saveTorrentFileToDB(File f) {
+		try {
+//			infoHash = Torrent.load(f).getHexInfoHash().toLowerCase();
+
+			byte[] fileBytes = java.nio.file.Files.readAllBytes(Paths.get(f.getAbsolutePath()));
+			TorrentInfo ti = TorrentInfo.bdecode(fileBytes);
+			
+			String infoHash = ti.getInfoHash().toHex().toLowerCase();
+
+
+			Tools.dbInit();
+			Actions.saveTorrentToDB(f, infoHash);
+			Tools.dbClose();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 

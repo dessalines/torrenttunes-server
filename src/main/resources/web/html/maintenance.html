@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <title>TorrentTunes</title>
+  <!-- favicon -->
+  <link rel="shortcut icon" href="../image/favicon.ico" type="image/x-icon" />
+  <!-- Bootstrap core CSS -->
+  <link href="../css/cyborg.bootstrap.min.css" rel="stylesheet">
+  <!-- Link to font awesome -->
+  <link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.min.css">
+  <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet"> -->
+  <!-- Bootstrap social css -->
+  <link href="../bower_components/bootstrap-social/bootstrap-social.css" rel="stylesheet">
+  <!--   Bootstrap validator -->
+  <link rel="stylesheet" href="../bower_components/bootstrapValidator/dist/css/bootstrapValidator.min.css" />
+  <!--   toastr css -->
+  <link href="../bower_components/toastr/toastr.css" rel="stylesheet" />
+  <!--   typeahead css -->
+  <!-- <link href="typeaheadjs.css" rel="stylesheet" /> -->
+  <!-- Pickadate -->
+  <link href="../bower_components/pickadate/lib/themes/default.css" rel="stylesheet" />
+  <link href="../bower_components/pickadate/lib/themes/default.date.css" rel="stylesheet" />
+  <!-- Summernote -->
+  <link href="../bower_components/summernote/dist/summernote.css" rel="stylesheet" />
+  <!-- Bootstrap datepicker -->
+  <link href="../bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css" rel="stylesheet" />
+  <!-- Soundmanager css -->
+  <link rel="stylesheet" href="../css/audioplayer.css" />
+  <!-- This main css -->
+  <link href="../css/main.css" rel="stylesheet">
+</head>
+
+<body>
+  <!-- Navbars -->
+  <!-- the start of the doc -->
+  <div id="wrapper" class="wrapper">
+    <!-- header -->
+    <nav class="navbar navbar-default navbar-top" role="navigation">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand text-muted" href="https://github.com/tchoulihan/torrenttunes-client" target="_blank"><img class="logo pull-left" src="../image/cd_icon_white_512.png" />TorrentTunes</a>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+            <li id="searchbar">
+              <form id="search_form" class="navbar-form navbar-left navbar-input-group " role="search">
+                <input id='search_id' type='hidden' name='id' />
+                <div class="input-group">
+                  <div id="search_box" class="form-group">
+                    <input name="search_input" type="text" class="form-control typeahead rounded-left" placeholder="Search for Artists, Albums, or Songs">
+                  </div>
+                  <span class="input-group-btn">
+                    <button type="submit" class="btn btn-default rounded-right"><i class="fa fa-search"></i>
+                        </button>
+                   </span>
+                </div>
+              </form>
+            </li>
+            <li id="top_categories_div" class="dropdown">
+              <script id="top_categories_template" type="x-tmpl-mustache">
+                <div class="navbar-form">
+                  <a class="dropdown-toggle btn btn-default rounded-right rounded-left" data-toggle="dropdown">Browse <span class="caret"></span>
+                </a>
+                  <ul class="dropdown-menu" role="menu">
+                    {{#.}}
+                    <li><a href="/category/{{id}}">{{name}}</a>
+                    </li>
+                    {{/.}}
+                    <li class="divider">
+                    </li>
+                    <li><a href="/browse"> View all</a>
+                    </li>
+                  </ul>
+                </div>
+              </script>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a id="upload_download_totals" href="javascript:void(0);" data-toggle="tooltip" data-placement="auto" title=""><i class="fa fa-fw fa-exchange fa-rotate-90"></i></a></li>
+            <li><a class="text-normal" href="javascript:void(0);" data-toggle="modal" data-target="#donateModal"><i class="fa fa-coffee fa-fw"></i></a></li>
+            <li class="hide"><a href="#settingsTab" data-toggle="tab"><i class="fa fa-fw fa-cog"></i></a></li>
+          </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+      </div>
+      <!-- /.container-fluid -->
+    </nav>
+    <!-- The full page with the sidebar -->
+    <div class="container-fluid">
+      <!-- The Page -->
+      <div class="row">
+        <div class="col-md-12">
+          <h1 class="text-danger"><i class="fa fa-frown-o"></i> TorrentTunes is currently down for maintenance.</h1>
+        </div>
+        <!-- end of wrapper -->
+      </div>
+    </div>
+    <!-- Modals -->
+    <div class="modal fade bs-example-modal-lg" id="donateModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="userloginModalLabel">Donate Bitcoin</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <a class="qrcode_a">
+                <div id="qrcode" class="text-center"></div>
+              </a>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <div class="row">
+              <a class="qrcode_a"><h4 id="receive_address" class="text-center well"></h4></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- end of login modal -->
+    <!-- Bootstrap core JavaScript
+      ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../bower_components/bootstrapValidator/dist/js/bootstrapValidator.min.js "></script>
+    <script src="../bower_components/toastr/toastr.js"></script>
+    <script src="../bower_components/mustache/mustache.js"></script>
+    <script src="../bower_components/jquery.tablesorter/dist/js/jquery.tablesorter.min.js"></script>
+    <script src="../bower_components/typeahead.js/dist/typeahead.bundle.js"></script>
+    <script src="../bower_components/jquery.qrcode/dist/jquery.qrcode.min.js"></script>
+    <script src="../bower_components/soundmanager2/script/soundmanager2-jsmin.js"></script>
+    <!-- my scripts -->
+</body>
+
+</html>
