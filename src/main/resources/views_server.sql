@@ -159,7 +159,7 @@ song.info_hash,
 tag_info1.count as count_1, 
 tag_info2.count as count_2, 
 tag.name, 
-tag.id,
+tag.id as tag_id_1,
 (tag_info1.tag_id*100/732) as score,
 (
 	select mbid from release_group
