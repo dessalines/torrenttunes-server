@@ -195,7 +195,7 @@ tag.id,
 		limit 1
 	)
 	order by mbid, RAND()
-) as song_mbid
+) as song_mbid 
 from artist as artist1
 left join tag_info as tag_info1
 on artist1.mbid = tag_info1.artist_mbid
