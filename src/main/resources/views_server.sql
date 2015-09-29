@@ -180,7 +180,7 @@ tag.id as this_tag_id,
 	limit 1
 ) as srg_song_mbid,
 (
-	select id as id_1 from song
+	select mbid from song
 	where song.mbid = 
 	(
 		select song_mbid from song_release_group
@@ -194,7 +194,7 @@ tag.id as this_tag_id,
 		order by RAND()
 		limit 1
 	)
-	order by id_1, RAND()
+	order by mbid, RAND()
 ) as song_id
 from artist as artist1
 left join tag_info as tag_info1
