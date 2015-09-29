@@ -72,7 +72,7 @@ public class Actions {
 		String artist = json.get("artist").asText();
 		String artistMbid = json.get("artistMBID").asText();
 		Long durationMS = json.get("duration").asLong();
-		String ipAddress = json.get("uploader_ip_hash").asText();
+		String ipHash = json.get("uploader_ip_hash").asText();
 
 		log.info("Updating song info for song: " + title + " , mbid: " + songMbid);
 
@@ -81,7 +81,7 @@ public class Actions {
 		Song song = SONG.findFirst("mbid = ?", songMbid);
 		song.set("title", title,
 				"duration_ms", durationMS,
-				"uploader_ip_address", ipAddress).saveIt();
+				"uploader_ip_hash", ipHash).saveIt();
 		Tools.dbClose();
 		log.info("New song: " + title + " updated");
 

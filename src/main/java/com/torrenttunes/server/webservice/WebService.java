@@ -1,12 +1,7 @@
 package com.torrenttunes.server.webservice;
 
-import static spark.Spark.*;
-
-import java.io.IOException;
-import java.nio.file.Paths;
-import java.util.Properties;
-
-import javax.servlet.ServletOutputStream;
+import static spark.Spark.get;
+import static spark.Spark.port;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
