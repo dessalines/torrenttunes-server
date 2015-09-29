@@ -52,8 +52,7 @@ public class Actions {
 			Boolean success = song.saveIt();
 
 		} catch(DBException e) {	
-			log.info("error message = " + e.getMessage());
-			if (e.getMessage().contains("Duplicate entry")) {
+			if (e.getMessage().contains("MySQLIntegrityConstraintViolationException")) {
 				log.error("Not adding " + torrentFile.getName() + ", Song was already in the DB");
 			} else {
 				e.printStackTrace();
@@ -81,6 +80,8 @@ public class Actions {
 		// Find it by the MBID
 		Tools.dbInit();
 		Song song = SONG.findFirst("mbid = ?", songMbid);
+		log.info(song.toJson(true));
+		
 		song.set("title", title,
 				"duration_ms", durationMS,
 				"uploader_ip_hash", ipHash).saveIt();
