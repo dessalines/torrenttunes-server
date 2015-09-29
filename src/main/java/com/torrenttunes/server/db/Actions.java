@@ -80,13 +80,9 @@ public class Actions {
 		// Find it by the MBID
 		Tools.dbInit();
 		Song song = SONG.findFirst("mbid = ?", songMbid);
-		log.info(song.toJson(true));
-		
-		
-		SONG.update("title", title,
+		song.set("title", title,
 				"duration_ms", durationMS,
-				"uploader_ip_hash", ipHash, "mbid = ?", songMbid);
-
+				"uploader_ip_hash", ipHash).saveIt();
 		Tools.dbClose();
 		log.info("New song: " + title + " updated");
 

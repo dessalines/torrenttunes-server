@@ -162,6 +162,9 @@
 </key>
 </table>
 <table x="719" y="56" name="song">
+<row name="id" null="1" autoincrement="1">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
 <row name="mbid" null="0" autoincrement="0">
 <datatype>VARCHAR(40)</datatype>
 <default>'NULL'</default></row>
@@ -193,7 +196,7 @@
 <datatype>TIMESTAMP</datatype>
 <default>CURRENT_TIMESTAMP</default></row>
 <key type="PRIMARY" name="">
-<part>mbid</part>
+<part>id</part>
 </key>
 <key type="UNIQUE" name="">
 <part>torrent_path</part>
@@ -207,6 +210,9 @@
 </key>
 <key type="INDEX" name="">
 <part>title</part>
+</key>
+<key type="UNIQUE" name="">
+<part>mbid</part>
 </key>
 </table>
 <table x="46" y="463" name="tag_info">

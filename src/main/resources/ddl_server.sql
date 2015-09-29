@@ -3,7 +3,7 @@
 -- ---
 
 -- SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
--- SET FOREIGN_KEY_CHECKS=0;
+SET FOREIGN_KEY_CHECKS=0;
 
 -- ---
 -- Table 'artist'
@@ -81,6 +81,7 @@ CREATE TABLE `song_release_group` (
 DROP TABLE IF EXISTS `song`;
     
 CREATE TABLE `song` (
+  `id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
   `mbid` VARCHAR(40) NOT NULL DEFAULT 'NULL',
   `torrent_path` VARCHAR(512) NOT NULL DEFAULT 'NULL',
   `info_hash` VARCHAR(100) NOT NULL DEFAULT 'NULL',
@@ -91,11 +92,12 @@ CREATE TABLE `song` (
   `timeouts` INTEGER NOT NULL DEFAULT 0,
   `seeders` VARCHAR(20) NULL DEFAULT NULL,
   `created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`mbid`),
+  PRIMARY KEY (`id`),
   UNIQUE KEY (`torrent_path`),
   UNIQUE KEY (`info_hash`),
 KEY (`mbid`, `plays`),
-KEY (`title`)
+KEY (`title`),
+  UNIQUE KEY (`mbid`)
 );
 
 -- ---
@@ -159,9 +161,10 @@ ALTER TABLE `tag_info` ADD FOREIGN KEY (tag_id) REFERENCES `tag` (`id`);
 -- ('','','','','','','','','','','','','','');
 -- INSERT INTO `song_release_group` (`id`,`song_mbid`,`release_group_mbid`,`disc_number`,`track_number`,`created`) VALUES
 -- ('','','','','','');
--- INSERT INTO `song` (`mbid`,`torrent_path`,`info_hash`,`title`,`duration_ms`,`uploader_ip_hash`,`plays`,`timeouts`,`seeders`,`created`) VALUES
--- ('','','','','','','','','','');
+-- INSERT INTO `song` (`id`,`mbid`,`torrent_path`,`info_hash`,`title`,`duration_ms`,`uploader_ip_hash`,`plays`,`timeouts`,`seeders`,`created`) VALUES
+-- ('','','','','','','','','','','');
 -- INSERT INTO `tag_info` (`id`,`artist_mbid`,`count`,`tag_id`,`created`) VALUES
 -- ('','','','','');
 -- INSERT INTO `tag` (`id`,`name`) VALUES
 -- ('','');
+SET FOREIGN_KEY_CHECKS=1;
