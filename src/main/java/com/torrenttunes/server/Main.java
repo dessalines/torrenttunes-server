@@ -43,8 +43,8 @@ public class Main {
 
 
 		log.setLevel(Level.toLevel(loglevel));
-		log.getLoggerContext().getLogger("org.eclipse.jetty").setLevel(Level.OFF);
-		log.getLoggerContext().getLogger("spark.webserver").setLevel(Level.OFF);
+//		log.getLoggerContext().getLogger("org.eclipse.jetty").setLevel(Level.OFF);
+//		log.getLoggerContext().getLogger("spark.webserver").setLevel(Level.OFF);
 
 
 		// Initialize
