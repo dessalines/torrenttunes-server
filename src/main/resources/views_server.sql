@@ -159,12 +159,12 @@ song.info_hash,
 tag_info1.count as count_1, 
 tag_info2.count as count_2, 
 tag.name, 
-tag.id as this_tag_id,
+tag.id as tag_id,
 (tag_info1.tag_id*100/732) as score,
 (
 	select mbid from release_group
 	where artist2.mbid = release_group.artist_mbid
-	order by rand()
+	order by RAND()
 	limit 1
 ) as rg_mbid,
 (
@@ -173,10 +173,10 @@ tag.id as this_tag_id,
 	(
 		select mbid from release_group
 		where artist2.mbid = release_group.artist_mbid
-		order by rand()
+		order by RAND()
 		limit 1
 	)
-	order by rand()
+	order by RAND()
 	limit 1
 ) as srg_song_mbid,
 (
@@ -188,21 +188,21 @@ tag.id as this_tag_id,
 		(
 			select mbid from release_group
 			where artist2.mbid = release_group.artist_mbid
-			order by rand()
+			order by RAND()
 			limit 1
 		)
-		order by rand()
+		order by RAND()
 		limit 1
 	)
-	order by id_1, rand()
+	order by id, RAND()
 ) as song_id
 from artist as artist1
 left join tag_info as tag_info1
 on artist1.mbid = tag_info1.artist_mbid
 left join tag 
-on tag_info1.tag_id = this_tag_id
+on tag_info1.tag_id = tag.id
 left join tag_info as tag_info2
-on tag_info2.tag_id = this_tag_id
+on tag_info2.tag_id = tag.id
 left join artist as artist2
 on tag_info2.artist_mbid = artist2.mbid
 left join song
