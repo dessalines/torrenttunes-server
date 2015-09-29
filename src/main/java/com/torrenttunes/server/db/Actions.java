@@ -82,9 +82,11 @@ public class Actions {
 		Song song = SONG.findFirst("mbid = ?", songMbid);
 		log.info(song.toJson(true));
 		
-		song.set("title", title,
+		
+		SONG.update("title", title,
 				"duration_ms", durationMS,
-				"uploader_ip_hash", ipHash).saveIt();
+				"uploader_ip_hash", ipHash, "mbid = ?", songMbid);
+
 		Tools.dbClose();
 		log.info("New song: " + title + " updated");
 
