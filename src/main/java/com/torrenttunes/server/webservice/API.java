@@ -82,7 +82,7 @@ public class API {
 				log.info(fileName);
 
 
-				return null;
+				return "success";
 
 			} catch (Exception e) {
 				res.status(666);
