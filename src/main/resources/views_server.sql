@@ -180,7 +180,7 @@ tag.id as tag_id_1,
 	limit 1
 ) as srg_song_mbid,
 (
-	select id as id_1from song
+	select id as id_1 from song
 	where song.mbid = 
 	(
 		select song_mbid from song_release_group
