@@ -4,6 +4,8 @@ import static com.torrenttunes.client.db.Tables.SETTINGS;
 import static com.torrenttunes.server.db.Tables.*;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -16,10 +18,12 @@ import org.javalite.activejdbc.Model;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.frostwire.jlibtorrent.TorrentInfo;
 import com.musicbrainz.mp3.tagger.Tools.Artist.Tag;
 import com.musicbrainz.mp3.tagger.Tools.CoverArt;
 import com.musicbrainz.mp3.tagger.Tools.Song.MusicBrainzRecordingQuery;
 import com.torrenttunes.client.LibtorrentEngine;
+import com.torrenttunes.server.DataSources;
 import com.torrenttunes.server.db.Tables.ReleaseGroup;
 import com.torrenttunes.server.db.Tables.Song;
 import com.torrenttunes.server.tools.Tools;
@@ -68,6 +72,7 @@ public class Actions {
 		String artist = json.get("artist").asText();
 		String artistMbid = json.get("artistMBID").asText();
 		Long durationMS = json.get("duration").asLong();
+		String ipAddress = json.get("uploader_ip_hash").asText();
 
 		log.info("Updating song info for song: " + title + " , mbid: " + songMbid);
 
@@ -75,10 +80,10 @@ public class Actions {
 		Tools.dbInit();
 		Song song = SONG.findFirst("mbid = ?", songMbid);
 		song.set("title", title,
-				"duration_ms", durationMS).saveIt();
+				"duration_ms", durationMS,
+				"uploader_ip_address", ipAddress).saveIt();
 		Tools.dbClose();
 		log.info("New song: " + title + " updated");
-
 
 		createArtist(artist, artistMbid);
 
@@ -326,6 +331,14 @@ public class Actions {
 		s.saveIt();
 
 	}
+	
+	public static void addToTimeoutCount(String infoHash) {
+		//		SONG.update("plays = plays + ?", "info_hash = ?", 1, infoHash);
+		Song s = SONG.findFirst("info_hash = ?", infoHash);
+		s.set("timeouts", s.getInteger("timeouts") + 1);
+		s.saveIt();
+
+	}
 
 
 	public static void updateSeeders(String infoHash, String seeders) {
@@ -407,6 +420,26 @@ public class Actions {
 		com.torrenttunes.client.tools.Tools.dbInit();
 		com.torrenttunes.client.db.Actions.removeSong(songMBID);
 		com.torrenttunes.client.tools.Tools.dbClose();
+	}
+	
+	public static void saveTorrentFileToDB(File f) {
+		try {
+//			infoHash = Torrent.load(f).getHexInfoHash().toLowerCase();
+
+			byte[] fileBytes = java.nio.file.Files.readAllBytes(Paths.get(f.getAbsolutePath()));
+			TorrentInfo ti = TorrentInfo.bdecode(fileBytes);
+			
+			String infoHash = ti.getInfoHash().toHex().toLowerCase();
+
+
+			Tools.dbInit();
+			Actions.saveTorrentToDB(f, infoHash);
+			Tools.dbClose();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 

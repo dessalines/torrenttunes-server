@@ -1,176 +1,218 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- SQL XML created by WWW SQL Designer, https://github.com/ondras/wwwsqldesigner/ -->
-<!-- Active URL: http://ondras.zarovi.cz/sql/demo/?keyword=torrenttunes-server -->
+<!-- Active URL: http://ondras.zarovi.cz/sql/demo/?keyword=torrenttunes-server-mysql -->
 <sql>
-<datatypes db="sqlite">
-        <group label="Affinity">
-            <type label="Integer" default="0" length="0" sql="INTEGER" quote="" color="rgb(238,238,170)"/>
-            <type label="Text" default="" length="1" sql="TEXT" quote="'" color="rgb(255,200,200)"/>
-            <type label="Numeric" default="0" length="0" sql="NUMERIC" quote="" color="rgb(238,238,170)"/>
-            <type label="Real" default="0" length="0" sql="REAL" quote="" color="rgb(238,238,170)"/>
-            <type label="None" default="" length="0" sql="NONE" quote="" color="rgb(200,255,200)"/>
-        </group>
-    </datatypes><table x="720" y="98" name="song">
-<row name="id" null="1" autoincrement="1">
-<datatype>INTEGER</datatype>
-<default>NULL</default></row>
-<row name="torrent_path" null="0" autoincrement="0">
-<datatype>TEXT</datatype>
-<default>'NULL'</default></row>
-<row name="info_hash" null="0" autoincrement="0">
-<datatype>TEXT</datatype>
-<default>'NULL'</default></row>
+<datatypes db="mysql">
+	<group label="Numeric" color="rgb(238,238,170)">
+		<type label="Integer" length="0" sql="INTEGER" quote=""/>
+	 	<type label="TINYINT" length="0" sql="TINYINT" quote=""/>
+	 	<type label="SMALLINT" length="0" sql="SMALLINT" quote=""/>
+	 	<type label="MEDIUMINT" length="0" sql="MEDIUMINT" quote=""/>
+	 	<type label="INT" length="0" sql="INT" quote=""/>
+		<type label="BIGINT" length="0" sql="BIGINT" quote=""/>
+		<type label="Decimal" length="1" sql="DECIMAL" re="DEC" quote=""/>
+		<type label="Single precision" length="0" sql="FLOAT" quote=""/>
+		<type label="Double precision" length="0" sql="DOUBLE" re="DOUBLE" quote=""/>
+	</group>
+
+	<group label="Character" color="rgb(255,200,200)">
+		<type label="Char" length="1" sql="CHAR" quote="'"/>
+		<type label="Varchar" length="1" sql="VARCHAR" quote="'"/>
+		<type label="Text" length="0" sql="MEDIUMTEXT" re="TEXT" quote="'"/>
+		<type label="Binary" length="1" sql="BINARY" quote="'"/>
+		<type label="Varbinary" length="1" sql="VARBINARY" quote="'"/>
+		<type label="BLOB" length="0" sql="BLOB" re="BLOB" quote="'"/>
+	</group>
+
+	<group label="Date &amp; Time" color="rgb(200,255,200)">
+		<type label="Date" length="0" sql="DATE" quote="'"/>
+		<type label="Time" length="0" sql="TIME" quote="'"/>
+		<type label="Datetime" length="0" sql="DATETIME" quote="'"/>
+		<type label="Year" length="0" sql="YEAR" quote=""/>
+		<type label="Timestamp" length="0" sql="TIMESTAMP" quote="'"/>
+	</group>
+	
+	<group label="Miscellaneous" color="rgb(200,200,255)">
+		<type label="ENUM" length="1" sql="ENUM" quote=""/>
+		<type label="SET" length="1" sql="SET" quote=""/>
+		<type label="Bit" length="0" sql="bit" quote=""/>
+	</group>
+</datatypes><table x="42" y="52" name="artist">
 <row name="mbid" null="0" autoincrement="0">
-<datatype>TEXT</datatype>
+<datatype>VARCHAR(40)</datatype>
 <default>'NULL'</default></row>
-<row name="title" null="1" autoincrement="0">
-<datatype>TEXT</datatype>
+<row name="name" null="0" autoincrement="0">
+<datatype>VARCHAR(200)</datatype>
+<default>'NULL'</default></row>
+<row name="image_url" null="1" autoincrement="0">
+<datatype>VARCHAR(512)</datatype>
 <default>NULL</default></row>
-<row name="duration_ms" null="1" autoincrement="0">
-<datatype>INTEGER</datatype>
+<row name="wikipedia_link" null="1" autoincrement="0">
+<datatype>VARCHAR(512)</datatype>
 <default>NULL</default></row>
-<row name="plays" null="0" autoincrement="0">
-<datatype>INTEGER</datatype>
-<default>0</default></row>
-<row name="seeders" null="1" autoincrement="0">
-<datatype>TEXT</datatype>
+<row name="allmusic_link" null="1" autoincrement="0">
+<datatype>VARCHAR(512)</datatype>
 <default>NULL</default></row>
-<key type="UNIQUE" name="">
-<part>torrent_path</part>
-</key>
+<row name="official_homepage" null="1" autoincrement="0">
+<datatype>VARCHAR(512)</datatype>
+<default>NULL</default></row>
+<row name="imdb" null="1" autoincrement="0">
+<datatype>VARCHAR(512)</datatype>
+<default>NULL</default></row>
+<row name="lyrics" null="1" autoincrement="0">
+<datatype>VARCHAR(512)</datatype>
+<default>NULL</default></row>
+<row name="youtube" null="1" autoincrement="0">
+<datatype>VARCHAR(512)</datatype>
+<default>NULL</default></row>
+<row name="soundcloud" null="1" autoincrement="0">
+<datatype>VARCHAR(lastfm)</datatype>
+<default>NULL</default></row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
 <key type="PRIMARY" name="">
-<part>id</part>
-</key>
-<key type="UNIQUE" name="">
-<part>info_hash</part>
-</key>
-<key type="UNIQUE" name="">
 <part>mbid</part>
 </key>
-<key type="INDEX" name="play_index">
-<part>plays</part>
-<part>mbid</part>
+<key type="INDEX" name="">
+<part>name</part>
 </key>
 </table>
-<table x="214" y="98" name="release_group">
+<table x="222" y="53" name="release_group">
 <row name="mbid" null="0" autoincrement="0">
-<datatype>TEXT</datatype>
-<default>'NULL'</default><relation table="song_release_group" row="release_group_mbid" />
-</row>
+<datatype>VARCHAR(40)</datatype>
+<default>'NULL'</default></row>
 <row name="title" null="0" autoincrement="0">
-<datatype>TEXT</datatype>
+<datatype>VARCHAR(512)</datatype>
 <default>'NULL'</default></row>
 <row name="artist_mbid" null="0" autoincrement="0">
-<datatype>TEXT</datatype>
+<datatype>VARCHAR(40)</datatype>
 <default>'NULL'</default><relation table="artist" row="mbid" />
 </row>
 <row name="year" null="1" autoincrement="0">
-<datatype>TEXT</datatype>
+<datatype>VARCHAR(6)</datatype>
 <default>NULL</default></row>
 <row name="wikipedia_link" null="1" autoincrement="0">
-<datatype>TEXT</datatype>
+<datatype>VARCHAR(512)</datatype>
 <default>NULL</default></row>
 <row name="allmusic_link" null="1" autoincrement="0">
-<datatype>TEXT</datatype>
+<datatype>VARCHAR(512)</datatype>
 <default>NULL</default></row>
 <row name="official_homepage" null="1" autoincrement="0">
-<datatype>TEXT</datatype>
+<datatype>VARCHAR(512)</datatype>
 <default>NULL</default></row>
 <row name="lyrics" null="1" autoincrement="0">
-<datatype>TEXT</datatype>
+<datatype>VARCHAR(512)</datatype>
 <default>NULL</default></row>
 <row name="album_coverart_url" null="1" autoincrement="0">
-<datatype>TEXT</datatype>
+<datatype>VARCHAR(512)</datatype>
 <default>NULL</default></row>
 <row name="album_coverart_thumbnail_large" null="1" autoincrement="0">
-<datatype>TEXT</datatype>
+<datatype>VARCHAR(512)</datatype>
 <default>NULL</default></row>
 <row name="album_coverart_thumbnail_small" null="1" autoincrement="0">
-<datatype>TEXT</datatype>
+<datatype>VARCHAR(512)</datatype>
 <default>NULL</default></row>
 <row name="primary_type" null="1" autoincrement="0">
-<datatype>TEXT</datatype>
+<datatype>VARCHAR(100)</datatype>
 <default>NULL</default></row>
 <row name="secondary_types" null="1" autoincrement="0">
-<datatype>TEXT</datatype>
+<datatype>VARCHAR(512)</datatype>
 <default>NULL</default></row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
 <key type="PRIMARY" name="">
 <part>mbid</part>
 </key>
-<key type="INDEX" name="artist_mbid_index">
-<part>artist_mbid</part>
+<key type="INDEX" name="">
+<part>title</part>
 </key>
 </table>
-<table x="34" y="100" name="artist">
-<row name="mbid" null="0" autoincrement="0">
-<datatype>TEXT</datatype>
-<default>'NULL'</default></row>
-<row name="name" null="0" autoincrement="0">
-<datatype>TEXT</datatype>
-<default>'NULL'</default></row>
-<row name="image_url" null="1" autoincrement="0">
-<datatype>TEXT</datatype>
-<default>NULL</default></row>
-<row name="wikipedia_link" null="1" autoincrement="0">
-<datatype>TEXT</datatype>
-<default>NULL</default></row>
-<row name="allmusic_link" null="1" autoincrement="0">
-<datatype>TEXT</datatype>
-<default>NULL</default></row>
-<row name="official_homepage" null="1" autoincrement="0">
-<datatype>TEXT</datatype>
-<default>NULL</default></row>
-<row name="imdb" null="1" autoincrement="0">
-<datatype>TEXT</datatype>
-<default>NULL</default></row>
-<row name="lyrics" null="1" autoincrement="0">
-<datatype>TEXT</datatype>
-<default>NULL</default></row>
-<row name="youtube" null="1" autoincrement="0">
-<datatype>TEXT</datatype>
-<default>NULL</default></row>
-<row name="soundcloud" null="1" autoincrement="0">
-<datatype>TEXT</datatype>
-<default>NULL</default></row>
-<row name="lastfm" null="1" autoincrement="0">
-<datatype>TEXT</datatype>
-<default>NULL</default></row>
-<key type="PRIMARY" name="">
-<part>mbid</part>
-</key>
-</table>
-<table x="482" y="97" name="song_release_group">
+<table x="487" y="54" name="song_release_group">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
-<row name="song_mbid" null="1" autoincrement="0">
-<datatype>TEXT</datatype>
-<default>NULL</default><relation table="song" row="mbid" />
+<row name="song_mbid" null="0" autoincrement="0">
+<datatype>VARCHAR(40)</datatype>
+<default>'NULL'</default><relation table="song" row="mbid" />
 </row>
-<row name="release_group_mbid" null="1" autoincrement="0">
-<datatype>TEXT</datatype>
-<default>NULL</default></row>
+<row name="release_group_mbid" null="0" autoincrement="0">
+<datatype>VARCHAR(40)</datatype>
+<default>'NULL'</default><relation table="release_group" row="mbid" />
+</row>
 <row name="disc_number" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
 <row name="track_number" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
 <key type="UNIQUE" name="">
-<part>release_group_mbid</part>
 <part>song_mbid</part>
+<part>release_group_mbid</part>
 </key>
 </table>
-<table x="42" y="450" name="tag_info">
+<table x="719" y="56" name="song">
+<row name="mbid" null="0" autoincrement="0">
+<datatype>VARCHAR(40)</datatype>
+<default>'NULL'</default></row>
+<row name="torrent_path" null="0" autoincrement="0">
+<datatype>VARCHAR(512)</datatype>
+<default>'NULL'</default></row>
+<row name="info_hash" null="0" autoincrement="0">
+<datatype>VARCHAR(100)</datatype>
+<default>'NULL'</default></row>
+<row name="title" null="1" autoincrement="0">
+<datatype>VARCHAR(512)</datatype>
+<default>NULL</default></row>
+<row name="duration_ms" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="uploader_ip_hash" null="0" autoincrement="0">
+<datatype>VARCHAR(100)</datatype>
+<default>'NULL'</default></row>
+<row name="plays" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>0</default></row>
+<row name="timeouts" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>0</default></row>
+<row name="seeders" null="1" autoincrement="0">
+<datatype>VARCHAR(20)</datatype>
+<default>NULL</default></row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<key type="PRIMARY" name="">
+<part>mbid</part>
+</key>
+<key type="UNIQUE" name="">
+<part>torrent_path</part>
+</key>
+<key type="UNIQUE" name="">
+<part>info_hash</part>
+</key>
+<key type="INDEX" name="">
+<part>mbid</part>
+<part>plays</part>
+</key>
+<key type="INDEX" name="">
+<part>title</part>
+</key>
+</table>
+<table x="46" y="463" name="tag_info">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
-<row name="artist_mbid" null="1" autoincrement="0">
-<datatype>TEXT</datatype>
-<default>NULL</default><relation table="artist" row="mbid" />
+<row name="artist_mbid" null="0" autoincrement="0">
+<datatype>VARCHAR(40)</datatype>
+<default>'NULL'</default><relation table="artist" row="mbid" />
 </row>
 <row name="count" null="0" autoincrement="0">
 <datatype>INTEGER</datatype>
@@ -179,6 +221,9 @@
 <datatype>INTEGER</datatype>
 <default>NULL</default><relation table="tag" row="id" />
 </row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
@@ -187,12 +232,12 @@
 <part>tag_id</part>
 </key>
 </table>
-<table x="228" y="449" name="tag">
+<table x="243" y="463" name="tag">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
 <row name="name" null="0" autoincrement="0">
-<datatype>TEXT</datatype>
+<datatype>VARCHAR(200)</datatype>
 <default>'NULL'</default></row>
 <key type="PRIMARY" name="">
 <part>id</part>

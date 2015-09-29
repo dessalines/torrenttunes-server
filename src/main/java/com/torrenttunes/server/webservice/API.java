@@ -4,50 +4,38 @@ import static com.torrenttunes.server.db.Tables.ALBUM_SEARCH_VIEW;
 import static com.torrenttunes.server.db.Tables.ALBUM_VIEW;
 import static com.torrenttunes.server.db.Tables.ARTIST;
 import static com.torrenttunes.server.db.Tables.ARTIST_SEARCH_VIEW;
-import static com.torrenttunes.server.db.Tables.RELATED_ARTIST_VIEW;
-import static com.torrenttunes.server.db.Tables.RELATED_ARTIST_VIEW_SQL;
+import static com.torrenttunes.server.db.Tables.RELATED_SONG_VIEW;
+import static com.torrenttunes.server.db.Tables.RELATED_SONG_VIEW_SQL;
 import static com.torrenttunes.server.db.Tables.SONG;
 import static com.torrenttunes.server.db.Tables.SONG_SEARCH_VIEW;
 import static com.torrenttunes.server.db.Tables.SONG_VIEW;
 import static com.torrenttunes.server.db.Tables.SONG_VIEW_GROUPED;
-import static com.torrenttunes.server.db.Tables.*;
 import static spark.Spark.get;
 import static spark.Spark.post;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.RandomAccessFile;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.nio.channels.Channels;
-import java.nio.channels.FileChannel;
-import java.nio.channels.WritableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Properties;
 
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.io.input.BoundedInputStream;
 import org.codehaus.jackson.JsonNode;
-import org.javalite.activejdbc.Model;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.hash.Hashing;
 import com.torrenttunes.server.DataSources;
 import com.torrenttunes.server.db.Actions;
 import com.torrenttunes.server.db.Tables.SongView;
@@ -87,7 +75,7 @@ public class API {
 				item.write(torrentFile);
 
 
-				Tools.saveTorrentFileToDB(torrentFile);
+				Actions.saveTorrentFileToDB(torrentFile);
 
 				// a first test
 
@@ -147,6 +135,29 @@ public class API {
 				log.info("added to play count for infohash: " + infoHash);
 
 				return "Added play count";
+			} catch (Exception e) {
+				res.status(666);
+				e.printStackTrace();
+				return e.getMessage();
+			} finally {
+				
+			}
+		});
+		
+		post("/add_timeout_count/:infoHash", (req, res) -> {
+
+			try {
+				Tools.allowAllHeaders(req, res);
+				String infoHash = req.params(":infoHash");
+
+				
+				Tools.dbInit();
+				Actions.addToTimeoutCount(infoHash);
+				Tools.dbClose();
+
+				log.info("added to timeout count for infohash: " + infoHash);
+
+				return "Added timeout count";
 			} catch (Exception e) {
 				res.status(666);
 				e.printStackTrace();

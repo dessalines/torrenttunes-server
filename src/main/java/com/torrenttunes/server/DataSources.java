@@ -3,9 +3,11 @@ package com.torrenttunes.server;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Properties;
 import java.util.Set;
 
-import com.torrenttunes.client.tools.Tools;
+import com.torrenttunes.server.tools.Tools;
+
 
 public class DataSources {
 
@@ -40,10 +42,7 @@ public class DataSources {
 	
 	public static final String SAMPLE_MUSIC_DIR = "/home/tyler/Downloads";
 	
-	public static final String SAMPLE_SONG = SAMPLE_MUSIC_DIR + "/04 One Evening.mp3";
-	
-	public static final String DB_FILE() {return HOME_DIR() + "/db/db_server.sqlite";}
-	
+	public static final String SAMPLE_SONG = SAMPLE_MUSIC_DIR + "/04 One Evening.mp3";	
 	
 	// This should not be used, other than for unzipping to the home dir
 	public static final String CODE_DIR = System.getProperty("user.dir");
@@ -79,4 +78,9 @@ public class DataSources {
 			"Firefox", "Android"));
 	
 	public static final Date APP_START_DATE = new Date();
+	
+	public static final String DB_PROP_FILE  = System.getProperty("user.home") + "/tt_db.properties";
+	
+	public static final Properties DB_PROP = Tools.loadProperties(DB_PROP_FILE);
+	
 }
