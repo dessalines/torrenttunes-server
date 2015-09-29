@@ -24,6 +24,9 @@ public class Main {
 
 	@Option(name="-loglevel", usage="Sets the log level [INFO, DEBUG, etc.]")
 	private String loglevel = "INFO";
+	
+	@Option(name="-maintenance", usage="Redirects to the maintenance page")
+	private boolean maintenanceRedirect;
 
 	public void doMain(String[] args) {
 
@@ -32,6 +35,10 @@ public class Main {
 		// See if the user wants to uninstall it
 		if (uninstall) {
 			Tools.uninstall();
+		}
+		
+		if (maintenanceRedirect) {
+			DataSources.BASE_ENDPOINT = DataSources.PAGES("maintenance");
 		}
 
 

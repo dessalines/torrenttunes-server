@@ -24,7 +24,7 @@ public class WebService {
 	
 	public static void start() {
 		
-
+		
 		
 		com.torrenttunes.client.tools.DataSources.MUSIC_STORAGE_PATH = 
 				DataSources.HOME_DIR() + "/music";
@@ -49,7 +49,7 @@ public class WebService {
 			Tools.allowAllHeaders(req, res);
 			Tools.set15MinuteCache(req, res);
 			
-			return Tools.readFile(DataSources.PAGES("main"));
+			return Tools.readFile(DataSources.BASE_ENDPOINT);
 		});
 		
 		get("/*", (req, res) -> {

@@ -20,6 +20,8 @@ public class DataSources {
 	public static String EXTERNAL_IP = Tools.httpGetString("http://api.ipify.org/").trim();
 	
 	public static String EXTERNAL_URL = "http://" + EXTERNAL_IP + ":" + SPARK_WEB_PORT + "/";
+
+	public static String BASE_ENDPOINT = PAGES("main");
 	
 	public static final String TORRENTTUNES_IP = "torrenttunes.ml";
 	
