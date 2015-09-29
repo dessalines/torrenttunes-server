@@ -1,3 +1,39 @@
+-- Drop the views
+
+drop view if exists album_view, song_view, song_view_grouped, song_search_view, 
+album_search_view, artist_search_view, related_artist_view, artist_tag_view,
+related_song_view;
+
+
+
+-- this includes song counts and play times
+CREATE VIEW album_view AS
+select release_group.mbid,
+release_group.title,
+release_group.artist_mbid,
+artist.name as artist_name,
+year,
+release_group.wikipedia_link,
+release_group.allmusic_link,
+album_coverart_url,
+album_coverart_thumbnail_large,
+album_coverart_thumbnail_small,
+primary_type,
+secondary_types,
+count(song_release_group.id) as number_of_songs,
+sum(plays) as plays,
+primary_type = 'Album' AND secondary_types is NULL as is_primary_album
+from release_group
+inner join song_release_group
+on release_group.mbid = song_release_group.release_group_mbid
+inner join song 
+on song.mbid = song_release_group.song_mbid
+inner join artist
+on release_group.artist_mbid = artist.mbid
+group by release_group.mbid;
+
+
+
 CREATE VIEW song_view as 
 select torrent_path,
 info_hash, 
@@ -58,31 +94,7 @@ select mbid as artist_mbid,
 name as search_artist
 from artist;
 
--- this includes song counts and play times
-CREATE VIEW album_view AS
-select release_group.mbid,
-release_group.title,
-release_group.artist_mbid,
-artist.name as artist_name,
-year,
-release_group.wikipedia_link,
-release_group.allmusic_link,
-album_coverart_url,
-album_coverart_thumbnail_large,
-album_coverart_thumbnail_small,
-primary_type,
-secondary_types,
-count(song_release_group.id) as number_of_songs,
-sum(plays) as plays,
-primary_type = 'Album' AND secondary_types is NULL as is_primary_album
-from release_group
-inner join song_release_group
-on release_group.mbid = song_release_group.release_group_mbid
-inner join song 
-on song.mbid = song_release_group.song_mbid
-inner join artist
-on release_group.artist_mbid = artist.mbid
-group by release_group.mbid;
+
 
 CREATE VIEW related_artist_view AS 
 select artist1.mbid as artist1_mbid, 
