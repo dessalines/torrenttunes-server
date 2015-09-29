@@ -49,6 +49,7 @@ public class Main {
 
 		// Initialize
 		com.torrenttunes.client.tools.DataSources.APP_NAME = DataSources.APP_NAME;
+		com.torrenttunes.client.tools.DataSources.TORRENTTUNES_URL = DataSources.TORRENTTUNES_INTERNAL_URL;
 		Tools.setupDirectories();
 
 		Tools.copyResourcesToHomeDir(true);

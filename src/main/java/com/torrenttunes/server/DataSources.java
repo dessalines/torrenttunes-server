@@ -32,6 +32,8 @@ public class DataSources {
 	
 	public static final String TORRENTTUNES_URL = "http://" + TORRENTTUNES_IP + ":" + TORRENTTUNES_PORT + "/";
 	
+	public static final String TORRENTTUNES_INTERNAL_URL = "http://" + TORRENTTUNES_IP + ":" + INTERNAL_SPARK_WEB_PORT + "/";
+	
 	
 	// The path to the ytm dir
 	public static String HOME_DIR() {

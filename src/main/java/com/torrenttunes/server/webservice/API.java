@@ -105,8 +105,6 @@ public class API {
 
 				String json = req.body();
 
-				log.info("torrent_info json =\n" + json);
-
 				JsonNode jsonNode = Tools.jsonToNode(json);
 
 		
