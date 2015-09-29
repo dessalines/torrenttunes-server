@@ -22,7 +22,8 @@ CREATE TABLE `artist` (
   `imdb` VARCHAR(512) NULL DEFAULT NULL,
   `lyrics` VARCHAR(512) NULL DEFAULT NULL,
   `youtube` VARCHAR(512) NULL DEFAULT NULL,
-  `soundcloud` VARCHAR(lastfm) NULL DEFAULT NULL,
+  `soundcloud` VARCHAR(512) NULL DEFAULT NULL,
+  `lastfm` VARCHAR(512) NULL DEFAULT NULL,
   `created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`mbid`),
 KEY (`name`)
@@ -152,8 +153,8 @@ ALTER TABLE `tag_info` ADD FOREIGN KEY (tag_id) REFERENCES `tag` (`id`);
 -- Test Data
 -- ---
 
--- INSERT INTO `artist` (`mbid`,`name`,`image_url`,`wikipedia_link`,`allmusic_link`,`official_homepage`,`imdb`,`lyrics`,`youtube`,`soundcloud`,`created`) VALUES
--- ('','','','','','','','','','','');
+-- INSERT INTO `artist` (`mbid`,`name`,`image_url`,`wikipedia_link`,`allmusic_link`,`official_homepage`,`imdb`,`lyrics`,`youtube`,`soundcloud`,`lastfm`,`created`) VALUES
+-- ('','','','','','','','','','','','');
 -- INSERT INTO `release_group` (`mbid`,`title`,`artist_mbid`,`year`,`wikipedia_link`,`allmusic_link`,`official_homepage`,`lyrics`,`album_coverart_url`,`album_coverart_thumbnail_large`,`album_coverart_thumbnail_small`,`primary_type`,`secondary_types`,`created`) VALUES
 -- ('','','','','','','','','','','','','','');
 -- INSERT INTO `song_release_group` (`id`,`song_mbid`,`release_group_mbid`,`disc_number`,`track_number`,`created`) VALUES

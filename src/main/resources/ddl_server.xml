@@ -66,7 +66,10 @@
 <datatype>VARCHAR(512)</datatype>
 <default>NULL</default></row>
 <row name="soundcloud" null="1" autoincrement="0">
-<datatype>VARCHAR(lastfm)</datatype>
+<datatype>VARCHAR(512)</datatype>
+<default>NULL</default></row>
+<row name="lastfm" null="1" autoincrement="0">
+<datatype>VARCHAR(512)</datatype>
 <default>NULL</default></row>
 <row name="created" null="0" autoincrement="0">
 <datatype>TIMESTAMP</datatype>
