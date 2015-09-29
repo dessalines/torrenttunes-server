@@ -164,7 +164,7 @@ tag.id,
 (
 	select mbid from release_group
 	where artist2.mbid = release_group.artist_mbid
-	order by random()
+	order by rand()
 	limit 1
 ) as rg_mbid,
 (
@@ -173,10 +173,10 @@ tag.id,
 	(
 		select mbid from release_group
 		where artist2.mbid = release_group.artist_mbid
-		order by random()
+		order by rand()
 		limit 1
 	)
-	order by random()
+	order by rand()
 	limit 1
 ) as srg_song_mbid,
 (
@@ -188,13 +188,13 @@ tag.id,
 		(
 			select mbid from release_group
 			where artist2.mbid = release_group.artist_mbid
-			order by random()
+			order by rand()
 			limit 1
 		)
-		order by random()
+		order by rand()
 		limit 1
 	)
-	order by id, random()
+	order by id, rand()
 ) as song_id
 from artist as artist1
 left join tag_info as tag_info1
