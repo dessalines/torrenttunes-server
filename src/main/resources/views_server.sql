@@ -178,8 +178,19 @@ tag.id,
 	)
 	order by RAND()
 	limit 1
-) as srg_song_mbid,
-(
+) as srg_song_mbid
+
+from artist as artist1
+left join tag_info as tag_info1
+on artist1.mbid = tag_info1.artist_mbid
+left join tag 
+on tag_info1.tag_id = tag.id
+left join tag_info as tag_info2
+on tag_info2.tag_id = tag.id
+left join artist as artist2
+on tag_info2.artist_mbid = artist2.mbid
+left join song
+on song.mbid = (
 	select mbid from song
 	where song.mbid = 
 	(
@@ -195,18 +206,7 @@ tag.id,
 		limit 1
 	)
 	order by mbid, RAND()
-) as song_derp 
-from artist as artist1
-left join tag_info as tag_info1
-on artist1.mbid = tag_info1.artist_mbid
-left join tag 
-on tag_info1.tag_id = tag.id
-left join tag_info as tag_info2
-on tag_info2.tag_id = tag.id
-left join artist as artist2
-on tag_info2.artist_mbid = artist2.mbid
-left join song
-on song.mbid = song_derp
+)
 -- where artist1.mbid = 'db3c0a20-bf05-4b30-ac22-f294aea24172'
 
 group by artist2.mbid
