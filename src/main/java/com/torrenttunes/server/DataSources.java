@@ -3,9 +3,11 @@ package com.torrenttunes.server;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Properties;
 import java.util.Set;
 
-import com.torrenttunes.client.tools.Tools;
+import com.torrenttunes.server.tools.Tools;
+
 
 public class DataSources {
 
@@ -18,10 +20,12 @@ public class DataSources {
 	public static String EXTERNAL_IP = Tools.httpGetString("http://api.ipify.org/").trim();
 	
 	public static String EXTERNAL_URL = "http://" + EXTERNAL_IP + ":" + SPARK_WEB_PORT + "/";
+
+	public static String BASE_ENDPOINT = PAGES("main");
 	
 	public static final String TORRENTTUNES_IP = "torrenttunes.ml";
 	
-	public static final String TORRENTTUNES_PORT = "80";// Main is 80, dev is 4567
+	public static final String TORRENTTUNES_PORT = "8080";// Main is 80, dev is 4567
 	
 	public static final String TORRENTTUNES_URL = "http://" + TORRENTTUNES_IP + ":" + TORRENTTUNES_PORT + "/";
 	
@@ -40,7 +44,7 @@ public class DataSources {
 	
 	public static final String SAMPLE_MUSIC_DIR = "/home/tyler/Downloads";
 	
-	public static final String SAMPLE_SONG = SAMPLE_MUSIC_DIR + "/04 One Evening.mp3";
+	public static final String SAMPLE_SONG = SAMPLE_MUSIC_DIR + "/04 One Evening.mp3";	
 	
 	public static final String DB_FILE() {return HOME_DIR() + "/db/db_server.sqlite";}
 	
@@ -79,4 +83,8 @@ public class DataSources {
 			"Firefox", "Android"));
 	
 	public static final Date APP_START_DATE = new Date();
+	
+	public static final String DB_PROP_FILE  = System.getProperty("user.home") + "/tt_db.properties";
+	
+	
 }
