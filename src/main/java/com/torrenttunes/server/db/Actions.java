@@ -212,7 +212,7 @@ public class Actions {
 			// Fetch and create the tags
 			// Check to see if there are any tagInfos for that artist in the db, or any from musicBrainz
 			Tools.dbInit();
-			createTags(artistMbid, mbInfo);
+			
 
 			artistRow = ARTIST.createIt("mbid", artistMbid,
 					"name", artist,
@@ -225,6 +225,9 @@ public class Actions {
 					"youtube", mbInfo.getYoutube(),
 					"soundcloud", mbInfo.getSoundCloud(),
 					"lastfm", mbInfo.getLastFM());
+			
+			createTags(artistMbid, mbInfo);
+			
 			Tools.dbClose();
 
 			log.info("New artist: " + artist + " created");
