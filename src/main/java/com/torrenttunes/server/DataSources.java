@@ -27,7 +27,7 @@ public class DataSources {
 	
 	public static final String TORRENTTUNES_IP = "torrenttunes.ml";
 	
-	public static final String TORRENTTUNES_PORT = "8080";// Main is 80, dev is 4567
+	public static final String TORRENTTUNES_PORT = "80";// Main is 80, dev is 4567
 	
 	public static final String TORRENTTUNES_URL = "http://" + TORRENTTUNES_IP + ":" + TORRENTTUNES_PORT + "/";
 	
