@@ -52,7 +52,7 @@ public class Actions {
 			Boolean success = song.saveIt();
 
 		} catch(DBException e) {		
-			if (e.getMessage().contains("[SQLITE_CONSTRAINT]")) {
+			if (e.getMessage().contains("Duplicate entry")) {
 				log.error("Not adding " + torrentFile.getName() + ", Song was already in the DB");
 			} else {
 				e.printStackTrace();
