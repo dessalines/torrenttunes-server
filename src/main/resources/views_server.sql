@@ -206,7 +206,7 @@ on tag_info2.tag_id = tag.id
 left join artist as artist2
 on tag_info2.artist_mbid = artist2.mbid
 left join song
-on song.mbid = song_mbid
+on song.mbid = song_mbid.mbid
 -- where artist1.mbid = 'db3c0a20-bf05-4b30-ac22-f294aea24172'
 
 group by artist2.mbid
