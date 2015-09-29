@@ -159,7 +159,7 @@ song.info_hash,
 tag_info1.count as count_1, 
 tag_info2.count as count_2, 
 tag.name, 
-tag.id as tag_id_1,
+tag.id as tag_id,
 (tag_info1.tag_id*100/732) as score,
 (
 	select mbid from release_group
@@ -194,7 +194,7 @@ tag.id as tag_id_1,
 		order by rand()
 		limit 1
 	)
-	order by id, rand()
+	order by id_1, rand()
 ) as song_id
 from artist as artist1
 left join tag_info as tag_info1
