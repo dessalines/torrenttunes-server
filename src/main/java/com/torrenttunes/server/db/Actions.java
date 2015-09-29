@@ -51,7 +51,8 @@ public class Actions {
 
 			Boolean success = song.saveIt();
 
-		} catch(DBException e) {		
+		} catch(DBException e) {	
+			log.info("error message = " + e.getMessage());
 			if (e.getMessage().contains("Duplicate entry")) {
 				log.error("Not adding " + torrentFile.getName() + ", Song was already in the DB");
 			} else {
