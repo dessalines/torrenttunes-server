@@ -133,7 +133,7 @@ limit 10;
 -- where artist1.mbid like 'b7ffd2af-418f-4be2-bdd1-22f8b48613da' 
 -- and artist2.mbid not like 'b7ffd2af-418f-4be2-bdd1-22f8b48613da' 
 
-select * from related_artist_view where `mbid` like 'b7ffd2af-418f-4be2-bdd1-22f8b48613da';
+-- select * from related_artist_view where `mbid` like 'b7ffd2af-418f-4be2-bdd1-22f8b48613da';
 
 CREATE VIEW artist_tag_view AS 
 select artist.mbid, artist.name as artist_name, tag_info.count, tag.name, tag.id
