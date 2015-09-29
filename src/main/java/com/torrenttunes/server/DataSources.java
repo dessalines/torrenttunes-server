@@ -11,7 +11,7 @@ public class DataSources {
 
 	public static String APP_NAME = "torrenttunes-server";
 	
-	public static Integer SPARK_WEB_PORT = 80; // Main is port 80, dev is port 4567
+	public static Integer SPARK_WEB_PORT = 8080; // Main is port 80, dev is port 4567
 	
 	public static final String WEB_SERVICE_URL = "http://localhost:" + SPARK_WEB_PORT + "/";
 	
