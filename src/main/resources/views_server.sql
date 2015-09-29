@@ -130,8 +130,8 @@ limit 10;
 -- where artist1.name like '%Bob Marley%'
 
 -- and artist2.name not like '%Deftones%'
---where artist1.mbid like 'b7ffd2af-418f-4be2-bdd1-22f8b48613da' 
---and artist2.mbid not like 'b7ffd2af-418f-4be2-bdd1-22f8b48613da' 
+-- where artist1.mbid like 'b7ffd2af-418f-4be2-bdd1-22f8b48613da' 
+-- and artist2.mbid not like 'b7ffd2af-418f-4be2-bdd1-22f8b48613da' 
 
 select * from related_artist_view where `mbid` like 'b7ffd2af-418f-4be2-bdd1-22f8b48613da';
 
