@@ -217,7 +217,7 @@
 <datatype>VARCHAR(40)</datatype>
 <default>'NULL'</default><relation table="artist" row="mbid" />
 </row>
-<row name="count" null="0" autoincrement="0">
+<row name="count" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
 <row name="tag_id" null="0" autoincrement="0">
