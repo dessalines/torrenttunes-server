@@ -13,13 +13,16 @@ public class DataSources {
 
 	public static String APP_NAME = "torrenttunes-server";
 	
-	public static Integer SPARK_WEB_PORT = 80; // Main is port 80, dev is port 4567
+	public static Integer EXTERNAL_SPARK_WEB_PORT = 80; // Main is port 80, dev is port 4567
 	
-	public static final String WEB_SERVICE_URL = "http://localhost:" + SPARK_WEB_PORT + "/";
+	// iptables are used to route all requests to 80 to 8080.
+	public static Integer INTERNAL_SPARK_WEB_PORT = 8080;
+	
+	public static final String WEB_SERVICE_URL = "http://localhost:" + EXTERNAL_SPARK_WEB_PORT + "/";
 	
 	public static String EXTERNAL_IP = Tools.httpGetString("http://api.ipify.org/").trim();
 	
-	public static String EXTERNAL_URL = "http://" + EXTERNAL_IP + ":" + SPARK_WEB_PORT + "/";
+	public static String EXTERNAL_URL = "http://" + EXTERNAL_IP + ":" + EXTERNAL_SPARK_WEB_PORT + "/";
 
 	public static String BASE_ENDPOINT = PAGES("main");
 	
@@ -82,7 +85,8 @@ public class DataSources {
 	public static final Date APP_START_DATE = new Date();
 	
 	public static final String DB_PROP_FILE  = System.getProperty("user.home") + "/tt_db.properties";
-	
+
 	public static final Properties DB_PROP = Tools.loadProperties(DB_PROP_FILE);
+
 	
 }

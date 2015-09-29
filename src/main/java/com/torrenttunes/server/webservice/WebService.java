@@ -32,7 +32,7 @@ public class WebService {
 //				setupSSL();
 
 
-		port(DataSources.SPARK_WEB_PORT);
+		port(DataSources.INTERNAL_SPARK_WEB_PORT);
 		
 		com.torrenttunes.client.tools.DataSources.APP_NAME = DataSources.APP_NAME;
 		Platform.setup();
