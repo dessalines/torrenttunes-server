@@ -428,8 +428,7 @@ public class Tools {
 			return res.raw();
 			
 		} catch (IOException e) {
-			e.printStackTrace();
-			throw new NoSuchElementException("Couldn't write result");
+			throw new NoSuchElementException("Couldn't write response from path" + path);
 		}
 	}
 

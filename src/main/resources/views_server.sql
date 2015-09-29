@@ -74,7 +74,7 @@ info_hash,
 seeders,
 is_primary_album,
 song.plays,
-artist_name || ' - ' || album_view.title || ' - ' ||  song.title as search_song
+concat(artist_name,' - ',album_view.title,' - ',song.title) as search_song
 from song
 inner join song_release_group
 on song.mbid = song_release_group.song_mbid 
@@ -85,7 +85,7 @@ CREATE VIEW album_search_view AS
 select album_view.mbid as album_mbid,
 is_primary_album,
 plays,
-artist_name || ' - ' || title as search_album
+concat(artist_name,' - ',title) as search_album
 from album_view;
 
 
