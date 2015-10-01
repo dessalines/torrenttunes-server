@@ -11,8 +11,6 @@ on song_release_group.song_mbid = song.mbid
 where uploader_ip_hash='f457fb8e6fb4c43fa3bfbcfeeb7ec529'
 group by release_group.mbid
 
-
-
 select release_group.mbid,uploader_ip_hash
 from artist
 inner join release_group
