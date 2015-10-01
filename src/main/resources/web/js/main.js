@@ -655,7 +655,7 @@ function setupUploadForm() {
 
         setupUploadTable();
         setupLibrary();
-        setupPlayQueue();
+        // setupPlayQueue();
 
 
 
@@ -969,39 +969,16 @@ function downloadOrFetchTrackObj(infoHash, option) {
       // console.log('play queue saved');
     }, true, torrentTunesSparkService, null);
 
-
-
-
+  }).error(function(err) {
+    simplePost('add_timeout_count/' + infoHash, null, null, function() {
+      // console.log('play queue saved');
+    }, true, torrentTunesSparkService, null);
   });
 }
 
 
 
 
-function setupPlayQueue() {
-  // Load it from the DB
-  getJson('get_play_queue').done(function(e) {
-    playQueue = JSON.parse(e);
-    console.log("play queue = " + playQueue);
-
-    if (playQueue != "") {
-      $('.sm2-bar-ui').removeClass('hide');
-      // Now reload the bottom bar playlist
-
-
-
-    }
-    playQueue.forEach(function(trackObj) {
-      addToQueueLast(trackObj);
-    });
-    player.playlistController.refresh();
-    player.actions.next();
-    player.actions.stop();
-
-
-  });
-
-}
 
 function addToQueueLast(trackObj) {
 

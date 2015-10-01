@@ -428,7 +428,7 @@ public class Tools {
 			return res.raw();
 			
 		} catch (IOException e) {
-			throw new NoSuchElementException("Couldn't write response from path" + path);
+			throw new NoSuchElementException("Couldn't write response from path: " + path);
 		}
 	}
 
