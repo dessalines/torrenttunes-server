@@ -159,7 +159,7 @@ public class Tables {
 			"\t)\n"+
 			"\torder by mbid, RAND()\n"+
 			")\n"+
-			"-- where artist1.mbid = \'db3c0a20-bf05-4b30-ac22-f294aea24172\'\n"+
+			"where artist1.mbid = ? \n"+
 			"\n"+
 			"group by artist2.mbid\n"+
 			"order by \n"+
