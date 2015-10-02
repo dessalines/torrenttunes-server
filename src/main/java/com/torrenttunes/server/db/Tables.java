@@ -110,13 +110,13 @@ public class Tables {
 			"song.info_hash,\n"+
 			"tag_info1.count as count_1, \n"+
 			"tag_info2.count as count_2, \n"+
-			"tag.name, \n"+
-			"tag.id,\n"+
+			"tag.name as tag_name, \n"+
+			"tag.id as tag_id,\n"+
 			"(tag_info1.tag_id*100/732) as score,\n"+
 			"(\n"+
 			"\tselect mbid from release_group\n"+
 			"\twhere artist2.mbid = release_group.artist_mbid\n"+
-			"\torder by RAND()\n"+
+			"\t-- order by rand()\n"+
 			"\tlimit 1\n"+
 			") as rg_mbid,\n"+
 			"(\n"+
@@ -125,13 +125,12 @@ public class Tables {
 			"\t(\n"+
 			"\t\tselect mbid from release_group\n"+
 			"\t\twhere artist2.mbid = release_group.artist_mbid\n"+
-			"\t\torder by RAND()\n"+
+			"\t\t-- order by rand()\n"+
 			"\t\tlimit 1\n"+
 			"\t)\n"+
-			"\torder by RAND()\n"+
+			"\t-- order by rand()\n"+
 			"\tlimit 1\n"+
 			") as srg_song_mbid\n"+
-			"\n"+
 			"from artist as artist1\n"+
 			"left join tag_info as tag_info1\n"+
 			"on artist1.mbid = tag_info1.artist_mbid\n"+
@@ -142,8 +141,9 @@ public class Tables {
 			"left join artist as artist2\n"+
 			"on tag_info2.artist_mbid = artist2.mbid\n"+
 			"left join song\n"+
-			"on song.mbid = (\n"+
-			"\tselect mbid from song\n"+
+			"on song.id = \n"+
+			"\t(\n"+
+			"\tselect id from song\n"+
 			"\twhere song.mbid = \n"+
 			"\t(\n"+
 			"\t\tselect song_mbid from song_release_group\n"+
@@ -151,16 +151,16 @@ public class Tables {
 			"\t\t(\n"+
 			"\t\t\tselect mbid from release_group\n"+
 			"\t\t\twhere artist2.mbid = release_group.artist_mbid\n"+
-			"\t\t\torder by RAND()\n"+
+			"\t\t\t-- order by rand()\n"+
 			"\t\t\tlimit 1\n"+
 			"\t\t)\n"+
-			"\t\torder by RAND()\n"+
+			"\t\t-- order by rand()\n"+
 			"\t\tlimit 1\n"+
 			"\t)\n"+
-			"\torder by mbid, RAND()\n"+
+			"\t-- order by id, rand()\n"+
 			")\n"+
-			"where artist1.mbid = ? \n"+
-			"\n"+
+			"-- where artist1.mbid = ? \n"+
+			"-- and song.info_hash is not null\n"+
 			"group by artist2.mbid\n"+
 			"order by \n"+
 			"-- This one sorts by tag.id desc, meaning the weirdest categories\n"+
