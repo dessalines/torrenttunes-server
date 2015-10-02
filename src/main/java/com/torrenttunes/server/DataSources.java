@@ -22,9 +22,7 @@ public class DataSources {
 	
 	public static String EXTERNAL_IP = Tools.httpGetString("http://api.ipify.org/").trim();
 	
-	public static String EXTERNAL_URL = "http://" + EXTERNAL_IP + ":" + EXTERNAL_SPARK_WEB_PORT + "/";
-
-	public static String BASE_ENDPOINT = PAGES("main");
+	public static String EXTERNAL_URL = "http://" + EXTERNAL_IP + ":" + EXTERNAL_SPARK_WEB_PORT + "/";	
 	
 	public static final String TORRENTTUNES_IP = "torrenttunes.ml";
 	
@@ -75,11 +73,14 @@ public class DataSources {
 
 	public static final String WEB_HTML() {return WEB_HOME() + "/html";}
 	
-
+	public static final String MAIN_PAGE_URL_EN() {return WEB_HTML() + "/main_en.html";}
 	
-	public static final String PAGES(String pageName) {
-		return WEB_HTML() + "/" + pageName + ".html";
-	}
+	public static final String MAIN_PAGE_URL_ES() {return WEB_HTML() + "/main_es.html";}
+	
+	public static final String MAINTENANCE_PAGE_URL() {return WEB_HTML() + "/maintenance.html";}
+	
+	public static String BASE_ENDPOINT = MAIN_PAGE_URL_EN();
+	
 	
 	public static final Set<String> NON_STREAMING_BROWSERS = new HashSet<String>(Arrays.asList(
 			"Firefox", "Android"));

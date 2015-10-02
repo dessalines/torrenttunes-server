@@ -47,6 +47,14 @@ public class WebService {
 			return Tools.readFile(DataSources.BASE_ENDPOINT);
 		});
 		
+		get("/es", (req, res) -> {
+			Tools.allowAllHeaders(req, res);
+			Tools.set15MinuteCache(req, res);
+			
+			return Tools.readFile(DataSources.MAIN_PAGE_URL_ES());
+		});
+		
+		
 		get("/*", (req, res) -> {
 			Tools.allowAllHeaders(req, res);
 			Tools.set15MinuteCache(req, res);

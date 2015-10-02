@@ -61,7 +61,7 @@ soundManager.onready(function() {
 
 $(document).ready(function() {
 
-
+  checkBrowserLanguage();
   keyboardShortcuts();
 
   loadPlaylistsFromLocalStorage();
@@ -82,6 +82,17 @@ $(document).ready(function() {
 
 
 });
+
+function checkBrowserLanguage() {
+  var userLang = navigator.language || navigator.userLanguage; 
+  console.log('Browser language: ' + userLang);
+
+  // redirect spanish browsers
+  if (userLang.lastIndexOf('es', 0) === 0) {
+    window.location = 'es';
+  }
+
+}
 
 function setupUploadDownloadTotals() {
   setUploadDownloadTotals();
@@ -753,12 +764,12 @@ function setupLibrary() {
       container: 'body'
     });
 
-    $("[name=library_table]").tablesorter({
-      sortList: [
-        [2, 0],
-        [4, 0]
-      ]
-    });
+    // $("[name=library_table]").tablesorter({
+    //   sortList: [
+    //     [2, 0],
+    //     [4, 0]
+    //   ]
+    // });
     // $('.tablesorter').trigger('update');
     // setup the add/play buttons
     addPlaylistDropdowns();
