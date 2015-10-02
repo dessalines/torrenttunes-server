@@ -61,6 +61,7 @@ import com.google.gson.GsonBuilder;
 import com.torrenttunes.client.tools.WriteMultilingualHTMLFiles;
 import com.torrenttunes.server.DataSources;
 import com.torrenttunes.server.db.Actions;
+import com.torrenttunes.server.db.ConnectionPool;
 
 import de.javakaffee.kryoserializers.KryoReflectionFactorySupport;
 
@@ -309,14 +310,9 @@ public class Tools {
 	}
 
 	public static final void dbInit() {
-		
-		Properties prop = DataSources.DB_PROP;
-		
+
 		try {
-			new DB("default").open("com.mysql.jdbc.Driver", 
-					prop.getProperty("dburl"), 
-					prop.getProperty("dbuser"), 
-					prop.getProperty("dbpassword"));
+			new DB("default").open(ConnectionPool.pool.dataSource.getDataSource());
 		} catch (DBException e) {
 			e.printStackTrace();
 			dbClose();
