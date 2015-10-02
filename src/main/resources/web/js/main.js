@@ -87,8 +87,11 @@ function checkBrowserLanguage() {
   var userLang = navigator.language || navigator.userLanguage; 
   console.log('Browser language: ' + userLang);
 
-  // redirect spanish browsers
-  if (userLang.lastIndexOf('es', 0) === 0) {
+  var cPath = getUrlPathArray().slice(-1)[0];
+
+
+  // redirect spanish browsers if not already there
+  if (userLang.lastIndexOf('es', 0) === 0 && cPath != 'es') {
     window.location = 'es';
   }
 
