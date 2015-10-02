@@ -159,8 +159,8 @@ public class Tables {
 			"\t)\n"+
 			"\t-- order by id, rand()\n"+
 			")\n"+
-			"-- where artist1.mbid = ? \n"+
-			"-- and song.info_hash is not null\n"+
+			"where artist1.mbid = ? \n"+
+			"and song.info_hash is not null\n"+
 			"group by artist2.mbid\n"+
 			"order by \n"+
 			"-- This one sorts by tag.id desc, meaning the weirdest categories\n"+
