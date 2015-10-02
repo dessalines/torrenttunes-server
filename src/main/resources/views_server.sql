@@ -142,7 +142,7 @@ left join tag_info
 on artist.mbid = tag_info.artist_mbid
 left join tag 
 on tag_info.tag_id = tag.id
-where artist.name like '%Bob Marley%'
+-- where artist.name like '%Bob Marley%'
 order by artist.mbid, tag_info.count desc, tag.id desc
 ;
 
@@ -405,20 +405,28 @@ on song.id =
 			-- order by rand()
 			limit 1
 		)
+
 		-- order by rand()
 		limit 1
 	)
 	-- order by id, rand()
+	limit 1
 )
--- where artist1.mbid = '9ad6d1e3-427f-4921-b603-7e9eda94a061' 
--- and song.info_hash is not null
+where artist1.mbid = '9ad6d1e3-427f-4921-b603-7e9eda94a061' 
+and song.info_hash is not null
+-- and (tag_info1.tag_id*100/732) > 2
 group by artist2.mbid
 order by 
+
+rand()
+
 -- This one sorts by tag.id desc, meaning the weirdest categories
-tag_info1.tag_id desc,
+-- tag_info1.tag_id desc,
 -- This one makes it more pertinent(NIN has the most votes for industrial)
-tag_info1.count desc, 
+-- tag_info1.count desc, 
 -- This one does the second groups votes
-tag_info2.count desc
+-- tag_info2.count desc
+
+
 
 limit 10;
