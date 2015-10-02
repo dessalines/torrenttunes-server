@@ -314,11 +314,11 @@ public class Tools {
 	public static final void dbInit() {
 
 		try {
-			Connection c = ConnectionPool.pool.dataSource.getConnection();
+			log.info(ConnectionPool.pool.dataSource.getDataSource().toString());
 			new DB("default").open(ConnectionPool.pool.dataSource.getDataSource());
 
 			
-		} catch (DBException | SQLException e) {
+		} catch (DBException e) {
 			e.printStackTrace();
 			dbClose();
 			dbInit();
