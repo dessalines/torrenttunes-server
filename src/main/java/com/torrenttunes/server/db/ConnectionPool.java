@@ -21,10 +21,10 @@ public enum ConnectionPool {
 		config.setJdbcUrl(dbUrl);
 		config.setUsername(dbUser);
 		config.setPassword(dbPass);
-		config.addDataSourceProperty("cachePrepStmts", "true");
-		config.addDataSourceProperty("prepStmtCacheSize", "250");
-		config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
-		config.setDataSourceClassName("com.mysql.jdbc.Driver");
+//		config.addDataSourceProperty("cachePrepStmts", "true");
+//		config.addDataSourceProperty("prepStmtCacheSize", "250");
+//		config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+//		config.setDataSourceClassName("com.mysql.jdbc.Driver");
 		
 		dataSource = new HikariDataSource(config);
 
