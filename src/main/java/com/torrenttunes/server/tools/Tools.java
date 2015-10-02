@@ -35,12 +35,14 @@ import java.util.zip.ZipFile;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.http.client.methods.HttpGet;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ObjectNode;
+import org.javalite.activejdbc.ConnectionSpec;
 import org.javalite.activejdbc.DB;
 import org.javalite.activejdbc.DBException;
 import org.slf4j.Logger;
@@ -312,8 +314,11 @@ public class Tools {
 	public static final void dbInit() {
 
 		try {
+			Connection c = ConnectionPool.pool.dataSource.getConnection();
 			new DB("default").open(ConnectionPool.pool.dataSource.getDataSource());
-		} catch (DBException e) {
+
+			
+		} catch (DBException | SQLException e) {
 			e.printStackTrace();
 			dbClose();
 			dbInit();
