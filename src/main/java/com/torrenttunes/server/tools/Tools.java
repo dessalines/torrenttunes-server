@@ -58,6 +58,7 @@ import com.google.common.hash.Hashing;
 import com.google.common.io.Files;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.torrenttunes.client.tools.WriteMultilingualHTMLFiles;
 import com.torrenttunes.server.DataSources;
 import com.torrenttunes.server.db.Actions;
 
@@ -225,6 +226,9 @@ public class Tools {
 			}
 			Tools.unzip(new File(zipFile), new File(DataSources.SOURCE_CODE_HOME()));
 			//		new Tools().copyJarResourcesRecursively("src", configHome);
+			
+			WriteMultilingualHTMLFiles.write();
+			
 		} else {
 			log.info("The source directory already exists");
 		}

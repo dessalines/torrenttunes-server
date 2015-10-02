@@ -38,7 +38,7 @@ public class Main {
 		}
 		
 		if (maintenanceRedirect) {
-			DataSources.BASE_ENDPOINT = DataSources.PAGES("maintenance");
+			DataSources.BASE_ENDPOINT = DataSources.MAINTENANCE_PAGE_URL();
 		}
 
 
