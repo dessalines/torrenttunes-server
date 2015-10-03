@@ -25,9 +25,8 @@ public enum ConnectionPool {
 //		config.addDataSourceProperty("prepStmtCacheSize", "250");
 //		config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
 //		config.setDataSourceClassName("com.mysql.jdbc.Driver");
-		
 		dataSource = new HikariDataSource(config);
-		
+
 
 		
 //		dataSourceClassName=com.mysql.jdbc.jdbc2.optional.MysqlDataSource
