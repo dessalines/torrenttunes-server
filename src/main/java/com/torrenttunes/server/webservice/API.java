@@ -777,7 +777,8 @@ public class API {
 			try {
 
 				Tools.allowAllHeaders(req, res);
-
+				Tools.dbInit();
+				
 				String artistMbid = req.params(":artistMbid");
 				
 				zipFile = Actions.createArtistDiscographyZipFile(artistMbid);
@@ -792,6 +793,7 @@ public class API {
 			} finally {
 				// Delete the zip file
 				zipFile.delete();
+				Tools.dbClose();
 				
 			}
 

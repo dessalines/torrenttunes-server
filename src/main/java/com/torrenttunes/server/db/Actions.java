@@ -455,10 +455,10 @@ public class Actions {
 
 		// Get the artist songs
 		try {
-			Tools.dbInit();
+			
 			List<SongViewGrouped> songs = SONG_VIEW_GROUPED.find("artist_mbid = ?", artistMbid).
 					orderBy("torrent_path");
-			Tools.dbClose();
+	
 
 			String zipFileName = songs.get(0).getString("artist") + "_torrents_discography.zip";
 
