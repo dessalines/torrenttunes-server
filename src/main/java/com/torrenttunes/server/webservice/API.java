@@ -784,7 +784,7 @@ public class API {
 				zipFile = Actions.createArtistDiscographyZipFile(artistMbid);
 				
 				
-				return Tools.writeFileToResponse(zipFile, res);
+				return zipFile;
 
 			} catch (Exception e) {
 				res.status(666);
