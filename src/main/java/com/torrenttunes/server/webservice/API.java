@@ -784,21 +784,48 @@ public class API {
 				zipFile = Actions.createArtistDiscographyZipFile(artistMbid);
 				
 				
-				return zipFile;
+				res.redirect("/download_discography/" + zipFile.getName());
+				
+				return null;
 
 			} catch (Exception e) {
 				res.status(666);
 				e.printStackTrace();
 				return e.getMessage();
 			} finally {
-				// Delete the zip file
-				zipFile.delete();
+
 				Tools.dbClose();
 				
 			}
 
 
 		});
+		
+		get("/download_discography/:zipFileName", (req, res) -> {
+			
+			File zipFile = null;
+			try {
+				Tools.allowAllHeaders(req, res);
+				
+				String zipFileName = req.params(":zipFileName");
+				zipFile = new File(DataSources.TORRENTS_DIR() + "/" + zipFileName);
+				
+				return Tools.writeFileToResponse(zipFile, res);
+				
+			} catch (Exception e) {
+				res.status(666);
+				e.printStackTrace();
+				return e.getMessage();
+			} finally {
+				
+				// Delete the zip file
+				zipFile.delete();
+			}
+			
+
+
+		});
+		
 
 
 		get("/get_audio_file/:encodedPath", (req, res) -> {
