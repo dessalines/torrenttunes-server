@@ -4,6 +4,7 @@ import static com.torrenttunes.client.db.Tables.SETTINGS;
 import static com.torrenttunes.server.db.Tables.*;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -11,6 +12,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import org.codehaus.jackson.JsonNode;
 import org.javalite.activejdbc.DBException;
@@ -66,7 +69,7 @@ public class Actions {
 
 	public static void updateSongInfo(JsonNode json) {
 
-	
+
 		// Get the variables
 		String songMbid = json.get("recordingMBID").asText();
 		String title = json.get("recording").asText();
@@ -131,7 +134,7 @@ public class Actions {
 						"release_group_mbid", albumMbid,
 						"disc_number", discNo,
 						"track_number", trackNo);
-				
+
 				log.info("Song release group:" + songMbid, " created");
 			} catch(DBException e) {
 				log.error("That song release group row already exists");
@@ -213,7 +216,7 @@ public class Actions {
 			// Fetch and create the tags
 			// Check to see if there are any tagInfos for that artist in the db, or any from musicBrainz
 			Tools.dbInit();
-			
+
 
 			artistRow = ARTIST.createIt("mbid", artistMbid,
 					"name", artist,
@@ -226,9 +229,9 @@ public class Actions {
 					"youtube", mbInfo.getYoutube(),
 					"soundcloud", mbInfo.getSoundCloud(),
 					"lastfm", mbInfo.getLastFM());
-			
+
 			createTags(artistMbid, mbInfo);
-			
+
 			Tools.dbClose();
 
 			log.info("New artist: " + artist + " created");
@@ -336,7 +339,7 @@ public class Actions {
 		s.saveIt();
 
 	}
-	
+
 	public static void addToTimeoutCount(String infoHash) {
 		//		SONG.update("plays = plays + ?", "info_hash = ?", 1, infoHash);
 		Song s = SONG.findFirst("info_hash = ?", infoHash);
@@ -419,32 +422,79 @@ public class Actions {
 		// Delete the torrent file from the server:
 		File torrentFile = new File(song.getString("torrent_path"));
 		if (torrentFile.exists()) torrentFile.delete();
-		
+
 		SONG.delete("mbid = ?", songMBID);
-		
+
 		com.torrenttunes.client.tools.Tools.dbInit();
 		com.torrenttunes.client.db.Actions.removeSong(songMBID);
 		com.torrenttunes.client.tools.Tools.dbClose();
 	}
-	
+
 	public static void saveTorrentFileToDB(File f) {
 		try {
-//			infoHash = Torrent.load(f).getHexInfoHash().toLowerCase();
+			//			infoHash = Torrent.load(f).getHexInfoHash().toLowerCase();
 
 			byte[] fileBytes = java.nio.file.Files.readAllBytes(Paths.get(f.getAbsolutePath()));
 			TorrentInfo ti = TorrentInfo.bdecode(fileBytes);
-			
+
 			String infoHash = ti.getInfoHash().toHex().toLowerCase();
 
 
 			Tools.dbInit();
 			Actions.saveTorrentToDB(f, infoHash);
 			Tools.dbClose();
-			
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+
+	public static File createArtistDiscographyZipFile(String artistMbid) {
+
+		// Get the artist songs
+		try {
+			Tools.dbInit();
+			List<SongViewGrouped> songs = SONG_VIEW_GROUPED.find("artist_mbid = ?", artistMbid).
+					orderBy("torrent_path");
+			Tools.dbClose();
+
+			String zipFileName = songs.get(0).getString("artist") + "_torrents_discography.zip";
+
+			File zipFile = new File(DataSources.TORRENTS_DIR() + "/" + zipFileName);
+
+			ZipOutputStream zout = new ZipOutputStream(new FileOutputStream(zipFile));
+
+			for (SongViewGrouped song : songs) {
+
+				File torrentFile = new File(song.getString("torrent_path"));
+				ZipEntry e = new ZipEntry(torrentFile.getName());
+				
+				zout.putNextEntry(e);
+
+				byte[] torrentBytes = java.nio.file.Files.readAllBytes(Paths.get(torrentFile.getAbsolutePath()));
+
+				zout.write(torrentBytes, 0, torrentBytes.length);
+				
+				zout.closeEntry();
+				
+			}
+			
+			zout.close();
+			
+			return zipFile;
+			
+			
+
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		
+		return null;
+
+
+
 	}
 
 

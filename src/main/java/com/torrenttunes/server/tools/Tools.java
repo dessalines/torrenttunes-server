@@ -420,6 +420,10 @@ public class Tools {
 		return s;
 	}
 	
+	public static HttpServletResponse writeFileToResponse(File file, Response res) {
+		return writeFileToResponse(file.getAbsolutePath(), res);
+	}
+	
 	public static HttpServletResponse writeFileToResponse(String path, Response res) {
 
 		byte[] encoded;

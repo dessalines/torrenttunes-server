@@ -771,6 +771,32 @@ public class API {
 
 		});
 
+		get("/get_artist_discography_zip/:artistMbid", (req, res) -> {
+
+			File zipFile = null;
+			try {
+
+				Tools.allowAllHeaders(req, res);
+
+				String artistMbid = req.params(":artistMbid");
+				
+				zipFile = Actions.createArtistDiscographyZipFile(artistMbid);
+				
+				
+				return Tools.writeFileToResponse(zipFile, res);
+
+			} catch (Exception e) {
+				res.status(666);
+				e.printStackTrace();
+				return e.getMessage();
+			} finally {
+				// Delete the zip file
+				zipFile.delete();
+				
+			}
+
+
+		});
 
 
 		get("/get_audio_file/:encodedPath", (req, res) -> {
