@@ -483,6 +483,8 @@ public class Actions {
 			
 			zout.close();
 			
+			log.info("Wrote a discography file for artist_mbid: " + artistMbid);
+			
 			return zipFile;
 			
 			
