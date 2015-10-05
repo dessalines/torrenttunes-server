@@ -348,7 +348,7 @@ limit 10;
 
 
 
-drop view related_song_view;
+
 CREATE VIEW related_song_view AS 
 select artist1.mbid as artist1_mbid, 
 artist1.name as artist1_name, 
