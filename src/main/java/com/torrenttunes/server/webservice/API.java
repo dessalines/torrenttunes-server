@@ -36,6 +36,7 @@ import org.codehaus.jackson.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.torrenttunes.client.LibtorrentEngine;
 import com.torrenttunes.server.DataSources;
 import com.torrenttunes.server.db.Actions;
 import com.torrenttunes.server.db.Tables.SongView;
@@ -107,7 +108,7 @@ public class API {
 
 				JsonNode jsonNode = Tools.jsonToNode(json);
 
-		
+
 				Actions.updateSongInfo(jsonNode);
 
 
@@ -125,7 +126,7 @@ public class API {
 				Tools.allowAllHeaders(req, res);
 				String infoHash = req.params(":infoHash");
 
-				
+
 				Tools.dbInit();
 				Actions.addToPlayCount(infoHash);
 				Tools.dbClose();
@@ -138,17 +139,17 @@ public class API {
 				e.printStackTrace();
 				return e.getMessage();
 			} finally {
-				
+
 			}
 		});
-		
+
 		post("/add_timeout_count/:infoHash", (req, res) -> {
 
 			try {
 				Tools.allowAllHeaders(req, res);
 				String infoHash = req.params(":infoHash");
 
-				
+
 				Tools.dbInit();
 				Actions.addToTimeoutCount(infoHash);
 				Tools.dbClose();
@@ -161,13 +162,13 @@ public class API {
 				e.printStackTrace();
 				return e.getMessage();
 			} finally {
-				
+
 			}
 		});
 
 		// Example:
 		// curl localhost:80/remove_artist_server/c2b37a39-c66a-44b2-b190-a69485ae5d95
-		
+
 		get("/remove_artist_server/:artistMBID", (req, res) -> {
 
 			try {
@@ -188,8 +189,8 @@ public class API {
 				Tools.dbClose();
 			}
 		});
-		
-		
+
+
 		get("/remove_song_server/:songMBID", (req, res) -> {
 
 			try {
@@ -778,14 +779,14 @@ public class API {
 
 				Tools.allowAllHeaders(req, res);
 				Tools.dbInit();
-				
+
 				String artistMbid = req.params(":artistMbid");
-				
+
 				zipFile = Actions.createArtistDiscographyZipFile(artistMbid);
-				
-				
+
+
 				res.redirect("/download_discography/" + zipFile.getName());
-				
+
 				return null;
 
 			} catch (Exception e) {
@@ -795,37 +796,122 @@ public class API {
 			} finally {
 
 				Tools.dbClose();
-				
+
 			}
 
 
 		});
-		
-		get("/download_discography/:zipFileName", (req, res) -> {
-			
+
+		get("/get_album_zip/:albumMbid", (req, res) -> {
+
 			File zipFile = null;
 			try {
+
 				Tools.allowAllHeaders(req, res);
-				
-				String zipFileName = req.params(":zipFileName");
-				zipFile = new File(DataSources.TORRENTS_DIR() + "/" + zipFileName);
-				
-				return Tools.writeFileToResponse(zipFile, res);
-				
+				Tools.dbInit();
+
+				String albumMbid = req.params(":albumMbid");
+
+				zipFile = Actions.createAlbumZipFile(albumMbid);
+
+
+				res.redirect("/download_album/" + zipFile.getName());
+
+				return null;
+
 			} catch (Exception e) {
 				res.status(666);
 				e.printStackTrace();
 				return e.getMessage();
 			} finally {
-				
+
+				Tools.dbClose();
+
+			}
+
+
+		});
+
+		get("/download_discography/:zipFileName", (req, res) -> {
+
+			File zipFile = null;
+			try {
+				Tools.allowAllHeaders(req, res);
+
+				String zipFileName = req.params(":zipFileName");
+				zipFile = new File(DataSources.TORRENTS_DIR() + "/" + zipFileName);
+
+				return Tools.writeFileToResponse(zipFile, res);
+
+			} catch (Exception e) {
+				res.status(666);
+				e.printStackTrace();
+				return e.getMessage();
+			} finally {
+
 				// Delete the zip file
 				zipFile.delete();
 			}
-			
+
+
+
+		});
+
+		get("/download_album/:zipFileName", (req, res) -> {
+
+			File zipFile = null;
+			try {
+				Tools.allowAllHeaders(req, res);
+
+				String zipFileName = req.params(":zipFileName");
+				zipFile = new File(DataSources.TORRENTS_DIR() + "/" + zipFileName);
+
+				return Tools.writeFileToResponse(zipFile, res);
+
+			} catch (Exception e) {
+				res.status(666);
+				e.printStackTrace();
+				return e.getMessage();
+			} finally {
+
+				// Delete the zip file
+				zipFile.delete();
+			}
+
 
 
 		});
 		
+		get("/get_magnet_link/:songMbid", (req, res) -> {
+
+			try {
+
+				Tools.allowAllHeaders(req, res);
+				Tools.dbInit();
+
+				String songMbid = req.params(":songMbid");
+				
+				String magnetLink = Actions.getSongMagnetLink(songMbid);
+				
+				return magnetLink;
+				
+				
+
+			} catch (Exception e) {
+				res.status(666);
+				e.printStackTrace();
+				return e.getMessage();
+			} finally {
+				Tools.dbClose();
+			}
+
+
+		});
+		
+		
+
+
+
 
 
 		get("/get_audio_file/:encodedPath", (req, res) -> {
