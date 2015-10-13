@@ -417,7 +417,10 @@ public class Actions {
 	}
 
 	public static void removeSong(String songMBID) {
-
+		
+		// Remove the song release groups
+		SONG_RELEASE_GROUP.delete("song_mbid = ?", songMBID);
+		
 		Song song = SONG.findFirst("mbid = ?", songMBID);
 
 		// Delete the torrent file from the server:
