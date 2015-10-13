@@ -21,6 +21,7 @@ import org.javalite.activejdbc.Model;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.frostwire.jlibtorrent.TorrentHandle;
 import com.frostwire.jlibtorrent.TorrentInfo;
 import com.musicbrainz.mp3.tagger.Tools.Artist.Tag;
 import com.musicbrainz.mp3.tagger.Tools.CoverArt;
@@ -454,13 +455,39 @@ public class Actions {
 	public static File createArtistDiscographyZipFile(String artistMbid) {
 
 		// Get the artist songs
-		try {
+	
 			
 			List<SongViewGrouped> songs = SONG_VIEW_GROUPED.find("artist_mbid = ?", artistMbid).
 					orderBy("torrent_path");
 	
-
 			String zipFileName = songs.get(0).getString("artist") + "_torrents_discography.zip";
+			
+			log.info("Wrote a discography file for artist_mbid: " + artistMbid);
+			
+			return createZipOfSongs(songs, zipFileName);
+		
+
+	}
+	
+	public static File createAlbumZipFile(String albumMbid) {
+
+		// Get the artist songs
+	
+			
+			List<SongViewGrouped> songs = SONG_VIEW_GROUPED.find("release_group_mbid = ?", albumMbid).
+					orderBy("torrent_path");
+	
+			String zipFileName = songs.get(0).getString("album") + "_torrents.zip";
+			
+			log.info("Wrote a Zip file for album mbid: " + albumMbid);
+			
+			return createZipOfSongs(songs, zipFileName);
+		
+
+	}
+	
+	public static File createZipOfSongs(List<SongViewGrouped> songs, String zipFileName) {
+		try {
 
 			File zipFile = new File(DataSources.TORRENTS_DIR() + "/" + zipFileName);
 
@@ -483,7 +510,7 @@ public class Actions {
 			
 			zout.close();
 			
-			log.info("Wrote a discography file for artist_mbid: " + artistMbid);
+			
 			
 			return zipFile;
 			
@@ -494,9 +521,17 @@ public class Actions {
 		}
 		
 		return null;
-
-
-
+	}
+	
+	public static String getSongMagnetLink(String songMbid) {
+		
+		Song song = SONG.findFirst("mbid = ?", songMbid);
+		
+		String infoHash = song.getString("info_hash");
+		
+		TorrentHandle th = LibtorrentEngine.INSTANCE.getInfoHashToTorrentMap().get(infoHash);
+		
+		return th.makeMagnetUri();
 	}
 
 
