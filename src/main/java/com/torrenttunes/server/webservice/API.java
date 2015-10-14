@@ -840,7 +840,11 @@ public class API {
 
 				String zipFileName = req.params(":zipFileName");
 				zipFile = new File(DataSources.TORRENTS_DIR() + "/" + zipFileName);
-
+				
+				res.type("application/octet-stream");
+				res.header("Content-Disposition", "attachment; filename='" + zipFileName + "'");
+				
+				
 				return Tools.writeFileToResponse(zipFile, res);
 
 			} catch (Exception e) {
@@ -865,6 +869,9 @@ public class API {
 
 				String zipFileName = req.params(":zipFileName");
 				zipFile = new File(DataSources.TORRENTS_DIR() + "/" + zipFileName);
+				
+				res.type("application/octet-stream");
+				res.header("Content-Disposition", "attachment; filename='" + zipFileName + "'");
 
 				return Tools.writeFileToResponse(zipFile, res);
 
