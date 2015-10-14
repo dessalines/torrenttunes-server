@@ -784,17 +784,19 @@ public class API {
 
 				zipFile = Actions.createArtistDiscographyZipFile(artistMbid);
 
-
-				res.redirect("/download_discography/" + zipFile.getName());
-
-				return null;
+				res.type("application/octet-stream");
+				res.header("Content-Disposition", "attachment; filename=\"" + zipFile.getName() + "\"");
+				res.header("Content-Length", String.valueOf(zipFile.length()));
+				res.header("Content-Transfer-Encoding", "binary");
+						
+				return Tools.writeFileToResponse(zipFile, res);
 
 			} catch (Exception e) {
 				res.status(666);
 				e.printStackTrace();
 				return e.getMessage();
 			} finally {
-
+				zipFile.delete();
 				Tools.dbClose();
 
 			}
@@ -819,20 +821,16 @@ public class API {
 				res.header("Content-Disposition", "attachment; filename=\"" + zipFile.getName() + "\"");
 				res.header("Content-Length", String.valueOf(zipFile.length()));
 				res.header("Content-Transfer-Encoding", "binary");
-				
-				
+						
 				return Tools.writeFileToResponse(zipFile, res);
-				
-//				res.redirect("/download_album/" + zipFile.getName());
-//
-//				return null;
+
 
 			} catch (Exception e) {
 				res.status(666);
 				e.printStackTrace();
 				return e.getMessage();
 			} finally {
-
+				zipFile.delete();
 				Tools.dbClose();
 
 			}
@@ -840,66 +838,6 @@ public class API {
 
 		});
 
-		get("/download_discography/:zipFileName", (req, res) -> {
-
-			File zipFile = null;
-			try {
-				Tools.allowAllHeaders(req, res);
-
-				String zipFileName = req.params(":zipFileName");
-				zipFile = new File(DataSources.TORRENTS_DIR() + "/" + zipFileName);
-				
-				res.type("application/octet-stream");
-				res.header("Content-Disposition", "attachment; filename=\"" + zipFileName + "\"");
-				res.header("Content-Length", String.valueOf(zipFile.length()));
-				res.header("Content-Transfer-Encoding", "binary");
-				
-				
-				return Tools.writeFileToResponse(zipFile, res);
-
-			} catch (Exception e) {
-				res.status(666);
-				e.printStackTrace();
-				return e.getMessage();
-			} finally {
-
-				// Delete the zip file
-				zipFile.delete();
-			}
-
-
-
-		});
-
-		get("/download_album/:zipFileName", (req, res) -> {
-
-			File zipFile = null;
-			try {
-				Tools.allowAllHeaders(req, res);
-
-				String zipFileName = req.params(":zipFileName");
-				zipFile = new File(DataSources.TORRENTS_DIR() + "/" + zipFileName);
-				
-				res.type("application/octet-stream");
-				res.header("Content-Disposition", "attachment; filename=\"" + zipFileName + "\"");
-				res.header("Content-Length", String.valueOf(zipFile.length()));
-				res.header("Content-Transfer-Encoding", "binary");
-
-				return Tools.writeFileToResponse(zipFile, res);
-
-			} catch (Exception e) {
-				res.status(666);
-				e.printStackTrace();
-				return e.getMessage();
-			} finally {
-
-				// Delete the zip file
-				zipFile.delete();
-			}
-
-
-
-		});
 		
 		get("/get_magnet_link/:songMbid", (req, res) -> {
 
