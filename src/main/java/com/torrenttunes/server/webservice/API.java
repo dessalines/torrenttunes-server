@@ -843,6 +843,8 @@ public class API {
 				
 				res.type("application/zip");
 				res.header("Content-Disposition", "attachment; filename=\"" + zipFileName + "\"");
+				res.header("Content-Length", String.valueOf(zipFile.length()));
+				res.header("Content-Transfer-Encoding", "binary");
 				
 				
 				return Tools.writeFileToResponse(zipFile, res);
@@ -872,6 +874,8 @@ public class API {
 				
 				res.type("application/zip");
 				res.header("Content-Disposition", "attachment; filename=\"" + zipFileName + "\"");
+				res.header("Content-Length", String.valueOf(zipFile.length()));
+				res.header("Content-Transfer-Encoding", "binary");
 
 				return Tools.writeFileToResponse(zipFile, res);
 
