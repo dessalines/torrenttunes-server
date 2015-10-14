@@ -842,7 +842,7 @@ public class API {
 				zipFile = new File(DataSources.TORRENTS_DIR() + "/" + zipFileName);
 				
 				res.type("application/octet-stream");
-				res.header("Content-Disposition", "attachment; filename='" + zipFileName + "'");
+				res.header("Content-Disposition", "attachment; filename=\"" + zipFileName + "\"");
 				
 				
 				return Tools.writeFileToResponse(zipFile, res);
@@ -871,7 +871,7 @@ public class API {
 				zipFile = new File(DataSources.TORRENTS_DIR() + "/" + zipFileName);
 				
 				res.type("application/octet-stream");
-				res.header("Content-Disposition", "attachment; filename=" + zipFileName + "");
+				res.header("Content-Disposition", "attachment; filename=\"" + zipFileName + "\"");
 
 				return Tools.writeFileToResponse(zipFile, res);
 
