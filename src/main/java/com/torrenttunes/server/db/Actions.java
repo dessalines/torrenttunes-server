@@ -477,7 +477,7 @@ public class Actions {
 		// Get the artist songs
 	
 			
-			List<SongViewGrouped> songs = SONG_VIEW_GROUPED.find("release_group_mbid = ?", albumMbid).
+			List<SongView> songs = SONG_VIEW.find("release_group_mbid = ?", albumMbid).
 					orderBy("torrent_path");
 	
 			String zipFileName = songs.get(0).getString("album") + "_torrents.ZIP";
@@ -489,14 +489,14 @@ public class Actions {
 
 	}
 	
-	public static File createZipOfSongs(List<SongViewGrouped> songs, String zipFileName) {
+	public static <T extends Model> File createZipOfSongs(List<T> songs, String zipFileName) {
 		try {
 
 			File zipFile = new File(DataSources.TORRENTS_DIR() + "/" + zipFileName);
 
 			ZipOutputStream zout = new ZipOutputStream(new FileOutputStream(zipFile));
 
-			for (SongViewGrouped song : songs) {
+			for (Model song : songs) {
 
 				File torrentFile = new File(song.getString("torrent_path"));
 				ZipEntry e = new ZipEntry(torrentFile.getName());
