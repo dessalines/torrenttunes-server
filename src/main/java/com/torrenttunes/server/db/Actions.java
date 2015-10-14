@@ -463,7 +463,7 @@ public class Actions {
 			List<SongViewGrouped> songs = SONG_VIEW_GROUPED.find("artist_mbid = ?", artistMbid).
 					orderBy("torrent_path");
 	
-			String zipFileName = songs.get(0).getString("artist") + "_torrents_discography.zip";
+			String zipFileName = songs.get(0).getString("artist") + "_torrents_discography.ZIP";
 			
 			log.info("Wrote a discography file for artist_mbid: " + artistMbid);
 			
@@ -480,7 +480,7 @@ public class Actions {
 			List<SongViewGrouped> songs = SONG_VIEW_GROUPED.find("release_group_mbid = ?", albumMbid).
 					orderBy("torrent_path");
 	
-			String zipFileName = songs.get(0).getString("album") + "_torrents.zip";
+			String zipFileName = songs.get(0).getString("album") + "_torrents.ZIP";
 			
 			log.info("Wrote a Zip file for album mbid: " + albumMbid);
 			

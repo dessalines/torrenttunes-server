@@ -841,7 +841,7 @@ public class API {
 				String zipFileName = req.params(":zipFileName");
 				zipFile = new File(DataSources.TORRENTS_DIR() + "/" + zipFileName);
 				
-				res.type("application/zip");
+				res.type("application/octet-stream");
 				res.header("Content-Disposition", "attachment; filename=\"" + zipFileName + "\"");
 				res.header("Content-Length", String.valueOf(zipFile.length()));
 				res.header("Content-Transfer-Encoding", "binary");
@@ -872,7 +872,7 @@ public class API {
 				String zipFileName = req.params(":zipFileName");
 				zipFile = new File(DataSources.TORRENTS_DIR() + "/" + zipFileName);
 				
-				res.type("application/zip");
+				res.type("application/octet-stream");
 				res.header("Content-Disposition", "attachment; filename=\"" + zipFileName + "\"");
 				res.header("Content-Length", String.valueOf(zipFile.length()));
 				res.header("Content-Transfer-Encoding", "binary");
