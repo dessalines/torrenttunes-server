@@ -814,10 +814,18 @@ public class API {
 
 				zipFile = Actions.createAlbumZipFile(albumMbid);
 
-
-				res.redirect("/download_album/" + zipFile.getName());
-
-				return null;
+				
+				res.type("application/octet-stream");
+				res.header("Content-Disposition", "attachment; filename=\"" + zipFile.getName() + "\"");
+				res.header("Content-Length", String.valueOf(zipFile.length()));
+				res.header("Content-Transfer-Encoding", "binary");
+				
+				
+				return Tools.writeFileToResponse(zipFile, res);
+				
+//				res.redirect("/download_album/" + zipFile.getName());
+//
+//				return null;
 
 			} catch (Exception e) {
 				res.status(666);
