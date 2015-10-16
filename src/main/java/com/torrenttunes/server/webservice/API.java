@@ -699,7 +699,7 @@ public class API {
 				Tools.allowAllHeaders(req, res);
 				Tools.set15MinuteCache(req, res);
 				Tools.dbInit();
-				Tools.setJsonContentType(res);
+//				Tools.setJsonContentType(res);
 
 				String json = null;
 				//json = ARTIST.findAll().orderBy("name asc").toJson(false);
