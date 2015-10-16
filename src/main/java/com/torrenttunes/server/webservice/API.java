@@ -757,7 +757,8 @@ public class API {
 
 
 				String json = null;
-				json = SONG_VIEW_GROUPED.findAll().orderBy("plays desc").limit(15).toJson(false);
+				json = SONG_VIEW_GROUPED.find("is_primary_album = ?", true).
+						orderBy("plays desc").limit(15).toJson(false);
 
 				return json;
 
