@@ -546,5 +546,9 @@ public class Tools {
 		return prop;
 
 	}
+	
+	public static void setJsonContentType(Response res) {
+		res.type("application/json; charset=utf-8");
+	}
 
 }
