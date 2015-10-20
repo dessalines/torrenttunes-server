@@ -131,6 +131,9 @@
 <key type="INDEX" name="">
 <part>title</part>
 </key>
+<key type="INDEX" name="">
+<part>artist_mbid</part>
+</key>
 </table>
 <table x="487" y="54" name="song_release_group">
 <row name="id" null="1" autoincrement="1">
@@ -157,6 +160,16 @@
 <part>id</part>
 </key>
 <key type="UNIQUE" name="">
+<part>song_mbid</part>
+<part>release_group_mbid</part>
+</key>
+<key type="INDEX" name="">
+<part>song_mbid</part>
+</key>
+<key type="INDEX" name="">
+<part>release_group_mbid</part>
+</key>
+<key type="INDEX" name="">
 <part>song_mbid</part>
 <part>release_group_mbid</part>
 </key>
@@ -212,6 +225,9 @@
 <part>title</part>
 </key>
 <key type="UNIQUE" name="">
+<part>mbid</part>
+</key>
+<key type="INDEX" name="">
 <part>mbid</part>
 </key>
 </table>

@@ -3,7 +3,7 @@
 -- ---
 
 -- SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
-SET FOREIGN_KEY_CHECKS=0;
+-- SET FOREIGN_KEY_CHECKS=0;
 
 -- ---
 -- Table 'artist'
@@ -52,7 +52,8 @@ CREATE TABLE `release_group` (
   `secondary_types` VARCHAR(512) NULL DEFAULT NULL,
   `created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`mbid`),
-KEY (`title`)
+KEY (`title`),
+KEY (`artist_mbid`)
 );
 
 -- ---
@@ -70,7 +71,10 @@ CREATE TABLE `song_release_group` (
   `track_number` INTEGER NULL DEFAULT NULL,
   `created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  UNIQUE KEY (`song_mbid`, `release_group_mbid`)
+  UNIQUE KEY (`song_mbid`, `release_group_mbid`),
+KEY (`song_mbid`),
+KEY (`release_group_mbid`),
+KEY (`song_mbid`, `release_group_mbid`)
 );
 
 -- ---
@@ -97,7 +101,8 @@ CREATE TABLE `song` (
   UNIQUE KEY (`info_hash`),
 KEY (`mbid`, `plays`),
 KEY (`title`),
-  UNIQUE KEY (`mbid`)
+  UNIQUE KEY (`mbid`),
+KEY (`mbid`)
 );
 
 -- ---
@@ -167,4 +172,3 @@ ALTER TABLE `tag_info` ADD FOREIGN KEY (tag_id) REFERENCES `tag` (`id`);
 -- ('','','','','');
 -- INSERT INTO `tag` (`id`,`name`) VALUES
 -- ('','');
-SET FOREIGN_KEY_CHECKS=1;

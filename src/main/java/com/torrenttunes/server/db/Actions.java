@@ -376,13 +376,19 @@ public class Actions {
 		List<ReleaseGroup> rgs = RELEASE_GROUP.find("artist_mbid = ?", artistMBID);
 
 
-		// Get song release groups
+		// Get songs
 		Set<SongReleaseGroup> srgs = new HashSet<>();
 		for (ReleaseGroup rg : rgs) {
 			List<SongReleaseGroup> srg = SONG_RELEASE_GROUP.find("release_group_mbid = ?", 
 					rg.getString("mbid"));
 			srgs.addAll(srg);
 		}
+		
+		for (ReleaseGroup rg : rgs) {
+			SONG_RELEASE_GROUP.delete("release_group_mbid = ?", 
+					rg.getString("mbid"));
+		}
+
 
 		// Delete from songs to artist
 
@@ -403,10 +409,6 @@ public class Actions {
 
 		}
 
-		for (ReleaseGroup rg : rgs) {
-			SONG_RELEASE_GROUP.delete("release_group_mbid = ?", 
-					rg.getString("mbid"));
-		}
 
 		RELEASE_GROUP.delete("artist_mbid = ?", artistMBID);
 		ARTIST.delete("mbid = ?", artistMBID);

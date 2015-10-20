@@ -21,6 +21,7 @@ public class Transformations {
 	static final Logger log = LoggerFactory.getLogger(Transformations.class);
 
 	
+	@Deprecated
 	public static ObjectNode artistViewJson(String artistMbid) {
 		
 		

@@ -4,6 +4,9 @@ import static com.torrenttunes.server.db.Tables.ALBUM_SEARCH_VIEW;
 import static com.torrenttunes.server.db.Tables.ALBUM_VIEW;
 import static com.torrenttunes.server.db.Tables.ARTIST;
 import static com.torrenttunes.server.db.Tables.ARTIST_SEARCH_VIEW;
+import static com.torrenttunes.server.db.Tables.ARTIST_TAG_VIEW;
+import static com.torrenttunes.server.db.Tables.RELATED_ARTIST_VIEW;
+import static com.torrenttunes.server.db.Tables.RELATED_ARTIST_VIEW_SQL;
 import static com.torrenttunes.server.db.Tables.RELATED_SONG_VIEW;
 import static com.torrenttunes.server.db.Tables.RELATED_SONG_VIEW_SQL;
 import static com.torrenttunes.server.db.Tables.SONG;
@@ -569,8 +572,58 @@ public class API {
 
 				String artistMbid = req.params(":artistMbid");
 
+				String json = ARTIST.findFirst("mbid = ?", artistMbid).toJson(false);
 
-				String json = Tools.nodeToJson(Transformations.artistViewJson(artistMbid));
+				return json;
+
+			} catch (Exception e) {
+				res.status(666);
+				e.printStackTrace();
+				return e.getMessage();
+			} finally {
+				Tools.dbClose();
+			}
+
+
+		});
+		
+		get("/get_artist_tags/:artistMbid",  (req, res) -> {
+
+			try {
+
+				Tools.allowAllHeaders(req, res);
+				Tools.set15MinuteCache(req, res);
+				Tools.dbInit();
+
+				String artistMbid = req.params(":artistMbid");
+
+				String json = ARTIST_TAG_VIEW.find("mbid = ?", artistMbid).toJson(false);
+
+				return json;
+
+			} catch (Exception e) {
+				res.status(666);
+				e.printStackTrace();
+				return e.getMessage();
+			} finally {
+				Tools.dbClose();
+			}
+
+
+		});
+		
+		get("/get_related_artists/:artistMbid",  (req, res) -> {
+
+			try {
+
+				Tools.allowAllHeaders(req, res);
+				Tools.set15MinuteCache(req, res);
+				Tools.dbInit();
+
+				String artistMbid = req.params(":artistMbid");
+
+				String json = RELATED_ARTIST_VIEW.findBySQL(
+						RELATED_ARTIST_VIEW_SQL, artistMbid, artistMbid).toJson(false);
 
 				return json;
 
@@ -703,6 +756,9 @@ public class API {
 
 				String json = null;
 				//json = ARTIST.findAll().orderBy("name asc").toJson(false);
+				
+				
+				
 				json = ARTIST.findAll()
 						.orderBy("case when lower(substr(name,1,3))='the' "
 								+ "then substr(name,5,length(name)-3) else name end;")

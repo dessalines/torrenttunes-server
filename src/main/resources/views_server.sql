@@ -53,7 +53,8 @@ album_coverart_thumbnail_large,
 album_coverart_thumbnail_small,
 seeders,
 release_group.primary_type,
-release_group.secondary_types
+release_group.secondary_types,
+release_group.primary_type = 'Album' AND release_group.secondary_types is NULL as is_primary_album
 from song
 inner join song_release_group
 on song.mbid = song_release_group.song_mbid 
@@ -430,3 +431,53 @@ rand()
 
 
 limit 10;
+
+
+
+-- explain speed up testing
+-- album view
+explain select release_group.mbid,
+release_group.title,
+release_group.artist_mbid,
+artist.name as artist_name,
+year,
+release_group.wikipedia_link,
+release_group.allmusic_link,
+album_coverart_url,
+album_coverart_thumbnail_large,
+album_coverart_thumbnail_small,
+primary_type,
+secondary_types,
+count(song_release_group.id) as number_of_songs,
+sum(plays) as plays,
+primary_type = 'Album' AND secondary_types is NULL as is_primary_album
+from release_group
+inner join song_release_group
+on release_group.mbid = song_release_group.release_group_mbid
+inner join song 
+on song.mbid = song_release_group.song_mbid
+inner join artist
+on release_group.artist_mbid = artist.mbid
+
+where artist_mbid = "66c662b6-6e2f-4930-8610-912e24c63ed1" 
+group by release_group.mbid
+order by year desc;
+
+explain select *
+from album_view
+order by plays desc 
+limit 4;
+
+select * from album_view 
+where artist_mbid = "4a76400d-283f-492e-9754-18ef41755f81" 
+AND (is_primary_album = true)
+order by year desc;
+
+explain select * 
+from song_view_grouped where artist_mbid = "4a76400d-283f-492e-9754-18ef41755f81" 
+order by plays desc;
+
+explain select * 
+from song_search_view 
+where search_song like '%Skrillex%'
+order by is_primary_album desc, plays desc limit 5;
