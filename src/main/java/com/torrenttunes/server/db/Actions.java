@@ -411,6 +411,8 @@ public class Actions {
 
 
 		RELEASE_GROUP.delete("artist_mbid = ?", artistMBID);
+		
+		TAG_INFO.delete("artist_mbid = ?", artistMBID);
 		ARTIST.delete("mbid = ?", artistMBID);
 
 		com.torrenttunes.client.tools.Tools.dbInit();
