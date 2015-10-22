@@ -9,7 +9,7 @@ CREATE TABLE `song_view_fast` AS
 select torrent_path,
 info_hash, 
 song_mbid,
-title, 
+`title`, 
 release_group_mbid,
 duration_ms, 
 plays,
