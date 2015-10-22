@@ -300,7 +300,7 @@ public class Tools {
 
 			sql = Files.toString(sqlFile, Charset.defaultCharset());
 			log.info(sql);
-			stmt.execute(sql);
+			stmt.executeUpdate(sql);
 			stmt.close();
 		} catch (IOException | SQLException e) {
 			// TODO Auto-generated catch block
