@@ -15,9 +15,17 @@ public class Tables {
 	public static class SongView extends Model {}
 	public static final SongView SONG_VIEW = new SongView();
 	
+	@Table("song_view_fast")
+	public static class SongViewFast extends Model {}
+	public static final SongViewFast SONG_VIEW_FAST = new SongViewFast();
+	
 	@Table("song_view_grouped")
 	public static class SongViewGrouped extends Model {}
 	public static final SongViewGrouped SONG_VIEW_GROUPED = new SongViewGrouped();
+	
+	@Table("song_view_grouped_fast")
+	public static class SongViewGroupedFast extends Model {}
+	public static final SongViewGroupedFast SONG_VIEW_GROUPED_FAST = new SongViewGroupedFast();
 	
 	@Table("artist")
 	public static class Artist extends Model {}
@@ -35,13 +43,9 @@ public class Tables {
 	public static class AlbumView extends Model {}
 	public static final AlbumView ALBUM_VIEW = new AlbumView();
 	
-	@Table("song_search_view")
-	public static class SongSearchView extends Model {}
-	public static final SongSearchView SONG_SEARCH_VIEW = new SongSearchView();
-	
-	@Table("album_search_view")
-	public static class AlbumSearchView extends Model {}
-	public static final AlbumSearchView ALBUM_SEARCH_VIEW = new AlbumSearchView();
+	@Table("album_view_fast")
+	public static class AlbumViewFast extends Model {}
+	public static final AlbumViewFast ALBUM_VIEW_FAST = new AlbumViewFast();
 	
 	@Table("artist_search_view")
 	public static class ArtistSearchView extends Model {}

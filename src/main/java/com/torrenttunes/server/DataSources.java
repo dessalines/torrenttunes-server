@@ -58,6 +58,8 @@ public class DataSources {
 	
 	public static final String SQL_VIEWS_FILE() {return SOURCE_CODE_HOME() + "/views_server.sql";}
 	
+	public static final String SQL_FAST_TABLES_FILE() {return SOURCE_CODE_HOME() + "/create_fast_tables.sql";}
+	
 	public static final String SHADED_JAR_FILE = CODE_DIR + "/target/" + APP_NAME + ".jar";
 
 	public static final String SHADED_JAR_FILE_2 = CODE_DIR + "/" + APP_NAME + ".jar";

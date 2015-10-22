@@ -1,18 +1,6 @@
 package com.torrenttunes.server.webservice;
 
-import static com.torrenttunes.server.db.Tables.ALBUM_SEARCH_VIEW;
-import static com.torrenttunes.server.db.Tables.ALBUM_VIEW;
-import static com.torrenttunes.server.db.Tables.ARTIST;
-import static com.torrenttunes.server.db.Tables.ARTIST_SEARCH_VIEW;
-import static com.torrenttunes.server.db.Tables.ARTIST_TAG_VIEW;
-import static com.torrenttunes.server.db.Tables.RELATED_ARTIST_VIEW;
-import static com.torrenttunes.server.db.Tables.RELATED_ARTIST_VIEW_SQL;
-import static com.torrenttunes.server.db.Tables.RELATED_SONG_VIEW;
-import static com.torrenttunes.server.db.Tables.RELATED_SONG_VIEW_SQL;
-import static com.torrenttunes.server.db.Tables.SONG;
-import static com.torrenttunes.server.db.Tables.SONG_SEARCH_VIEW;
-import static com.torrenttunes.server.db.Tables.SONG_VIEW;
-import static com.torrenttunes.server.db.Tables.SONG_VIEW_GROUPED;
+import static com.torrenttunes.server.db.Tables.*;
 import static spark.Spark.get;
 import static spark.Spark.post;
 
@@ -28,7 +16,6 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Properties;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -39,11 +26,9 @@ import org.codehaus.jackson.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.torrenttunes.client.LibtorrentEngine;
 import com.torrenttunes.server.DataSources;
 import com.torrenttunes.server.db.Actions;
 import com.torrenttunes.server.db.Tables.SongView;
-import com.torrenttunes.server.db.Transformations;
 import com.torrenttunes.server.tools.Tools;
 
 
@@ -278,9 +263,9 @@ public class API {
 			try {
 				String infoHash = req.params(":infoHash");
 				Tools.dbInit();
-				List<SongView> svs = SONG_VIEW.find("info_hash = ?", infoHash).
+				List<SongViewFast> svs = SONG_VIEW_FAST.find("info_hash = ?", infoHash).
 						orderBy("secondary_types asc");
-				SongView sv = svs.get(0);
+				SongViewFast sv = svs.get(0);
 				String json = sv.toJson(false);
 
 
@@ -341,7 +326,7 @@ public class API {
 				String queryStr = constructQueryString(query, "search_song");
 				log.info(queryStr);
 
-				json = SONG_SEARCH_VIEW.find(queryStr.toString()).limit(5).
+				json = SONG_VIEW_FAST.find(queryStr.toString()).limit(5).
 						orderBy("is_primary_album desc, plays desc").toJson(false);
 
 				log.info(json);
@@ -404,7 +389,7 @@ public class API {
 				String queryStr = constructQueryString(query, "search_album");
 				log.info(queryStr);
 
-				json = ALBUM_SEARCH_VIEW.find(queryStr.toString()).limit(5).
+				json = ALBUM_VIEW_FAST.find(queryStr.toString()).limit(5).
 						orderBy("is_primary_album desc, plays desc").toJson(false);
 
 				return json;
@@ -432,7 +417,7 @@ public class API {
 
 				String json = null;
 
-				json = ALBUM_VIEW.find("artist_mbid = ? AND is_primary_album = ?", artistMbid, true).
+				json = ALBUM_VIEW_FAST.find("artist_mbid = ? AND is_primary_album = ?", artistMbid, true).
 						orderBy("plays desc").limit(4).toJson(false);
 
 				return json;
@@ -488,7 +473,7 @@ public class API {
 
 				String json = null;
 
-				json = ALBUM_VIEW.find("artist_mbid = ? AND is_primary_album = ?", 
+				json = ALBUM_VIEW_FAST.find("artist_mbid = ? AND is_primary_album = ?", 
 						artistMbid, true).
 						orderBy("year desc").toJson(false);
 
@@ -517,7 +502,7 @@ public class API {
 
 				String json = null;
 
-				json = ALBUM_VIEW.find("artist_mbid = ? AND (primary_type != ? OR secondary_types is not ?)", 
+				json = ALBUM_VIEW_FAST.find("artist_mbid = ? AND (primary_type != ? OR secondary_types is not ?)", 
 						artistMbid, "Album", null).
 						orderBy("year desc").toJson(false);
 
@@ -677,7 +662,7 @@ public class API {
 				String albumMbid = req.params(":albumMbid");
 
 				String json = null;
-				json = ALBUM_VIEW.findFirst("mbid = ?", albumMbid).toJson(false);
+				json = ALBUM_VIEW_FAST.findFirst("mbid = ?", albumMbid).toJson(false);
 
 				return json;
 
@@ -703,7 +688,7 @@ public class API {
 				String albumMbid = req.params(":albumMbid");
 
 				String json = null;
-				json = SONG_VIEW.find("release_group_mbid = ?", albumMbid).
+				json = SONG_VIEW_FAST.find("release_group_mbid = ?", albumMbid).
 						orderBy("disc_number asc, track_number asc").toJson(false);
 
 				return json;
@@ -730,7 +715,7 @@ public class API {
 				String songMbid = req.params(":songMBID");
 
 				String json = null;
-				json = SONG_VIEW.findFirst("song_mbid = ?", songMbid).toJson(false);
+				json = SONG_VIEW_FAST.findFirst("song_mbid = ?", songMbid).toJson(false);
 
 				return json;
 
@@ -787,7 +772,7 @@ public class API {
 
 
 				String json = null;
-				json = ALBUM_VIEW.find("is_primary_album = ?", true).orderBy("plays desc").limit(4).toJson(false);
+				json = ALBUM_VIEW_FAST.find("is_primary_album = ?", true).orderBy("plays desc").limit(4).toJson(false);
 
 				return json;
 
