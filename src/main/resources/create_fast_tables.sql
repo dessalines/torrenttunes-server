@@ -1,3 +1,8 @@
+CREATE TABLE `test` (
+	`name` VARCHAR(200) NOT NULL DEFAULT 'NULL',
+	PRIMARY KEY (`name`)
+);
+
 DROP TABLE IF EXISTS `song_view_fast`
 ;
 
