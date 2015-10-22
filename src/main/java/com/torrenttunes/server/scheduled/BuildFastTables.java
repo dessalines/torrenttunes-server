@@ -1,10 +1,8 @@
 package com.torrenttunes.server.scheduled;
 
 
-import java.io.File;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Properties;
 
 import org.quartz.Job;
@@ -14,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.torrenttunes.server.DataSources;
-import com.torrenttunes.server.tools.Tools;
 
 
 public class BuildFastTables implements Job {
@@ -23,27 +20,39 @@ public class BuildFastTables implements Job {
 
 
 	private static void create() {
-		Connection c = null;
+
 
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
-
 
 			Properties prop = DataSources.DB_PROP;
 
-			c = DriverManager.getConnection(prop.getProperty("dburl") + "?useUnicode=true&characterEncoding=UTF-8", 
-					prop.getProperty("dbuser"), 
-					prop.getProperty("dbpassword"));
+			ArrayList<String> cmd = new ArrayList<String>();
+			cmd.add("mysql");
+			cmd.add("-u" + prop.getProperty("dbuser"));
+			cmd.add("-p" + prop.getProperty("dbpassword"));
+			cmd.add(prop.getProperty("dburl"));
+			cmd.add("<");
+			cmd.add(DataSources.SQL_FAST_TABLES_FILE());
 
-			Tools.runSQLFile(c, new File(DataSources.SQL_FAST_TABLES_FILE()));
-		
-			c.close();
+
+			ProcessBuilder b = new ProcessBuilder(cmd);
+			b.inheritIO();
+			Process p;
+
+			p = b.start();
+
+
+			p.waitFor();
 
 			log.info("Fast Tables created succesfully.");
-
-		} catch (ClassNotFoundException | SQLException e) {
+			
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+
+
 	}
 
 	@Override
