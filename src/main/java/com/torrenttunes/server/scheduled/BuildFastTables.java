@@ -33,7 +33,8 @@ public class BuildFastTables implements Job {
 			cmd.add(prop.getProperty("dburl"));
 			cmd.add("<");
 			cmd.add(DataSources.SQL_FAST_TABLES_FILE());
-
+			
+			for (String uz : cmd) {System.out.println(uz);}
 
 			ProcessBuilder b = new ProcessBuilder(cmd);
 			b.inheritIO();
