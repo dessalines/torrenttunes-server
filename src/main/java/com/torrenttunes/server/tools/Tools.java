@@ -299,14 +299,15 @@ public class Tools {
 			String sql;
 
 			sql = Files.toString(sqlFile, Charset.defaultCharset());
-
-			stmt.executeUpdate(sql);
+			log.info(sql);
+			stmt.execute(sql);
 			stmt.close();
 		} catch (IOException | SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
+	
 
 	public static final void dbInit() {
 		
