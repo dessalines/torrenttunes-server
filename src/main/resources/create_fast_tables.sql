@@ -1,6 +1,6 @@
-CREATE TABLE `test` (
-	`name` VARCHAR(200) NOT NULL DEFAULT 'NULL',
-	PRIMARY KEY (`name`)
+CREATE TABLE `test_test` (
+	`id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
+	PRIMARY KEY (`id`)
 );
 
 -- DROP TABLE IF EXISTS `song_view_fast`
