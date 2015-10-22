@@ -1,16 +1,16 @@
-DROP TABLE IF EXISTS `song\_view\_fast`;
+DROP TABLE IF EXISTS `song_view_fast`;
 
-CREATE TABLE `song\_view\_fast` select * from `song\_view`;
+CREATE TABLE `song_view_fast` select * from `song_view`;
 
-DROP TABLE IF EXISTS `song\_view\_grouped\_fast`;
+DROP TABLE IF EXISTS `song_view_grouped_fast`;
 
-CREATE TABLE `song\_view\_grouped\_fast` select * from `song\_view\_grouped`;
+CREATE TABLE `song_view_grouped_fast` select * from `song_view_grouped`;
 
-DROP TABLE IF EXISTS `album\_view\_fast`;
+DROP TABLE IF EXISTS `album_view_fast`;
 
-CREATE TABLE `album\_view\_fast` select * from `album\_view`;
+CREATE TABLE `album_view_fast` select * from `album_view`;
 
-DROP TABLE IF EXISTS `artist\_search\_view\_fast`; 
+DROP TABLE IF EXISTS `artist_search_view_fast`; 
 
-CREATE TABLE `artist\_search\_view\_fast` select * from `artist\_search\_view`;
+CREATE TABLE `artist_search_view_fast` select * from `artist_search_view`;
 
