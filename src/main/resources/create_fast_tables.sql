@@ -5,17 +5,17 @@
 
 DROP TABLE IF EXISTS `song_view_fast`;
 
-CREATE TABLE `song_view_fast` AS select * from `song_view`;
+CREATE TABLE `song_view_fast` AS select torrent_path from `song_view`;
 
-DROP TABLE IF EXISTS `song_view_grouped_fast`;
+-- DROP TABLE IF EXISTS `song_view_grouped_fast`;
 
-CREATE TABLE `song_view_grouped_fast` AS select * from `song_view_grouped`;
+-- CREATE TABLE `song_view_grouped_fast` AS select * from `song_view_grouped`;
 
-DROP TABLE IF EXISTS `album_view_fast`;
+-- DROP TABLE IF EXISTS `album_view_fast`;
 
-CREATE TABLE `album_view_fast` AS select * from `album_view`;
+-- CREATE TABLE `album_view_fast` AS select * from `album_view`;
 
-DROP TABLE IF EXISTS `artist_search_view_fast`; 
+-- DROP TABLE IF EXISTS `artist_search_view_fast`; 
 
-CREATE TABLE `artist_search_view_fast` AS select * from `artist_search_view`;
+-- CREATE TABLE `artist_search_view_fast` AS select * from `artist_search_view`;
 
