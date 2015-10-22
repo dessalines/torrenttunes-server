@@ -3,9 +3,12 @@
 -- 	PRIMARY KEY (`id`)
 -- );
 
+
 DROP TABLE IF EXISTS `song_view_fast`;
 
-CREATE TEMPORARY TABLE `song_view_fast` AS (select * from song_view);
+CREATE TABLE `song_view_fast` AS (select * from song_view);
+
+
 
 
 
