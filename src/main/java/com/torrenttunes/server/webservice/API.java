@@ -1058,9 +1058,13 @@ public class API {
 		}
 		String[] splitWords = query.split(" ");
 		StringBuilder queryStr = new StringBuilder();
+		
 		for(int i = 0;;) {
-			String word = columnName + " like '%" + splitWords[i++] + "%'";
-			queryStr.append(word);
+			String word = splitWords[i++].replaceAll("'", "_");
+			
+			String likeQuery = columnName + " like '%" + word + "%'";
+			
+			queryStr.append(likeQuery);
 
 			if (i < splitWords.length) {
 				queryStr.append(" and ");
