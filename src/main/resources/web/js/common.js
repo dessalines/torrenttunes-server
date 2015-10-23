@@ -207,13 +207,15 @@ function setSearchType(data) {
   $("#search_form").removeClass('artist-search-type');
 
 
-  if (searchType == 'song_mbid') {
-    $("#search_form").addClass('song-search-type');
+  if (searchType == 'artist_mbid') {
+    $("#search_form").addClass('artist-search-type');
   } else if (searchType == 'release_group_mbid') {
     $("#search_form").addClass('album-search-type');
-  } else if (searchType == 'artist_mbid') {
-    $("#search_form").addClass('artist-search-type');
+  } else if (searchType == 'song_mbid') {
+    $("#search_form").addClass('song-search-type');
   }
+
+
 
   $('#search_id').val(searchMbid);
 }
