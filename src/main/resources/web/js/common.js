@@ -208,7 +208,7 @@ function setSearchType(data) {
      searchMbid = data['release_group_mbid'];
     $("#search_form").addClass('song-search-type');
   } else if (searchType == 'search_album') {
-    searchMbid = data['release_group_mbid'];
+    searchMbid = data['mbid'];
     $("#search_form").addClass('album-search-type');
   } else if (searchType == 'search_artist') {
     searchMbid = data['artist_mbid'];
