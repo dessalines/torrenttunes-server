@@ -208,11 +208,11 @@ function setSearchType(data) {
 
 
 
-  if (searchType == 'song_mbid') {
+  if (searchType == 'search_song') {
     $("#search_form").addClass('song-search-type');
-  } else if (searchType == 'release_group_mbid') {
+  } else if (searchType == 'search_album') {
     $("#search_form").addClass('album-search-type');
-  } else if (searchType == 'artist_mbid') {
+  } else if (searchType == 'search_artist') {
     $("#search_form").addClass('artist-search-type');
   }
 
