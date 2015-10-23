@@ -182,24 +182,24 @@ function setupSearch() {
 
 function setSearchType(data) {
   // add a class for the type
-  var mbidTypes = ['search_song', 'search_artist', 'search_album'];
+  var searchTypes = ['search_song', 'search_artist', 'search_album'];
   var searchTypeIndex = 0;
   for (i = 0; i < 3; i++) {
-    searchTypeIndex = $.inArray(mbidTypes[i], Object.keys(data));
+    searchTypeIndex = $.inArray(searchTypes[i], Object.keys(data));
     console.log(searchTypeIndex);
     if (searchTypeIndex != -1) {
       break;
     }
   }
 
+
   var searchType = Object.keys(data)[searchTypeIndex];
-  var searchMbid = data[searchType];
+
 
   if (searchType == 'song_mbid') {
     searchMbid = data['release_group_mbid'];
   }
-  console.log(searchType);
-  console.log(searchMbid);
+
 
   // remove the 3 classes first
   $("#search_form").removeClass('song-search-type');
@@ -207,14 +207,20 @@ function setSearchType(data) {
   $("#search_form").removeClass('artist-search-type');
 
 
-
+  var searchMbid;
   if (searchType == 'search_song') {
+     searchMbid = data['song_mbid'];
     $("#search_form").addClass('song-search-type');
   } else if (searchType == 'search_album') {
+    searchMbid = data['release_group_mbid'];
     $("#search_form").addClass('album-search-type');
   } else if (searchType == 'search_artist') {
+    searchMbid = data['artist_mbid'];
     $("#search_form").addClass('artist-search-type');
   }
+
+  console.log(searchType);
+  console.log(searchMbid);
 
 
 
@@ -249,7 +255,7 @@ function showAlbumPage(releaseMBID) {
 
   replaceParams('album', releaseMBID);
 
-  
+
   albumCatalogMBID = releaseMBID;
   $('#albumcatalogTab').addClass('hide');
   $('a[href="#albumcatalogTab"]').tab('show');
@@ -349,7 +355,7 @@ function setupAddToPlaylist() {
 
 
       deleteExtraFieldsFromPlaylists();
-      
+
       tracks.push(playlistTrackObj);
 
       savePlaylistsToLocalStorage();
