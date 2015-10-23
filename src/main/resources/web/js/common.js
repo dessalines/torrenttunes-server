@@ -118,9 +118,10 @@ function setupSearch() {
     }
 
 
-  }).bind('typeahead:selected', function(e, data) {
+  }).bind('typeahead:selected', function(e, data, name) {
     console.log(e);
     console.log(data);
+    console.log(name);
 
     setSearchType(data);
 
