@@ -196,10 +196,6 @@ function setSearchType(data) {
   var searchType = Object.keys(data)[searchTypeIndex];
 
 
-  if (searchType == 'song_mbid') {
-    searchMbid = data['release_group_mbid'];
-  }
-
 
   // remove the 3 classes first
   $("#search_form").removeClass('song-search-type');
@@ -209,7 +205,7 @@ function setSearchType(data) {
 
   var searchMbid;
   if (searchType == 'search_song') {
-     searchMbid = data['song_mbid'];
+     searchMbid = data['release_group_mbid'];
     $("#search_form").addClass('song-search-type');
   } else if (searchType == 'search_album') {
     searchMbid = data['release_group_mbid'];
