@@ -182,7 +182,7 @@ function setupSearch() {
 
 function setSearchType(data) {
   // add a class for the type
-  var mbidTypes = ['song_mbid', 'artist_mbid', 'release_group_mbid'];
+  var mbidTypes = ['search_song', 'search_artist', 'search_album'];
   var searchTypeIndex = 0;
   for (i = 0; i < 3; i++) {
     searchTypeIndex = $.inArray(mbidTypes[i], Object.keys(data));
@@ -207,12 +207,13 @@ function setSearchType(data) {
   $("#search_form").removeClass('artist-search-type');
 
 
-  if (searchType == 'artist_mbid') {
-    $("#search_form").addClass('artist-search-type');
+
+  if (searchType == 'song_mbid') {
+    $("#search_form").addClass('song-search-type');
   } else if (searchType == 'release_group_mbid') {
     $("#search_form").addClass('album-search-type');
-  } else if (searchType == 'song_mbid') {
-    $("#search_form").addClass('song-search-type');
+  } else if (searchType == 'artist_mbid') {
+    $("#search_form").addClass('artist-search-type');
   }
 
 
