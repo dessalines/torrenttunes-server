@@ -23,11 +23,13 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.torrenttunes.server.DataSources;
 import com.torrenttunes.server.db.Actions;
+import com.torrenttunes.server.db.Transformations;
 import com.torrenttunes.server.db.Tables.SongView;
 import com.torrenttunes.server.tools.Tools;
 
@@ -557,7 +559,8 @@ public class API {
 
 				String artistMbid = req.params(":artistMbid");
 
-				String json = ARTIST.findFirst("mbid = ?", artistMbid).toJson(false);
+				ObjectNode on = Transformations.artistViewJson(artistMbid);
+				String json = Tools.nodeToJson(on);
 
 				return json;
 
