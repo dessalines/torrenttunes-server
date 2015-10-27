@@ -139,7 +139,7 @@ function setupSearch() {
   $("#search_form").submit(function(event) {
     var formData = $("#search_form").serializeArray();
 
-
+    hideKeyboard($('[name=search_input]'));
 
 
     // var classList = document.getElementsByName('creators_list').className.split(/\s+/);
