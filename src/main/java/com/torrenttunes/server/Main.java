@@ -12,6 +12,7 @@ import ch.qos.logback.classic.Logger;
 
 import com.torrenttunes.client.LibtorrentEngine;
 import com.torrenttunes.server.db.Actions;
+import com.torrenttunes.server.scheduled.ScheduledJobs;
 import com.torrenttunes.server.tools.Tools;
 import com.torrenttunes.server.webservice.WebService;
 
@@ -46,8 +47,7 @@ public class Main {
 //		log.getLoggerContext().getLogger("org.eclipse.jetty").setLevel(Level.OFF);
 //		log.getLoggerContext().getLogger("spark.webserver").setLevel(Level.OFF);
 
-
-		// Initialize
+		
 		com.torrenttunes.client.tools.DataSources.APP_NAME = DataSources.APP_NAME;
 		com.torrenttunes.client.tools.DataSources.TORRENTTUNES_URL = DataSources.TORRENTTUNES_INTERNAL_URL;
 		Tools.setupDirectories();
@@ -57,6 +57,8 @@ public class Main {
 		Tools.addExternalWebServiceVarToTools();
 
 		com.torrenttunes.client.db.InitializeTables.initializeTables();
+		
+		ScheduledJobs.start();
 
 		// Startup the web service
 		WebService.start();

@@ -299,7 +299,7 @@ public class Tools {
 			String sql;
 
 			sql = Files.toString(sqlFile, Charset.defaultCharset());
-
+			log.info(sql);
 			stmt.executeUpdate(sql);
 			stmt.close();
 		} catch (IOException | SQLException e) {
@@ -307,6 +307,7 @@ public class Tools {
 			e.printStackTrace();
 		}
 	}
+	
 
 	public static final void dbInit() {
 		

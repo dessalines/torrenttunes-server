@@ -61,7 +61,7 @@ soundManager.onready(function() {
 
 $(document).ready(function() {
 
-  checkBrowserLanguage();
+  checkBrowserLanguageOrRedirect();
   keyboardShortcuts();
 
   loadPlaylistsFromLocalStorage();
@@ -83,12 +83,16 @@ $(document).ready(function() {
 
 });
 
-function checkBrowserLanguage() {
+function checkBrowserLanguageOrRedirect() {
   var userLang = navigator.language || navigator.userLanguage; 
   console.log('Browser language: ' + userLang);
 
   var cPath = getUrlPathArray().slice(-1)[0];
 
+  if (window.location.href.lastIndexOf('http://www') === 0) {
+    console.log('redirecting to regular torrenttunes');
+    window.location = 'http://torrenttunes.ml';
+  }
 
   // redirect spanish browsers if not already there
   if (userLang.lastIndexOf('es', 0) === 0 && cPath != 'es') {
