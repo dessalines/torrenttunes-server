@@ -129,6 +129,10 @@ function setupSearch() {
     // $('#search_id').val(searchId);
 
     $(this).submit();
+  }).bind('typeahead:render', function(e) {
+    
+    $('#search_form').parent().find('.tt-selectable:first').addClass('tt-cursor');
+
   });
 
   // $('[name=search_input]').focus();
@@ -140,7 +144,6 @@ function setupSearch() {
     var formData = $("#search_form").serializeArray();
 
     hideKeyboard($('[name=search_input]'));
-
 
     // var classList = document.getElementsByName('creators_list').className.split(/\s+/);
     // console.log(classList);
