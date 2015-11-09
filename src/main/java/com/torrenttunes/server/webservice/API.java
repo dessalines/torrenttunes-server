@@ -776,7 +776,7 @@ public class API {
 
 				String json = null;
 				json = ALBUM_VIEW_FAST.find("is_primary_album = ? and plays > ?", true, 0).
-						orderBy("created asc").limit(4).toJson(false);
+						orderBy("created desc").limit(4).toJson(false);
 
 				return json;
 
@@ -803,7 +803,7 @@ public class API {
 
 				String json = null;
 				json = SONG_VIEW_GROUPED.find("is_primary_album = ? and plays > ?", true, 0).
-						orderBy("created asc").limit(15).toJson(false);
+						orderBy("created desc").limit(15).toJson(false);
 
 				return json;
 
