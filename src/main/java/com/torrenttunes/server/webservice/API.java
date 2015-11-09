@@ -506,7 +506,7 @@ public class API {
 
 				json = ALBUM_VIEW_FAST.find("artist_mbid = ? AND (primary_type != ? OR secondary_types is not ?)", 
 						artistMbid, "Album", null).
-						orderBy("year desc").toJson(false);
+						orderBy("number_of_songs desc").toJson(false);
 
 				return json;
 
@@ -574,7 +574,7 @@ public class API {
 
 
 		});
-		
+
 		get("/get_artist_tags/:artistMbid",  (req, res) -> {
 
 			try {
@@ -599,7 +599,7 @@ public class API {
 
 
 		});
-		
+
 		get("/get_related_artists/:artistMbid",  (req, res) -> {
 
 			try {
@@ -740,13 +740,13 @@ public class API {
 				Tools.allowAllHeaders(req, res);
 				Tools.set15MinuteCache(req, res);
 				Tools.dbInit();
-//				Tools.setJsonContentType(res);
+				//				Tools.setJsonContentType(res);
 
 				String json = null;
 				//json = ARTIST.findAll().orderBy("name asc").toJson(false);
-				
-				
-				
+
+
+
 				json = ARTIST.findAll()
 						.orderBy("case when lower(substr(name,1,3))='the' "
 								+ "then substr(name,5,length(name)-3) else name end;")
@@ -775,7 +775,8 @@ public class API {
 
 
 				String json = null;
-				json = ALBUM_VIEW_FAST.find("is_primary_album = ?", true).orderBy("plays desc").limit(4).toJson(false);
+				json = ALBUM_VIEW_FAST.find("is_primary_album = ? and plays > ?", true, 0).
+						orderBy("created asc").limit(4).toJson(false);
 
 				return json;
 
@@ -801,8 +802,8 @@ public class API {
 
 
 				String json = null;
-				json = SONG_VIEW_GROUPED.find("is_primary_album = ?", true).
-						orderBy("plays desc").limit(15).toJson(false);
+				json = SONG_VIEW_GROUPED.find("is_primary_album = ? and plays > ?", true, 0).
+						orderBy("created asc").limit(15).toJson(false);
 
 				return json;
 
@@ -833,7 +834,7 @@ public class API {
 				res.header("Content-Disposition", "attachment; filename=\"" + zipFile.getName() + "\"");
 				res.header("Content-Length", String.valueOf(zipFile.length()));
 				res.header("Content-Transfer-Encoding", "binary");
-						
+
 				return Tools.writeFileToResponse(zipFile, res);
 
 			} catch (Exception e) {
@@ -861,12 +862,12 @@ public class API {
 
 				zipFile = Actions.createAlbumZipFile(albumMbid);
 
-				
+
 				res.type("application/octet-stream");
 				res.header("Content-Disposition", "attachment; filename=\"" + zipFile.getName() + "\"");
 				res.header("Content-Length", String.valueOf(zipFile.length()));
 				res.header("Content-Transfer-Encoding", "binary");
-						
+
 				return Tools.writeFileToResponse(zipFile, res);
 
 
@@ -883,7 +884,7 @@ public class API {
 
 		});
 
-		
+
 		get("/get_magnet_link/:songMbid", (req, res) -> {
 
 			try {
@@ -892,12 +893,12 @@ public class API {
 				Tools.dbInit();
 
 				String songMbid = req.params(":songMbid");
-				
+
 				String magnetLink = Actions.getSongMagnetLink(songMbid);
-				
+
 				return magnetLink;
-				
-				
+
+
 
 			} catch (Exception e) {
 				res.status(666);
@@ -909,8 +910,8 @@ public class API {
 
 
 		});
-		
-		
+
+
 
 
 
@@ -1046,12 +1047,12 @@ public class API {
 		}
 		String[] splitWords = query.split(" ");
 		StringBuilder queryStr = new StringBuilder();
-		
+
 		for(int i = 0;;) {
 			String word = splitWords[i++].replaceAll("'", "_");
-			
+
 			String likeQuery = columnName + " like '%" + word + "%'";
-			
+
 			queryStr.append(likeQuery);
 
 			if (i < splitWords.length) {

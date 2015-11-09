@@ -20,8 +20,9 @@ primary_type,
 secondary_types,
 count(song_release_group.id) as number_of_songs,
 sum(plays) as plays,
-primary_type = 'Album' AND secondary_types is NULL as is_primary_album,
-concat(artist.name,' - ',release_group.title) as search_album
+(primary_type in ('Album','EP')) AND secondary_types is NULL as is_primary_album,
+concat(artist.name,' - ',release_group.title) as search_album,
+release_group.created
 from release_group
 inner join song_release_group
 on release_group.mbid = song_release_group.release_group_mbid
@@ -54,7 +55,8 @@ seeders,
 concat(artist.name,' - ',release_group.title,' - ',song.title) as search_song,
 release_group.primary_type,
 release_group.secondary_types,
-release_group.primary_type = 'Album' AND release_group.secondary_types is NULL as is_primary_album
+release_group.primary_type = 'Album' AND release_group.secondary_types is NULL as is_primary_album,
+song.created
 from song
 inner join song_release_group
 on song.mbid = song_release_group.song_mbid 
