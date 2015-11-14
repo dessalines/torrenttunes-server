@@ -36,7 +36,11 @@ public class ChangeTorrentTrackers {
 					String torrentPath = l.getString("torrent_path");
 					log.info("Editing torrent_path: " + torrentPath);
 					File torrentFile = new File(torrentPath);
-					com.torrenttunes.client.tools.ChangeTorrentTracker.updateTrackerForTorrent(torrentFile);
+					try {
+						com.torrenttunes.client.tools.ChangeTorrentTracker.updateTrackerForTorrent(torrentFile);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
 
 			} catch(Exception e) {
