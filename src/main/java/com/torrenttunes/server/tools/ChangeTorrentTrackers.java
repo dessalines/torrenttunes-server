@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.torrenttunes.client.LibtorrentEngine;
-import com.torrenttunes.client.tools.Tools;
 import com.torrenttunes.server.DataSources;
 import com.torrenttunes.server.db.Tables.Song;
 
