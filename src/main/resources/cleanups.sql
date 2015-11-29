@@ -1,4 +1,18 @@
 
+87d456b2e0c6886ccdaae6f2e463578e
+
+select 
+uploader_ip_hash, 
+count(*),
+sum(plays), 
+sum(timeouts),
+max(seeders)
+from song
+-- where uploader_ip_hash is NULL
+group by uploader_ip_hash
+order by count(*) desc;
+
+
 select artist.mbid, release_group.mbid, song_release_group.id, song.mbid, song.title,
 uploader_ip_hash
 from artist
@@ -24,7 +38,7 @@ group by release_group.mbid
 
 select distinct uploader_ip_hash from song;
 
-select * from song where uploader_ip_hash='NULL'
+select count(*) from song where uploader_ip_hash='87d456b2e0c6886ccdaae6f2e463578e';
 
 -- These two are for removing songs by bad uploaders
 delete srg
@@ -76,7 +90,7 @@ inner join
 	group by artist.mbid
 	having count(song.mbid) = 0
 ) a
-on ti.artist_mbid = a.mbid
+on ti.artist_mbid = a.mbid;
 
 
 delete art
@@ -94,19 +108,26 @@ inner join
 	group by artist.mbid
 	having count(song.mbid) = 0
 ) a
-on art.mbid = a.mbid
+on art.mbid = a.mbid;
 
 
-	-- An indicator that you need to fix song_view, because its not finding this song
-	-- from jeremy irons on a disney mix cd
-	select artist.mbid, release_group.mbid, song_release_group.id, song.mbid, song.title
-	from artist
-	left join release_group
-	on artist.mbid = release_group.artist_mbid
-	left join song_release_group
-	on release_group.mbid = song_release_group.release_group_mbid
-	left join song 
-	on song_release_group.song_mbid = song.mbid
-	where artist.mbid = '349ab9cc-3062-430e-9561-d73d0e10e08a'
-	group by artist.mbid
-	having count(song.mbid) = 0
+-- check to see which artists need their columns converted
+select *
+from artist 
+where artist.name like '%?%';
+
+
+
+-- An indicator that you need to fix song_view, because its not finding this song
+-- from jeremy irons on a disney mix cd
+select artist.mbid, release_group.mbid, song_release_group.id, song.mbid, song.title
+from artist
+left join release_group
+on artist.mbid = release_group.artist_mbid
+left join song_release_group
+on release_group.mbid = song_release_group.release_group_mbid
+left join song 
+on song_release_group.song_mbid = song.mbid
+where artist.mbid = '349ab9cc-3062-430e-9561-d73d0e10e08a'
+group by artist.mbid
+having count(song.mbid) = 0

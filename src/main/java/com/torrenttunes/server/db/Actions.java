@@ -6,6 +6,7 @@ import static com.torrenttunes.server.db.Tables.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -502,16 +503,20 @@ public class Actions {
 
 			for (Model song : songs) {
 
+				try {
 				File torrentFile = new File(song.getString("torrent_path"));
 				ZipEntry e = new ZipEntry(torrentFile.getName());
 				
 				zout.putNextEntry(e);
-
+				
 				byte[] torrentBytes = java.nio.file.Files.readAllBytes(Paths.get(torrentFile.getAbsolutePath()));
 
 				zout.write(torrentBytes, 0, torrentBytes.length);
 				
 				zout.closeEntry();
+				} catch(NoSuchFileException e) {
+					log.error("Couldn't find torrent file, skipping: " + song.getString("torrent_path"));
+				}
 				
 			}
 			
