@@ -6,6 +6,8 @@ import static spark.Spark.port;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import spark.Spark;
+
 import com.torrenttunes.client.webservice.Platform;
 import com.torrenttunes.server.DataSources;
 import com.torrenttunes.server.tools.Tools;
@@ -24,7 +26,7 @@ public class WebService {
 		com.torrenttunes.client.tools.DataSources.MUSIC_STORAGE_PATH = 
 				DataSources.HOME_DIR() + "/music";
 
-//				setupSSL();
+		Spark.secure(DataSources.KEYSTORE(), null,null,null);
 
 
 		port(DataSources.INTERNAL_SPARK_WEB_PORT);

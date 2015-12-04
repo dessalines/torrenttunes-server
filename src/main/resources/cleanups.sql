@@ -45,11 +45,11 @@ delete srg
 from song_release_group srg
 inner join song 
 on srg.song_mbid = song.mbid 
-where uploader_ip_hash='NULL';
+where uploader_ip_hash='87d456b2e0c6886ccdaae6f2e463578e';
 
 delete 
 from song
-where uploader_ip_hash='NULL';
+where uploader_ip_hash='87d456b2e0c6886ccdaae6f2e463578e';
 
 
 -- delete empty release groups

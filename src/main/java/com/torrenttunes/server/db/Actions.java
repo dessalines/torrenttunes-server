@@ -514,6 +514,7 @@ public class Actions {
 				zout.write(torrentBytes, 0, torrentBytes.length);
 				
 				zout.closeEntry();
+				
 				} catch(NoSuchFileException e) {
 					log.error("Couldn't find torrent file, skipping: " + song.getString("torrent_path"));
 				}

@@ -32,12 +32,15 @@ public class DataSources {
 	
 	public static final String TORRENTTUNES_INTERNAL_URL = "http://" + TORRENTTUNES_IP + ":" + INTERNAL_SPARK_WEB_PORT + "/";
 	
+
 	
 	// The path to the ytm dir
 	public static String HOME_DIR() {
 		String userHome = System.getProperty( "user.home" ) + "/." + APP_NAME;
 		return userHome;
 	}
+	
+	public static final String KEYSTORE() { return HOME_DIR() + "/keystore.jks";}
 	
 	public static final String TORRENTS_DIR() {return HOME_DIR() + "/torrents_server";}
 	
