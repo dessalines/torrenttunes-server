@@ -1021,6 +1021,7 @@ function addToQueueLast(trackObj) {
 
   }
 
+  setupTrackRemoveFromQueue();
 
   return index;
 
@@ -1036,6 +1037,9 @@ function addToQueueNext(trackObj) {
   console.log(index);
 
   $('#playlist_div li ').eq(index).after(li);
+
+  setupTrackRemoveFromQueue();
+
   return index;
 
 
@@ -1136,12 +1140,19 @@ function buildLiFromTrackObject(trackObj) {
   encodedAudioFilePath = encodedAudioFilePath.replace(/\%2F/g, 'qzvkn');
   console.log(encodedAudioFilePath);
 
-
-
-  var li = '<li><a href="' + encodedAudioFilePath + '"><b>' +
+  var li = '<li><div class="sm2-row">' +
+    '<div class="sm2-col sm2-wide">' +
+    '<a href=' + encodedAudioFilePath + '><b>' +
     '<span class="artist_playing_clickable" name="' + trackObj['artist_mbid'] + '">' +
     htmlDecode(htmlDecode(trackObj['artist'])) + '</span></b> - ' +
-    htmlDecode(htmlDecode(trackObj['title'])) + '</a></li>';
+    htmlDecode(htmlDecode(trackObj['title'])) +
+    '</a></div>' +
+    '<div class="sm2-col">' +
+    '<a class="sm2-icon sm2-exclude sm2-trash"' +
+    'href="javascript:void(0)" title="Remove From Queue">' +
+    '</a></div>' +
+    '</div></li>';
+
 
   // console.log(trackObj['artist']);
 
