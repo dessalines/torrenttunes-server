@@ -451,7 +451,7 @@ public class Tools {
 					DataSources.WEB_SERVICE_URL + "';";
 
 			String torrentTunesServiceLine = "var torrentTunesSparkService ='" + 
-					DataSources.TORRENTTUNES_URL + "';";
+					DataSources.TORRENTTUNES_URL() + "';";
 			
 			String externalServiceLine = "var externalSparkService ='" + 
 					DataSources.EXTERNAL_URL + "';";

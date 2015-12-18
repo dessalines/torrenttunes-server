@@ -28,6 +28,9 @@ public class Main {
 	
 	@Option(name="-maintenance", usage="Redirects to the maintenance page")
 	private boolean maintenanceRedirect;
+	
+	@Option(name="-ssl", usage="Use ssl")
+	private boolean ssl;
 
 	public void doMain(String[] args) {
 
@@ -41,6 +44,8 @@ public class Main {
 		if (maintenanceRedirect) {
 			DataSources.BASE_ENDPOINT = DataSources.MAINTENANCE_PAGE_URL();
 		}
+		
+		DataSources.SSL = ssl;
 
 
 		log.setLevel(Level.toLevel(loglevel));
@@ -49,7 +54,7 @@ public class Main {
 
 		
 		com.torrenttunes.client.tools.DataSources.APP_NAME = DataSources.APP_NAME;
-		com.torrenttunes.client.tools.DataSources.TORRENTTUNES_URL = DataSources.TORRENTTUNES_INTERNAL_URL;
+		com.torrenttunes.client.tools.DataSources.TORRENTTUNES_URL = DataSources.TORRENTTUNES_INTERNAL_URL();
 		Tools.setupDirectories();
 
 		Tools.copyResourcesToHomeDir(true);

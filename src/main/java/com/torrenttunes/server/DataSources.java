@@ -13,24 +13,33 @@ public class DataSources {
 
 	public static String APP_NAME = "torrenttunes-server";
 	
-	public static Integer EXTERNAL_SPARK_WEB_PORT = 80; // Main is port 80, dev is port 4567
+	public static Integer EXTERNAL_SPARK_WEB_PORT(){return (SSL) ? 443 : 80;} // Main is port 80, dev is port 4567
 	
 	// iptables are used to route all requests to 80 to 8080.
 	public static Integer INTERNAL_SPARK_WEB_PORT = 8080;
 	
-	public static final String WEB_SERVICE_URL = "http://localhost:" + EXTERNAL_SPARK_WEB_PORT + "/";
+	public static Boolean SSL = false;
+	
+	public static final String WEB_SERVICE_URL = "http://localhost:" + EXTERNAL_SPARK_WEB_PORT() + "/";
 	
 	public static String EXTERNAL_IP = Tools.httpGetString("http://api.ipify.org/").trim();
 	
-	public static String EXTERNAL_URL = "http://" + EXTERNAL_IP + ":" + EXTERNAL_SPARK_WEB_PORT + "/";	
+	public static String EXTERNAL_URL = "http://" + EXTERNAL_IP + ":" + EXTERNAL_SPARK_WEB_PORT() + "/";	
 	
 	public static final String TORRENTTUNES_IP = "torrenttunes.ml";
 	
-	public static final String TORRENTTUNES_PORT = "80";// Main is 80, dev is 4567
+	public static final Integer TORRENTTUNES_PORT() {return EXTERNAL_SPARK_WEB_PORT();}// Main is 80, dev is 4567
 	
-	public static final String TORRENTTUNES_URL = "http://" + TORRENTTUNES_IP + ":" + TORRENTTUNES_PORT + "/";
+	public static String HTTP() {return (SSL) ? "https://" : "http://";}
 	
-	public static final String TORRENTTUNES_INTERNAL_URL = "http://" + TORRENTTUNES_IP + ":" + INTERNAL_SPARK_WEB_PORT + "/";
+	public static final String TORRENTTUNES_URL() {
+		return HTTP() + TORRENTTUNES_IP + ":" + TORRENTTUNES_PORT() + "/";
+	}
+	
+	public static final String TORRENTTUNES_INTERNAL_URL() {
+		return HTTP() + TORRENTTUNES_IP + ":" + INTERNAL_SPARK_WEB_PORT + "/";
+	}
+	
 	
 
 	
