@@ -45,6 +45,7 @@ public class Main {
 			DataSources.BASE_ENDPOINT = DataSources.MAINTENANCE_PAGE_URL();
 		}
 		
+		System.out.println(ssl);
 		DataSources.SSL = ssl;
 
 
