@@ -866,7 +866,7 @@ function updateDownloadStatusBar(infoHash) {
   // console.log(tableRows);
 
 
-  getJson('get_torrent_progress/' + infoHash, true, externalSparkService).done(function(percentageFloat) {
+  getJson('get_torrent_progress/' + infoHash, true, torrentTunesSparkService).done(function(percentageFloat) {
 
     var percentage = parseInt(percentageFloat * 100) + '%';
 
@@ -949,7 +949,7 @@ function downloadOrFetchTrackObj(infoHash, option) {
     updateDownloadStatusBar(infoHash);
   }, 5000);
 
-  return getJson('fetch_or_download_song/' + infoHash, null, externalSparkService, playButtonName).done(function(e1) {
+  return getJson('fetch_or_download_song/' + infoHash, null, torrentTunesSparkService, playButtonName).done(function(e1) {
     var trackObj = JSON.parse(e1);
 
     replaceParams('song', trackObj['mbid']);
@@ -1134,7 +1134,7 @@ function createRadioStation(trackObj) {
 }
 
 function buildLiFromTrackObject(trackObj) {
-  var encodedAudioFilePath = externalSparkService + 'get_audio_file/' +
+  var encodedAudioFilePath = torrentTunesSparkService + 'get_audio_file/' +
     encodeURIComponent(trackObj['file_path']);
 
   encodedAudioFilePath = encodedAudioFilePath.replace(/\%2F/g, 'qzvkn');
