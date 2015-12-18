@@ -26,7 +26,9 @@ public class WebService {
 		com.torrenttunes.client.tools.DataSources.MUSIC_STORAGE_PATH = 
 				DataSources.HOME_DIR() + "/music";
 
-//		Spark.secure(DataSources.KEYSTORE(), "changeit",null,"changeit");
+		if (DataSources.SSL) {
+			Spark.secure(DataSources.KEYSTORE(), "changeit",null,null);
+		}
 
 
 		port(DataSources.INTERNAL_SPARK_WEB_PORT);
