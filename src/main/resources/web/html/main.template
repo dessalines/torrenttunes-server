@@ -886,7 +886,7 @@
               </div>
             </div>
           </div>
-          <div class="sm2-inline-element sm2-button-element sm2-volume">
+          <div class="sm2-inline-element sm2-button-element sm2-volume hide hide_on_mobile">
             <div class="sm2-button-bd">
               <span class="sm2-inline-button sm2-volume-control volume-shade"></span>
               <a href="#volume" class="sm2-inline-button sm2-volume-control">volume</a>
@@ -902,12 +902,12 @@
               <a href="#next" title="Next" class="sm2-inline-button next">&gt; next</a>
             </div>
           </div>
-          <div class="sm2-inline-element sm2-button-element">
+          <div class="sm2-inline-element sm2-button-element hide hide_on_mobile">
             <div class="sm2-button-bd">
               <a href="#repeat" title="Repeat playlist" class="sm2-inline-button repeat">∞ repeat</a>
             </div>
           </div>
-          <div class="sm2-inline-element sm2-button-element">
+          <div class="sm2-inline-element sm2-button-element hide hide_on_mobile">
             <div class="sm2-button-bd">
               <a href="#trash" title="Clear queue" class="sm2-inline-button trash">Trash</a>
             </div>

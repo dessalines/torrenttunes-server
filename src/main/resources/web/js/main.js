@@ -57,6 +57,13 @@ soundManager.onready(function() {
   player.actions.next();
   // player.actions.stop();
   setupPaths();
+
+  // unhide a few things if desktop
+  if (!isMobile()) {
+    $('.hide_on_mobile').removeClass('hide');
+  }
+
+
 });
 
 $(document).ready(function() {
@@ -79,6 +86,8 @@ $(document).ready(function() {
   setupTabs();
 
   setupUploadDownloadTotals();
+
+
 
 
 });
