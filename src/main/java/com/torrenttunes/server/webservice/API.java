@@ -459,11 +459,11 @@ public class API {
 				String artistMbid = req.params(":artistMbid");
 
 				String json = null;
-
-				json = SONG_VIEW_GROUPED.find("artist_mbid = ?", artistMbid).
-						orderBy("plays desc").limit(15).toJson(false);
-
-				return json;
+				
+				json = SONG_VIEW_FAST.find("artist_mbid = ? and is_primary_album = ?", artistMbid, true).
+						orderBy("plays desc").limit(15).toJson(false);						
+						
+						return json;
 
 			} catch (Exception e) {
 				res.status(666);

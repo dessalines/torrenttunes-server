@@ -476,3 +476,19 @@ explain select *
 from song_search_view 
 where search_song like '%Skrillex%'
 order by is_primary_album desc, plays desc limit 5;
+
+
+-- The top albums query
+select * from (
+	select * from album_view_fast 
+	where artist_mbid="172e1f1a-504d-4488-b053-6344ba63e6d0" 
+	and is_primary_album=0 
+	and number_of_songs > 8
+	order by number_of_songs desc limit 1) as a
+union all
+select * from (
+	select * from album_view_fast 
+	where artist_mbid="172e1f1a-504d-4488-b053-6344ba63e6d0" 
+	and is_primary_album=1 
+	order by plays desc) as b
+limit 4;
