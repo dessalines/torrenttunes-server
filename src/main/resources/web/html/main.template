@@ -645,7 +645,9 @@
 
                     
                       
-                      <!-- <i class="fa fa-arrows fa-fw"></i> -->
+                      <a class="text-normal" href="javascript:void(0);">
+                                <i class="fa fa-arrows fa-fw"></i></a>
+
                       <a name="delete-playlist-track_@@name~~" class="playlist-track-delete" href="javascript:void(0)"><i data-toggle="tooltip" data-placement="auto" title="Remove" class="fa text-danger fa-fw fa-trash"></i></a>
                       
                           <i data-toggle="tooltip" data-placement="auto" title="@@#seedersToNum~~@@seeders~~@@/seedersToNum~~ {{strings.seeders}}" class="fa text-@@#seedersToType~~@@seeders~~@@/seedersToType~~ fa-fw fa-circle"></i>
@@ -999,6 +1001,7 @@
       ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../bower_components/jquery-ui/jquery-ui.min.js"></script>
     <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../bower_components/bootstrapValidator/dist/js/bootstrapValidator.min.js "></script>
     <script src="../bower_components/toastr/toastr.js"></script>

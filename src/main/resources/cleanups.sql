@@ -1,3 +1,11 @@
+cc197bad-dc9c-440d-a5b5-d52ba2e14234
+
+curl localhost:8080/remove_artist_server/cc197bad-dc9c-440d-a5b5-d52ba2e14234
+curl localhost:8080/remove_artist/cc197bad-dc9c-440d-a5b5-d52ba2e14234
+
+curl localhost:4568/remove_artist_server/cc197bad-dc9c-440d-a5b5-d52ba2e14234
+curl localhost:4568/remove_artist/cc197bad-dc9c-440d-a5b5-d52ba2e14234
+
 
 87d456b2e0c6886ccdaae6f2e463578e
 
