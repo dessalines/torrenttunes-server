@@ -419,8 +419,21 @@ public class API {
 
 				String json = null;
 
-				json = ALBUM_VIEW_FAST.find("artist_mbid = ? AND is_primary_album = ?", artistMbid, true).
-						orderBy("plays desc").limit(4).toJson(false);
+				String query ="select * from (\n"+
+						"\tselect * from album_view_fast \n"+
+						"\twhere artist_mbid=\"" + artistMbid + "\" \n"+
+						"\tand is_primary_album=0 \n"+
+						"\tand number_of_songs > 8\n"+
+						"\torder by number_of_songs desc limit 1) as a\n"+
+						"union all\n"+
+						"select * from (\n"+
+						"\tselect * from album_view_fast \n"+
+						"\twhere artist_mbid=\"" + artistMbid + "\" \n"+
+						"\tand is_primary_album=1 \n"+
+						"\torder by plays desc) as b\n"+
+						"limit 4;";
+
+				json = ALBUM_VIEW_FAST.findBySQL(query).toJson(false);
 
 				return json;
 
@@ -446,11 +459,11 @@ public class API {
 				String artistMbid = req.params(":artistMbid");
 
 				String json = null;
-
-				json = SONG_VIEW_GROUPED.find("artist_mbid = ?", artistMbid).
-						orderBy("plays desc").limit(15).toJson(false);
-
-				return json;
+				
+				json = SONG_VIEW_FAST.find("artist_mbid = ? and is_primary_album = ?", artistMbid, true).
+						orderBy("plays desc").limit(15).toJson(false);						
+						
+						return json;
 
 			} catch (Exception e) {
 				res.status(666);
