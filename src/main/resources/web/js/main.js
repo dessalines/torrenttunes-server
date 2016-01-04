@@ -109,6 +109,10 @@ function checkBrowserLanguageOrRedirect() {
   if (userLang.lastIndexOf('es', 0) === 0 && cPath != 'es') {
     window.location = 'es';
   }
+  else if (userLang.lastIndexOf('fr', 0) === 0 && cPath != 'fr') {
+    window.location = 'fr';
+  }
+
 
 }
 
