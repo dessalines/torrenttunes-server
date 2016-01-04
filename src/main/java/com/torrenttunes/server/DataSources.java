@@ -91,6 +91,8 @@ public class DataSources {
 	
 	public static final String MAIN_PAGE_URL_ES() {return WEB_HTML() + "/main_es.html";}
 	
+	public static final String MAIN_PAGE_URL_FR() {return WEB_HTML() + "/main_fr.html";}
+	
 	public static final String MAINTENANCE_PAGE_URL() {return WEB_HTML() + "/maintenance.html";}
 	
 	public static String BASE_ENDPOINT = MAIN_PAGE_URL_EN();
