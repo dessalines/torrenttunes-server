@@ -98,9 +98,6 @@ public class DataSources {
 	public static String BASE_ENDPOINT = MAIN_PAGE_URL_EN();
 	
 	
-	public static final Set<String> NON_STREAMING_BROWSERS = new HashSet<String>(Arrays.asList(
-			"Firefox", "Android"));
-	
 	public static final Date APP_START_DATE = new Date();
 	
 	public static final String DB_PROP_FILE  = System.getProperty("user.home") + "/tt_db.properties";
