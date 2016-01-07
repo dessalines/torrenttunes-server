@@ -561,7 +561,7 @@ public class Actions {
 			
 			String name = com.musicbrainz.mp3.tagger.Tools.Artist.fetchArtist(mbid).getName();
 			
-			artist.set("name", name).saveIt();
+			artist.update("name = ?", "mbid = ?", name, mbid);
 			
 			log.info("Updated artist name in DB: " + name);
 
@@ -574,7 +574,7 @@ public class Actions {
 			
 			String title = com.musicbrainz.mp3.tagger.Tools.ReleaseGroup.fetchReleaseGroup(mbid).getTitle();
 			
-			rg.set("title", title).saveIt();
+			rg.update("title = ?",  "mbid = ?",  title, mbid);
 			
 			log.info("Updated release group title in DB: " + title);
 		}
