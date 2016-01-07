@@ -553,7 +553,7 @@ public class Actions {
 		// Go through the artist, album, and song tables, refetching all the titles
 		
 		Tools.dbInit();
-		List<Artist> artists = ARTIST.findAll();
+		List<Artist> artists = ARTIST.find("name like ?", "%?%");
 		
 		for (Artist artist : artists) {
 			
@@ -567,7 +567,7 @@ public class Actions {
 
 		}
 		
-		List<ReleaseGroup> rgs = RELEASE_GROUP.findAll();
+		List<ReleaseGroup> rgs = RELEASE_GROUP.find("title like ?", "%?%");
 		
 		for (ReleaseGroup rg : rgs) {
 			String mbid = rg.getString("mbid");
@@ -579,7 +579,7 @@ public class Actions {
 			log.info("Updated release group title in DB: " + title);
 		}
 		
-		List<Song> songs = SONG.findAll();
+		List<Song> songs = SONG.find("title like ?", "%?%");
 		
 		for (Song song : songs) {
 			String mbid = song.getString("mbid");
