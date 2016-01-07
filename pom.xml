@@ -101,11 +101,7 @@
 			<version>1.3.1</version>
 		</dependency>
 
-		<dependency>
-			<groupId>com.github.tchoulihan</groupId>
-			<artifactId>musicbrainz-tagger</artifactId>
-			<version>1.2.7</version>
-		</dependency>
+
 		<dependency>
 			<groupId>com.esotericsoftware</groupId>
 			<artifactId>kryo</artifactId>

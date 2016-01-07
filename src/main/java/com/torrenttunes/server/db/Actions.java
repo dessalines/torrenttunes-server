@@ -548,6 +548,56 @@ public class Actions {
 	}
 
 
+	public static void refetchTitles() {
+		
+		// Go through the artist, album, and song tables, refetching all the titles
+		
+		Tools.dbInit();
+		List<Artist> artists = ARTIST.findAll();
+		
+		for (Artist artist : artists) {
+			
+			String mbid = artist.getString("mbid");
+			
+			String name = com.musicbrainz.mp3.tagger.Tools.Artist.fetchArtist(mbid).getName();
+			
+			artist.set("name", name).saveIt();
+			
+			log.info("Updated artist name in DB: " + name);
+
+		}
+		
+		List<ReleaseGroup> rgs = RELEASE_GROUP.findAll();
+		
+		for (ReleaseGroup rg : rgs) {
+			String mbid = rg.getString("mbid");
+			
+			String title = com.musicbrainz.mp3.tagger.Tools.ReleaseGroup.fetchReleaseGroup(mbid).getTitle();
+			
+			rg.set("title", title).saveIt();
+			
+			log.info("Updated release group title in DB: " + title);
+		}
+		
+		List<Song> songs = SONG.findAll();
+		
+		for (Song song : songs) {
+			String mbid = song.getString("mbid");
+			
+			String title = com.musicbrainz.mp3.tagger.Tools.SongMBID.fetchSong(mbid).getRecording();
+			
+			song.set("title", title).saveIt();
+			
+			log.info("Updated song title in DB: " + title);
+		}
+		
+		Tools.dbClose();
+		
+		
+		
+	}
+
+
 
 
 }
