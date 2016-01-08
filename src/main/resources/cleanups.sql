@@ -7,7 +7,7 @@ curl localhost:4568/remove_artist_server/cc197bad-dc9c-440d-a5b5-d52ba2e14234
 curl localhost:4568/remove_artist/cc197bad-dc9c-440d-a5b5-d52ba2e14234
 
 curl localhost:8080/remove_song_server/facda332-7bdc-49cb-86ca-1bc620f1ecf7
-curl localhost:4568/remove_song_server/facda332-7bdc-49cb-86ca-1bc620f1ecf7
+curl localhost:4568/remove_song/facda332-7bdc-49cb-86ca-1bc620f1ecf7
 
 select * from song where mbid="facda332-7bdc-49cb-86ca-1bc620f1ecf7";
 
