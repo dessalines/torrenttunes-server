@@ -69,7 +69,7 @@ public class Main {
 		// Startup the web service
 		WebService.start();
 
-		LibtorrentEngine.INSTANCE.startSeedingLibraryVersion1();
+		LibtorrentEngine.INSTANCE.seedLibrary();
 
 	}
 
