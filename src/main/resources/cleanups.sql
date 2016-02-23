@@ -1,10 +1,10 @@
 cc197bad-dc9c-440d-a5b5-d52ba2e14234
 
-curl localhost:8080/remove_artist_server/cc197bad-dc9c-440d-a5b5-d52ba2e14234
-curl localhost:8080/remove_artist/cc197bad-dc9c-440d-a5b5-d52ba2e14234
+curl localhost:8080/remove_artist_server/3798b104-01cb-484c-a3b0-56adc6399b80
+curl localhost:8080/remove_artist/3798b104-01cb-484c-a3b0-56adc6399b80
 
-curl localhost:4568/remove_artist_server/cc197bad-dc9c-440d-a5b5-d52ba2e14234
-curl localhost:4568/remove_artist/cc197bad-dc9c-440d-a5b5-d52ba2e14234
+curl localhost:4568/remove_artist_server/3798b104-01cb-484c-a3b0-56adc6399b80
+curl localhost:4568/remove_artist/3798b104-01cb-484c-a3b0-56adc6399b80
 
 curl localhost:8080/remove_song_server/facda332-7bdc-49cb-86ca-1bc620f1ecf7
 curl localhost:4568/remove_song/facda332-7bdc-49cb-86ca-1bc620f1ecf7
@@ -14,6 +14,7 @@ select * from song where mbid="facda332-7bdc-49cb-86ca-1bc620f1ecf7";
 curl -X POST localhost:8080/clear_cache
 
 87d456b2e0c6886ccdaae6f2e463578e
+c72b3ad462815f54fe800cf6951adb0b
 
 select 
 uploader_ip_hash, 
@@ -52,18 +53,18 @@ group by release_group.mbid
 
 select distinct uploader_ip_hash from song;
 
-select count(*) from song where uploader_ip_hash='87d456b2e0c6886ccdaae6f2e463578e';
+select count(*) from song where uploader_ip_hash='c72b3ad462815f54fe800cf6951adb0b';
 
 -- These two are for removing songs by bad uploaders
 delete srg
 from song_release_group srg
 inner join song 
 on srg.song_mbid = song.mbid 
-where uploader_ip_hash='87d456b2e0c6886ccdaae6f2e463578e';
+where uploader_ip_hash='c72b3ad462815f54fe800cf6951adb0b';
 
 delete 
 from song
-where uploader_ip_hash='87d456b2e0c6886ccdaae6f2e463578e';
+where uploader_ip_hash='c72b3ad462815f54fe800cf6951adb0b';
 
 
 -- delete empty release groups

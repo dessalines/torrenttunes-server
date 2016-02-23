@@ -848,7 +848,7 @@ public class API {
 				res.header("Content-Length", String.valueOf(zipFile.length()));
 				res.header("Content-Transfer-Encoding", "binary");
 
-				return Tools.writeFileToResponse(zipFile, res);
+				return Tools.writeFileToResponse(zipFile, req, res);
 
 			} catch (Exception e) {
 				res.status(666);
@@ -881,7 +881,7 @@ public class API {
 				res.header("Content-Length", String.valueOf(zipFile.length()));
 				res.header("Content-Transfer-Encoding", "binary");
 
-				return Tools.writeFileToResponse(zipFile, res);
+				return Tools.writeFileToResponse(zipFile, req, res);
 
 
 			} catch (Exception e) {

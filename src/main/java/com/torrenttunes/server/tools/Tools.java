@@ -37,6 +37,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.http.client.methods.HttpGet;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -48,6 +49,7 @@ import org.slf4j.LoggerFactory;
 
 import spark.Request;
 import spark.Response;
+import spark.utils.GzipUtils;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
@@ -105,6 +107,8 @@ public class Tools {
 		String origin = req.headers("Origin");
 		res.header("Access-Control-Allow-Credentials", "true");
 		res.header("Access-Control-Allow-Origin", origin);
+		res.header("Content-Encoding", "gzip");
+
 
 
 	}
@@ -405,37 +409,44 @@ public class Tools {
 
 		return imageURL;
 	}
+	
+	public static Boolean writeFileToResponse(File file, Request req, Response res) {
+		return writeFileToResponse(file.getAbsolutePath(), req, res);
+	}
 
-	public static String readFile(String path) {
-		String s = null;
 
-		byte[] encoded;
+	public static Boolean writeFileToResponse(String path, Request req, Response res) {
 		try {
-			encoded = java.nio.file.Files.readAllBytes(Paths.get(path));
 			
-			s = new String(encoded, Charset.defaultCharset());
+			OutputStream wrappedOutputStream = GzipUtils.checkAndWrap(req.raw(), 
+					res.raw());
+
+			IOUtils.copy(new FileInputStream(new File(path)), wrappedOutputStream);
+
+			wrappedOutputStream.flush();
+			wrappedOutputStream.close();
+			
+
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
-			throw new NoSuchElementException("Couldn't write result");
 		}
-		return s;
+		return true;
 	}
 	
-	public static HttpServletResponse writeFileToResponse(File file, Response res) {
-		return writeFileToResponse(file.getAbsolutePath(), res);
-	}
-	
-	public static HttpServletResponse writeFileToResponse(String path, Response res) {
+	public static HttpServletResponse writeFileToResponse2(String path, Response res) {
 
 		byte[] encoded;
 		try {
 			encoded = java.nio.file.Files.readAllBytes(Paths.get(path));
+
 
 			ServletOutputStream os = res.raw().getOutputStream();
 			os.write(encoded);
 			os.close();
+
 			return res.raw();
-			
+
 		} catch (IOException e) {
 			throw new NoSuchElementException("Couldn't write response from path: " + path);
 		}

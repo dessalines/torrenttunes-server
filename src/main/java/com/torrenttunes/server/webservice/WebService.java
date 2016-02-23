@@ -3,6 +3,8 @@ package com.torrenttunes.server.webservice;
 import static spark.Spark.get;
 import static spark.Spark.port;
 
+import java.io.File;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,21 +50,21 @@ public class WebService {
 			Tools.allowAllHeaders(req, res);
 			Tools.set15MinuteCache(req, res);
 			
-			return Tools.readFile(DataSources.BASE_ENDPOINT);
+			return Tools.writeFileToResponse(new File(DataSources.BASE_ENDPOINT), req, res);
 		});
 		
 		get("/es", (req, res) -> {
 			Tools.allowAllHeaders(req, res);
 			Tools.set15MinuteCache(req, res);
 			
-			return Tools.readFile(DataSources.MAIN_PAGE_URL_ES());
+			return Tools.writeFileToResponse(new File(DataSources.MAIN_PAGE_URL_ES()), req, res);
 		});
 		
 		get("/fr", (req, res) -> {
 			Tools.allowAllHeaders(req, res);
 			Tools.set15MinuteCache(req, res);
 			
-			return Tools.readFile(DataSources.MAIN_PAGE_URL_FR());
+			return Tools.writeFileToResponse(new File(DataSources.MAIN_PAGE_URL_FR()), req, res);
 		});
 		
 		
@@ -76,7 +78,7 @@ public class WebService {
 			
 			Tools.setContentTypeFromFileName(pageName, res);
 			
-			return Tools.writeFileToResponse(webHomePath, res);
+			return Tools.writeFileToResponse(webHomePath, req, res);
 			
 		});
 
