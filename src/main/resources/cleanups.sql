@@ -1,10 +1,9 @@
 cc197bad-dc9c-440d-a5b5-d52ba2e14234
 
-curl localhost:8080/remove_artist_server/3798b104-01cb-484c-a3b0-56adc6399b80
-curl localhost:8080/remove_artist/3798b104-01cb-484c-a3b0-56adc6399b80
+curl localhost:8080/remove_artist_server/153c9281-268f-4cf3-8938-f5a4593e5df4
+curl localhost:8080/remove_artist/153c9281-268f-4cf3-8938-f5a4593e5df4
 
-curl localhost:4568/remove_artist_server/3798b104-01cb-484c-a3b0-56adc6399b80
-curl localhost:4568/remove_artist/3798b104-01cb-484c-a3b0-56adc6399b80
+curl localhost:4568/remove_artist/153c9281-268f-4cf3-8938-f5a4593e5df4
 
 curl localhost:8080/remove_song_server/facda332-7bdc-49cb-86ca-1bc620f1ecf7
 curl localhost:4568/remove_song/facda332-7bdc-49cb-86ca-1bc620f1ecf7
