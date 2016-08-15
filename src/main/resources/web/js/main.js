@@ -102,7 +102,7 @@ function checkBrowserLanguageOrRedirect() {
 
   if (window.location.href.lastIndexOf('http://www') === 0) {
     console.log('redirecting to regular torrenttunes');
-    window.location = 'http://torrenttunes.ml';
+    window.location = 'http://torrenttunes.tk';
   }
 
   // redirect spanish browsers if not already there
